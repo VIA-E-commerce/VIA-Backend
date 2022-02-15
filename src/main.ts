@@ -3,6 +3,7 @@ import { Logger } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule } from '@nestjs/swagger';
 import * as expressBasicAuth from 'express-basic-auth';
+import * as cookieParser from 'cookie-parser';
 
 import { swaggerConfig, corsConfig } from '@/config';
 import { APP, API_URL } from '@/constant';
@@ -41,6 +42,8 @@ class Application {
     this.app.useGlobalInterceptors(new SuccessInterceptor());
     this.app.useGlobalFilters(new HttpExceptionFilter());
     this.setUpOpenAPI();
+
+    this.app.use(cookieParser(process.env.COOKIE_SECRET));
   }
 
   async bootstrap() {
