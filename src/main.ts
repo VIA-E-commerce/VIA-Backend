@@ -1,20 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule } from '@nestjs/swagger';
 import * as expressBasicAuth from 'express-basic-auth';
 
-import { swaggerConfig } from '@/config';
-import { API_URL } from '@/constant';
+import { swaggerConfig, corsConfig } from '@/config';
+import { APP, API_URL } from '@/constant';
 import { AppModule } from './app.module';
-import { NestExpressApplication } from '@nestjs/platform-express';
 
 class Application {
   private logger = new Logger(Application.name);
   private PORT: string;
+  private DEV_MODE: boolean;
 
   constructor(private app: NestExpressApplication) {
     this.app = app;
     this.PORT = process.env.PORT;
+    this.DEV_MODE = process.env.NODE_ENV === APP.NODE_ENV.DEVELOPMENT;
   }
 
   private async setUpOpenAPI() {
@@ -33,6 +35,7 @@ class Application {
   }
 
   private async setUpGlobalMiddleware() {
+    this.app.enableCors(corsConfig(this.DEV_MODE));
     this.setUpOpenAPI();
   }
 
