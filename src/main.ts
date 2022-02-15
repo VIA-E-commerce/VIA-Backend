@@ -6,6 +6,8 @@ import * as expressBasicAuth from 'express-basic-auth';
 
 import { swaggerConfig, corsConfig } from '@/config';
 import { APP, API_URL } from '@/constant';
+import { HttpExceptionFilter } from '@/common';
+
 import { AppModule } from './app.module';
 
 class Application {
@@ -36,6 +38,7 @@ class Application {
 
   private async setUpGlobalMiddleware() {
     this.app.enableCors(corsConfig(this.DEV_MODE));
+    this.app.useGlobalFilters(new HttpExceptionFilter());
     this.setUpOpenAPI();
   }
 
