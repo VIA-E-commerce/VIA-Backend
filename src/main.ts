@@ -7,7 +7,11 @@ import * as cookieParser from 'cookie-parser';
 
 import { swaggerConfig, corsConfig } from '@/config';
 import { APP, API_URL } from '@/constant';
-import { HttpExceptionFilter, SuccessInterceptor } from '@/common';
+import {
+  HttpExceptionFilter,
+  SuccessInterceptor,
+  CustomLoggerService,
+} from '@/common';
 
 import { AppModule } from './app.module';
 
@@ -60,6 +64,7 @@ class Application {
 
 async function init() {
   const server = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: CustomLoggerService,
     bufferLogs: true,
   });
 
