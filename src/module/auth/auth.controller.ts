@@ -38,12 +38,14 @@ export class AuthController {
     return this.issueJwt(user, res);
   }
 
+  @Docs.kakao('카카오 회원가입/로그인')
   @Get('kakao')
   @UseGuards(KakaoAuthGuard)
   kakao(): void {
     // 카카오 아이디로 로그인
   }
 
+  @Docs.kakaoCallback('카카오 OAuth 콜백')
   @Get('kakao/oauth')
   @UseGuards(KakaoAuthGuard)
   async kakaoCallback(@CurrentUser() user: User, @Res() res: Response) {
