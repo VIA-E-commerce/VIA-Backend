@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -16,7 +15,6 @@ import { JwtPayload } from './interface';
 export class AuthService {
   constructor(
     private readonly config: ConfigService,
-    @InjectRepository(User)
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
@@ -81,5 +79,31 @@ export class AuthService {
       secret: this.config.get<AuthConfig>(CONFIG.AUTH).accessTokenSecret,
       expiresIn: this.config.get<AuthConfig>(CONFIG.AUTH).accessTokenExp,
     });
+  }
+
+  async generateRefreshToken({ id }: JwtPayload): Promise<string> {
+    const payload: JwtPayload = { id };
+
+    try {
+      const refreshToken = this.jwtService.sign(payload, {
+        secret: this.config.get<AuthConfig>(CONFIG.AUTH).accessTokenSecret,
+        expiresIn: this.config.get<AuthConfig>(CONFIG.AUTH).accessTokenExp,
+      });
+
+      const result = await this.userRepository.update(id, {
+        refreshToken,
+      });
+
+      if (result.affected === 0) {
+        throw new Error();
+      }
+
+      return refreshToken;
+    } catch (err) {
+      throw new HttpException(
+        AUTH_ERROR.JWT_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
