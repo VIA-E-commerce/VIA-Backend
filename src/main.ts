@@ -53,6 +53,7 @@ class Application {
   }
 
   async bootstrap() {
+    this.app.setGlobalPrefix(APP.GLOBAL_PREFIX);
     await this.setUpGlobalMiddleware();
     await this.app.listen(this.PORT);
   }
