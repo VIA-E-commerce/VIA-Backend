@@ -43,4 +43,27 @@ export class AuthService {
       );
     }
   }
+
+  async validateLocalUser(email: string, password: string): Promise<User> {
+    const user = await this.userRepository.findWithPassword(email);
+
+    if (!user) {
+      throw new HttpException(
+        AUTH_ERROR.BAD_LOGIN_REQUEST,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    delete user.password;
+
+    if (!isPasswordValid) {
+      throw new HttpException(
+        AUTH_ERROR.BAD_LOGIN_REQUEST,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return user;
+  }
 }

@@ -2,7 +2,7 @@ import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { dbConfig } from '@/config';
+import { configs } from '@/config';
 import { APP, CONFIG } from '@/constant';
 import { modules } from '@/module';
 
@@ -11,7 +11,7 @@ import { modules } from '@/module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV || APP.NODE_ENV.DEVELOPMENT}`,
-      load: [dbConfig],
+      load: configs,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
