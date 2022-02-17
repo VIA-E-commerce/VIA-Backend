@@ -5,9 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from '@/config';
 import { APP, CONFIG } from '@/constant';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -21,7 +18,7 @@ import { AppService } from './app.service';
       inject: [ConfigService],
     }),
   ],
-  controllers: [AppController],
-  providers: [Logger, AppService],
+  controllers: [],
+  providers: [Logger],
 })
 export class AppModule {}
