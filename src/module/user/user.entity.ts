@@ -1,13 +1,7 @@
 import { CommonEntity } from '@/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
-import {
-  IsEmail,
-  IsNotEmpty,
-  Length,
-  Matches,
-  MaxLength,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, Length, MaxLength } from 'class-validator';
 
 import { UserRole, SNSProvider } from './enum';
 import { USER } from './user.constant';
@@ -60,17 +54,6 @@ export class User extends CommonEntity {
     length: USER.NAME.MAX_LENGTH,
   })
   name: string;
-
-  @ApiProperty({
-    description: '휴대폰 번호',
-    example: '01012345678',
-    required: true,
-  })
-  @Matches(USER.MOBILE.MATCHES, {
-    message: USER.MOBILE.MESSAGE.MATCHES,
-  })
-  @Column()
-  mobile: string;
 
   @Column({
     type: 'enum',

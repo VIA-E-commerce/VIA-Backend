@@ -2,8 +2,9 @@ import { PickType } from '@nestjs/swagger';
 
 import { User } from '@/module/user';
 
-export class JoinForm extends PickType(User, [
+export class OAuthRequest extends PickType(User, [
   'email',
-  'password',
   'name',
+  'provider',
+  'snsId',
 ] as const) {}

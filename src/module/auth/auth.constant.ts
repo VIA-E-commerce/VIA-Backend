@@ -7,8 +7,10 @@ export const AUTH_ERROR = {
   JOIN_ERROR: '회원가입 중 알 수 없는 오류가 발생했습니다.',
   BAD_LOGIN_REQUEST: '잘못된 인증 정보입니다.',
   JWT_ERROR: '토큰 발급 중 오류가 발생했습니다.',
+  MISMATCHED_SNS_INFO: '다른 SNS 아이디가 계정과 연동되어 있습니다.',
 };
 
 export const STRATEGY = {
   LOCAL: 'LOCAL',
+  KAKAO: 'KAKAO',
 };

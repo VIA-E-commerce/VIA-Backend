@@ -3,12 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { User, UserRepository, UserRole } from '@/module/user';
-
-import { JoinForm } from './dto';
-import { AUTH, AUTH_ERROR } from './auth.constant';
 import { CONFIG } from '@/constant';
 import { AuthConfig } from '@/config';
+import { User, UserRepository, UserRole } from '@/module/user';
+
+import { JoinForm, OAuthRequest } from './dto';
+import { AUTH, AUTH_ERROR } from './auth.constant';
 import { JwtPayload } from './interface';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class AuthService {
   ) {}
 
   async join(joinForm: JoinForm): Promise<void> {
-    const { email, password, name, mobile } = joinForm;
+    const { email, password, name } = joinForm;
 
     const exUser: User = await this.userRepository.findOne({ email });
 
@@ -37,7 +37,6 @@ export class AuthService {
           email,
           password: await bcrypt.hash(password, AUTH.SALT),
           name,
-          mobile,
           role: UserRole.USER,
         }),
       );
@@ -102,6 +101,42 @@ export class AuthService {
     } catch (err) {
       throw new HttpException(
         AUTH_ERROR.JWT_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getOAuthUser(oAuthRequest: OAuthRequest): Promise<User> {
+    // 1. DB에서 email로 가입 여부를 확인합니다.
+    const exUser: User = await this.userRepository.findOne({
+      email: oAuthRequest.email,
+    });
+
+    // 2. 가입되어 있지 않으면 null을 반환합니다.
+    if (!exUser) return null;
+
+    // 3. DB에 저장된 유저의 SNS 정보와 Request의 SNS 정보가 다르면 예외를 던집니다.
+    this.checkOAuthInfo(exUser, oAuthRequest);
+
+    return exUser;
+  }
+
+  private checkOAuthInfo(user: User, { provider, snsId }: OAuthRequest) {
+    console.log(typeof user.snsId, typeof snsId);
+    if (user.provider !== provider || user.snsId != snsId) {
+      throw new HttpException(
+        AUTH_ERROR.MISMATCHED_SNS_INFO,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async oAuthJoin(oAuthRequest: OAuthRequest): Promise<User> {
+    try {
+      return this.userRepository.save(this.userRepository.create(oAuthRequest));
+    } catch (err) {
+      throw new HttpException(
+        AUTH_ERROR.JOIN_ERROR,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

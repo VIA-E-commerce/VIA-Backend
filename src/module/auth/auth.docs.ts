@@ -45,4 +45,12 @@ export const Docs: SwaggerMethodDoc<AuthController> = {
       }),
     );
   },
+
+  kakao(summary: string) {
+    return applyDecorators();
+  },
+
+  kakaoCallback(summary: string) {
+    return applyDecorators();
+  },
 };
