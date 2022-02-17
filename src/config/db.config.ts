@@ -1,4 +1,4 @@
-import { registerAs } from '@nestjs/config';
+import { ConfigType, registerAs } from '@nestjs/config';
 import { getMetadataArgsStorage } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
@@ -20,3 +20,5 @@ export const dbConfig = registerAs(CONFIG.DB, () => {
     logging: isDevMode,
   };
 });
+
+export type DBConfig = ConfigType<typeof dbConfig>;
