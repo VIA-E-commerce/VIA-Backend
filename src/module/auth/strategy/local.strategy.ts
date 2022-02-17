@@ -8,7 +8,7 @@ import { STRATEGY } from '../auth.constant';
 import { AuthService } from '../auth.service';
 import { ConfigService } from '@nestjs/config';
 import { CONFIG } from '@/constant';
-import { AuthConfig } from '@/config/auth.config';
+import { AuthConfig } from '@/config';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy, STRATEGY.LOCAL) {
