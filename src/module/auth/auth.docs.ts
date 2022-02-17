@@ -1,5 +1,3 @@
-import { AuthController } from './auth.controller';
-
 import { SwaggerMethodDoc } from '@/common';
 import { applyDecorators } from '@nestjs/common';
 import {
@@ -8,6 +6,8 @@ import {
   ApiInternalServerErrorResponse,
   ApiOperation,
 } from '@nestjs/swagger';
+
+import { AuthController } from './auth.controller';
 
 export const Docs: SwaggerMethodDoc<AuthController> = {
   join(summary: string) {
@@ -20,5 +20,9 @@ export const Docs: SwaggerMethodDoc<AuthController> = {
       ApiBadRequestResponse({ description: '잘못된 인증 정보 입력' }),
       ApiInternalServerErrorResponse({ description: '알 수 없는 서버 오류' }),
     );
+  },
+
+  login(summary: string) {
+    return applyDecorators();
   },
 };
