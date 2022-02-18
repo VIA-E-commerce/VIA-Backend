@@ -12,6 +12,10 @@ export const authConfig = registerAs(CONFIG.AUTH, () => ({
   kakaoClientSecret: process.env.KAKAO_CLIENT_SECRET,
   kakaoCallbackUrl: process.env.KAKAO_CALLBACK_URL,
 
+  naverClientID: process.env.NAVER_CLIENT_ID,
+  naverClientSecret: process.env.NAVER_CLIENT_SECRET,
+  naverCallbackUrl: process.env.NAVER_CALLBACK_URL,
+
   oAuthRedirectUrl: `${process.env.CLIENT_BASE_URL}/oauth`,
 }));
 

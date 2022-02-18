@@ -11,6 +11,7 @@ export const AUTH_ERROR = {
 };
 
 export const STRATEGY = {
-  LOCAL: 'LOCAL',
-  KAKAO: 'KAKAO',
+  LOCAL: 'local',
+  KAKAO: 'kakao',
+  NAVER: 'naver',
 };
