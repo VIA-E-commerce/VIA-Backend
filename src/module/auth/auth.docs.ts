@@ -65,10 +65,20 @@ export const Docs: SwaggerMethodDoc<AuthController> = {
   },
 
   naver(summary: string) {
-    return applyDecorators();
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '네이버 아이디로 회원가입/로그인을 진행합니다.',
+      }),
+    );
   },
 
   naverCallback(summary: string) {
-    return applyDecorators();
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '네이버 OAuth 인증 성공 시 실행되는 콜백 API입니다.',
+      }),
+    );
   },
 };
