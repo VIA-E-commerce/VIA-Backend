@@ -63,4 +63,12 @@ export const Docs: SwaggerMethodDoc<AuthController> = {
       }),
     );
   },
+
+  naver(summary: string) {
+    return applyDecorators();
+  },
+
+  naverCallback(summary: string) {
+    return applyDecorators();
+  },
 };

@@ -8,7 +8,7 @@ import { User } from '@/module/user';
 
 import { CurrentUser } from './decorator';
 import { JoinForm, LoginResponse } from './dto';
-import { LocalAuthGuard, KakaoAuthGuard } from './guard';
+import { LocalAuthGuard, KakaoAuthGuard, NaverAuthGuard } from './guard';
 import { JwtPayload } from './interface';
 import { AuthService } from './auth.service';
 import { Docs } from './auth.docs';
@@ -49,6 +49,20 @@ export class AuthController {
   @Get('kakao/oauth')
   @UseGuards(KakaoAuthGuard)
   async kakaoCallback(@CurrentUser() user: User, @Res() res: Response) {
+    await this.oAuthLogin(user, res);
+  }
+
+  @Docs.naver('네이버 회원가입/로그인')
+  @Get('naver')
+  @UseGuards(NaverAuthGuard)
+  naver(): void {
+    // 네이버 아이디로 로그인
+  }
+
+  @Docs.naverCallback('네이버 OAuth 콜백')
+  @Get('naver/oauth')
+  @UseGuards(NaverAuthGuard)
+  async naverCallback(@CurrentUser() user: User, @Res() res: Response) {
     await this.oAuthLogin(user, res);
   }
 
