@@ -8,10 +8,12 @@ export const AUTH_ERROR = {
   BAD_LOGIN_REQUEST: '잘못된 인증 정보입니다.',
   JWT_ERROR: '토큰 발급 중 오류가 발생했습니다.',
   MISMATCHED_SNS_INFO: '다른 SNS 아이디가 계정과 연동되어 있습니다.',
+  UNAUTHORIZED: '접근 권한이 없습니다.',
 };
 
 export const STRATEGY = {
   LOCAL: 'local',
   KAKAO: 'kakao',
   NAVER: 'naver',
+  JWT: 'jwt',
 };

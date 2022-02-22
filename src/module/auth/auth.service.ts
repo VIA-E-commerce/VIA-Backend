@@ -71,6 +71,16 @@ export class AuthService {
     return user;
   }
 
+  async validateJwtUser(id: number) {
+    const user = await this.userRepository.findOne({ id });
+
+    if (!user) {
+      throw new HttpException(AUTH_ERROR.UNAUTHORIZED, HttpStatus.UNAUTHORIZED);
+    }
+
+    return user;
+  }
+
   generateAccessToken({ id }: JwtPayload): string {
     const payload: JwtPayload = { id };
 
