@@ -18,3 +18,7 @@ export const USER = {
     MAX_LENGTH: 17,
   },
 };
+
+export const USER_ERROR = {
+  NOT_FOUND: '회원을 찾을 수 없습니다.',
+};
