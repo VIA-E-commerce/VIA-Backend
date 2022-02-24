@@ -35,7 +35,7 @@ export class AuthController {
     @CurrentUser() user: User,
     @Res({ passthrough: true }) res: Response,
   ): Promise<LoginResponse> {
-    return this.issueJwt(user, res);
+    return this.issueTokens(user, res);
   }
 
   @Docs.kakao('카카오 회원가입/로그인')
@@ -71,7 +71,7 @@ export class AuthController {
     res.cookie(COOKIE.REFRESH_TOKEN, refreshToken);
   }
 
-  private async issueJwt(user: User, res: Response): Promise<LoginResponse> {
+  private async issueTokens(user: User, res: Response): Promise<LoginResponse> {
     const jwtPayload: JwtPayload = { id: user.id };
     const accessToken = this.authService.generateAccessToken(jwtPayload);
     await this.setRefreshTokenCookie(jwtPayload, res);
@@ -82,7 +82,7 @@ export class AuthController {
   }
 
   private async oAuthLogin(user: User, res: Response) {
-    const { accessToken } = await this.issueJwt(user, res);
+    const { accessToken } = await this.issueTokens(user, res);
 
     const oAuthLoginRedirect = `${
       this.config.get<AuthConfig>(CONFIG.AUTH).oAuthRedirectUrl
