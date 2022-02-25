@@ -8,13 +8,13 @@ import { CONFIG } from '@/constant';
 
 import { JwtPayload } from '../interface';
 import { STRATEGY } from '../auth.constant';
-import { AuthService } from '../auth.service';
+import { UserService } from '@/module/user';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, STRATEGY.JWT) {
   constructor(
     private readonly config: ConfigService,
-    private readonly authService: AuthService,
+    private readonly userService: UserService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -23,6 +23,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, STRATEGY.JWT) {
   }
 
   async validate(payload: JwtPayload) {
-    return this.authService.validateJwtUser(payload.id);
+    return this.userService.getUserById(payload.id);
   }
 }

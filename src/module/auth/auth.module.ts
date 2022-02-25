@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 
-import { UserRepository } from '@/module/user';
+import { UserModule, UserRepository } from '@/module/user';
 
 import { strategies } from './strategy';
 import { AuthService } from './auth.service';
@@ -24,6 +24,7 @@ import { CONFIG } from '@/constant';
       }),
       inject: [ConfigService],
     }),
+    UserModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, ...strategies],
