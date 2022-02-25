@@ -2,10 +2,10 @@ import { ConfigType, registerAs } from '@nestjs/config';
 import { getMetadataArgsStorage } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
-import { APP, CONFIG } from '@/constant';
+import { CONFIG } from '@/constant';
 
 export const dbConfig = registerAs(CONFIG.DB, () => {
-  const isDevMode = process.env.NODE_ENV === APP.NODE_ENV.DEVELOPMENT;
+  const isDevMode = process.env.NODE_ENV === CONFIG.NODE_ENV.DEVELOPMENT;
   return {
     namingStrategy: new SnakeNamingStrategy(),
     type: 'mysql',

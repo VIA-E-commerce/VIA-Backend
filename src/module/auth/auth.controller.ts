@@ -1,18 +1,23 @@
 import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+import { CookieOptions, Response } from 'express';
 
+import { AuthConfig } from '@/config';
 import { CONFIG, COOKIE } from '@/constant';
 import { User } from '@/module/user';
 
 import { CurrentUser } from './decorator';
 import { JoinForm, LoginResponse } from './dto';
-import { LocalAuthGuard, KakaoAuthGuard, NaverAuthGuard } from './guard';
+import {
+  LocalAuthGuard,
+  KakaoAuthGuard,
+  NaverAuthGuard,
+  JwtRefreshAuthGuard,
+} from './guard';
 import { JwtPayload } from './interface';
 import { AuthService } from './auth.service';
 import { Docs } from './auth.docs';
-import { AuthConfig } from '@/config';
 
 @ApiTags('인증/인가 API')
 @Controller('auth')
@@ -66,9 +71,30 @@ export class AuthController {
     await this.oAuthLogin(user, res);
   }
 
+  @Get('refresh')
+  @UseGuards(JwtRefreshAuthGuard)
+  refresh(@CurrentUser() user: User): LoginResponse {
+    const jwtPayload: JwtPayload = { id: user.id };
+    const accessToken = this.authService.generateAccessToken(jwtPayload);
+
+    return {
+      accessToken,
+    };
+  }
+
   private async setRefreshTokenCookie(payload: JwtPayload, res: Response) {
     const refreshToken = await this.authService.generateRefreshToken(payload);
-    res.cookie(COOKIE.REFRESH_TOKEN, refreshToken);
+    const cookieOptions: CookieOptions = {
+      path: '/',
+      maxAge: this.config.get<AuthConfig>(CONFIG.AUTH).refreshTokenExp * 1000,
+      httpOnly: true,
+      signed: true,
+      secure:
+        this.config.get(CONFIG.ENV_KEY.NODE_ENV) !==
+        CONFIG.NODE_ENV.DEVELOPMENT,
+    };
+
+    res.cookie(COOKIE.REFRESH_TOKEN, refreshToken, cookieOptions);
   }
 
   private async issueTokens(user: User, res: Response): Promise<LoginResponse> {

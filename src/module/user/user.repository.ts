@@ -10,4 +10,11 @@ export class UserRepository extends Repository<User> {
       .where('email = :email', { email })
       .getOne();
   }
+
+  async findWithRefreshToken(id: number) {
+    return this.createQueryBuilder('user')
+      .addSelect('user.refresh_token', 'user_refresh_token')
+      .where('id = :id', { id })
+      .getOne();
+  }
 }

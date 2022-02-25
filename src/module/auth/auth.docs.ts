@@ -81,4 +81,8 @@ export const Docs: SwaggerMethodDoc<AuthController> = {
       }),
     );
   },
+
+  refresh(summary: string) {
+    return applyDecorators();
+  },
 };

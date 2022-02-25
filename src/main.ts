@@ -6,7 +6,7 @@ import * as expressBasicAuth from 'express-basic-auth';
 import * as cookieParser from 'cookie-parser';
 
 import { swaggerConfig, corsConfig } from '@/config';
-import { APP, API_URL } from '@/constant';
+import { APP, API_URL, CONFIG } from '@/constant';
 import {
   HttpExceptionFilter,
   SuccessInterceptor,
@@ -23,7 +23,7 @@ class Application {
   constructor(private app: NestExpressApplication) {
     this.app = app;
     this.PORT = process.env.PORT;
-    this.DEV_MODE = process.env.NODE_ENV === APP.NODE_ENV.DEVELOPMENT;
+    this.DEV_MODE = process.env.NODE_ENV === CONFIG.NODE_ENV.DEVELOPMENT;
   }
 
   private async setUpOpenAPI() {
