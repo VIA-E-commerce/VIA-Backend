@@ -48,6 +48,10 @@ export class AuthService {
     }
   }
 
+  async removeRefreshToken(userId: number) {
+    this.userRepository.update(userId, { refreshToken: null });
+  }
+
   async validateLocalUser(email: string, password: string): Promise<User> {
     const user = await this.userRepository.findWithPassword(email);
 

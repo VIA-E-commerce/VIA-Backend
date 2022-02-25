@@ -46,6 +46,10 @@ export const Docs: SwaggerMethodDoc<AuthController> = {
     );
   },
 
+  logout(summary: string) {
+    return applyDecorators();
+  },
+
   kakao(summary: string) {
     return applyDecorators(
       ApiOperation({
