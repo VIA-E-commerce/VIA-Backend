@@ -47,7 +47,12 @@ export const Docs: SwaggerMethodDoc<AuthController> = {
   },
 
   logout(summary: string) {
-    return applyDecorators();
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '로그인된 회원의 Refresh 토큰을 삭제한 뒤 로그아웃합니다.',
+      }),
+    );
   },
 
   kakao(summary: string) {
