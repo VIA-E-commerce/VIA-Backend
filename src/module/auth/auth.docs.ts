@@ -83,6 +83,12 @@ export const Docs: SwaggerMethodDoc<AuthController> = {
   },
 
   refresh(summary: string) {
-    return applyDecorators();
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description:
+          'Refresh 토큰을 이용해 만료된 Access 토큰을 새로 갱신합니다.',
+      }),
+    );
   },
 };

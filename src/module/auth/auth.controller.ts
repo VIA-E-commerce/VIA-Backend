@@ -71,6 +71,7 @@ export class AuthController {
     await this.oAuthLogin(user, res);
   }
 
+  @Docs.refresh('Access 토큰 갱신')
   @Get('refresh')
   @UseGuards(JwtRefreshAuthGuard)
   refresh(@CurrentUser() user: User): LoginResponse {
