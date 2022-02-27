@@ -1,5 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+
+import { Pagination, PagingQuery } from '@/common';
 
 import { Product } from './entity';
 import { ProductService } from './product.service';
@@ -12,7 +14,9 @@ export class ProductController {
 
   @Docs.list('상품 목록 조회')
   @Get()
-  async list(): Promise<Product[]> {
-    return this.productService.list();
+  async list(
+    @Query() { pageNum, pageSize }: PagingQuery,
+  ): Promise<Pagination<Product>> {
+    return this.productService.list({ pageNum, pageSize });
   }
 }

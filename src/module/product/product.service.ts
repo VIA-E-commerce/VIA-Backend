@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { getPagination, Pagination, PagingOptions } from '@/common';
+
 import { Product } from './entity';
 
 @Injectable()
@@ -11,9 +13,15 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async list(): Promise<Product[]> {
-    const product = await this.productRepository.find({ show: true });
+  async list(pagingOptions: PagingOptions): Promise<Pagination<Product>> {
+    const { pageNum, pageSize } = pagingOptions;
 
-    return product;
+    const product = await this.productRepository.findAndCount({
+      skip: (pageNum - 1) * pageSize,
+      take: pageSize,
+      where: { show: true },
+    });
+
+    return getPagination(product[0], product[1], pagingOptions);
   }
 }
