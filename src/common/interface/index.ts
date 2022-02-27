@@ -13,3 +13,7 @@ export interface ErrorResponse {
 export type SwaggerMethodDoc<T> = {
   [K in keyof T]: (summary: string) => MethodDecorator;
 };
+
+export type SwaggerFieldDoc<T> = {
+  [K in keyof T]: () => PropertyDecorator;
+};

@@ -3,7 +3,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 
 import { UserSummary } from './dto';
-import { User } from './user.entity';
+import { User } from './entity';
 
 @Controller('users')
 export class UserController {

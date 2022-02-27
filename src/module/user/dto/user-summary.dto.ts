@@ -1,6 +1,6 @@
 import { PickType } from '@nestjs/swagger';
 
-import { User } from '../user.entity';
+import { User } from '../entity';
 
 export class UserSummary extends PickType(User, [
   'id',
