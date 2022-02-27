@@ -6,7 +6,7 @@ import { Column, PrimaryGeneratedColumn } from 'typeorm';
 import { Product } from './product.entity';
 import { PRODUCT } from '../product.constant';
 
-export const ProductDocs: SwaggerFieldDoc<Product> = {
+export const Docs: SwaggerFieldDoc<Product> = {
   id() {
     return applyDecorators(
       ApiProperty({

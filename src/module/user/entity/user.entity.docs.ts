@@ -9,7 +9,7 @@ import { UserRole, SNSProvider } from '../enum';
 import { USER } from '../user.constant';
 import { User } from './user.entity';
 
-export const UserDocs: SwaggerFieldDoc<User> = {
+export const Docs: SwaggerFieldDoc<User> = {
   id() {
     return applyDecorators(
       ApiProperty({

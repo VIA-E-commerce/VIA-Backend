@@ -2,32 +2,32 @@ import { CommonEntity } from '@/common';
 import { Entity, Index } from 'typeorm';
 
 import { UserRole, SNSProvider } from '../enum';
-import { UserDocs } from './user.entity.docs';
+import { Docs } from './user.entity.docs';
 
 @Index('email', ['email'], { unique: true })
 @Entity()
 export class User extends CommonEntity {
-  @UserDocs.id()
+  @Docs.id()
   id: number;
 
-  @UserDocs.email()
+  @Docs.email()
   email: string;
 
-  @UserDocs.password()
+  @Docs.password()
   password: string;
 
-  @UserDocs.name()
+  @Docs.name()
   name: string;
 
-  @UserDocs.role()
+  @Docs.role()
   role: UserRole;
 
-  @UserDocs.provider()
+  @Docs.provider()
   provider: SNSProvider;
 
-  @UserDocs.snsId()
+  @Docs.snsId()
   snsId: string;
 
-  @UserDocs.refreshToken()
+  @Docs.refreshToken()
   refreshToken: string;
 }
