@@ -5,7 +5,7 @@ import { Pagination, PagingQuery } from '@/common';
 
 import { Product } from './entity';
 import { ProductService } from './product.service';
-import { Docs } from './product.controller.docs';
+import { Docs } from './product.docs';
 
 @ApiTags('상품 API')
 @Controller('product')
