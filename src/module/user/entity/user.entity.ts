@@ -1,33 +1,31 @@
-import { CommonEntity } from '@/common';
 import { Entity, Index } from 'typeorm';
 
+import { CommonIdEntity } from '@/common';
+
 import { UserRole, SNSProvider } from '../enum';
-import { Docs } from './user.entity.docs';
+import { UserMetaInfo as MetaInfo } from './user.meta-info';
 
 @Index('email', ['email'], { unique: true })
 @Entity()
-export class User extends CommonEntity {
-  @Docs.id()
-  id: number;
-
-  @Docs.email()
+export class User extends CommonIdEntity {
+  @MetaInfo.email()
   email: string;
 
-  @Docs.password()
+  @MetaInfo.password()
   password: string;
 
-  @Docs.name()
+  @MetaInfo.name()
   name: string;
 
-  @Docs.role()
+  @MetaInfo.role()
   role: UserRole;
 
-  @Docs.provider()
+  @MetaInfo.provider()
   provider: SNSProvider;
 
-  @Docs.snsId()
+  @MetaInfo.snsId()
   snsId: string;
 
-  @Docs.refreshToken()
+  @MetaInfo.refreshToken()
   refreshToken: string;
 }

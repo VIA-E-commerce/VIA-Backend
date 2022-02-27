@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column } from 'typeorm';
 import { IsEmail, IsNotEmpty, Length, MaxLength } from 'class-validator';
 
 import { SwaggerFieldDoc } from '@/common';
@@ -9,18 +9,7 @@ import { UserRole, SNSProvider } from '../enum';
 import { USER } from '../user.constant';
 import { User } from './user.entity';
 
-export const Docs: SwaggerFieldDoc<User> = {
-  id() {
-    return applyDecorators(
-      ApiProperty({
-        description: '아이디',
-        example: '1',
-        required: true,
-      }),
-      PrimaryGeneratedColumn(),
-    );
-  },
-
+export const UserMetaInfo: SwaggerFieldDoc<User> = {
   email() {
     return applyDecorators(
       ApiProperty({

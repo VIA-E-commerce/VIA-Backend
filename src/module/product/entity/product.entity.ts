@@ -1,36 +1,34 @@
-import { CommonEntity } from '@/common';
 import { Entity } from 'typeorm';
 
-import { Docs } from './product.entity.docs';
+import { CommonIdEntity } from '@/common';
+
+import { ProductMetaInfo as MetaInfo } from './meta-info';
 
 @Entity()
-export class Product extends CommonEntity {
-  @Docs.id()
-  id: number;
-
-  @Docs.name()
+export class Product extends CommonIdEntity {
+  @MetaInfo.name()
   name: string;
 
-  @Docs.retailPrice()
+  @MetaInfo.retailPrice()
   retailPrice: number;
 
-  @Docs.sellingPrice()
+  @MetaInfo.sellingPrice()
   sellingPrice: number;
 
   // 통계 속성
-  @Docs.salesVolume()
+  @MetaInfo.salesVolume()
   salesVolume: number;
 
-  @Docs.reviewCount()
+  @MetaInfo.reviewCount()
   reviewCount: number;
 
-  @Docs.wishCount()
+  @MetaInfo.wishCount()
   wishCount: number;
 
   // check 옵션
-  @Docs.show()
+  @MetaInfo.show()
   show: boolean;
 
-  @Docs.onSale()
+  @MetaInfo.onSale()
   onSale: boolean;
 }

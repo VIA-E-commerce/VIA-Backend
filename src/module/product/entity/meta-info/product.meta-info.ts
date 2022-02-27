@@ -1,25 +1,13 @@
-import { SwaggerFieldDoc } from '@/common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column } from 'typeorm';
 
-import { Product } from './product.entity';
-import { PRODUCT } from '../product.constant';
+import { SwaggerFieldDoc } from '@/common';
 
-export const Docs: SwaggerFieldDoc<Product> = {
-  id() {
-    return applyDecorators(
-      ApiProperty({
-        description: '아이디',
-        example: 1,
-        required: true,
-      }),
-      PrimaryGeneratedColumn({
-        unsigned: true,
-      }),
-    );
-  },
+import { PRODUCT } from '../../product.constant';
+import { Product } from '../product.entity';
 
+export const ProductMetaInfo: SwaggerFieldDoc<Product> = {
   name() {
     return applyDecorators(
       ApiProperty({
