@@ -22,6 +22,11 @@ export const ProductDocs: SwaggerFieldDoc<Product> = {
 
   name() {
     return applyDecorators(
+      ApiProperty({
+        description: '상품명',
+        example: '남녀공용 기모 오버핏 무지 맨투맨',
+        required: true,
+      }),
       Column({
         length: PRODUCT.NAME.MAX_LENGTH,
       }),
@@ -30,6 +35,10 @@ export const ProductDocs: SwaggerFieldDoc<Product> = {
 
   retailPrice() {
     return applyDecorators(
+      ApiProperty({
+        description: '소비자가',
+        example: 39900,
+      }),
       Column({
         type: 'mediumint',
         unsigned: true,
@@ -40,6 +49,11 @@ export const ProductDocs: SwaggerFieldDoc<Product> = {
 
   sellingPrice() {
     return applyDecorators(
+      ApiProperty({
+        description: '판매가',
+        example: 19900,
+        required: true,
+      }),
       Column({
         type: 'mediumint',
         unsigned: true,
@@ -51,6 +65,10 @@ export const ProductDocs: SwaggerFieldDoc<Product> = {
   // 통계 속성
   salesVolume() {
     return applyDecorators(
+      ApiProperty({
+        description: '판매량',
+        example: 2761,
+      }),
       Column({
         unsigned: true,
         default: 0,
@@ -60,6 +78,10 @@ export const ProductDocs: SwaggerFieldDoc<Product> = {
 
   reviewCount() {
     return applyDecorators(
+      ApiProperty({
+        description: '리뷰 수',
+        example: 137,
+      }),
       Column({
         unsigned: true,
         default: 0,
@@ -69,6 +91,10 @@ export const ProductDocs: SwaggerFieldDoc<Product> = {
 
   wishCount() {
     return applyDecorators(
+      ApiProperty({
+        description: '찜 수',
+        example: 12,
+      }),
       Column({
         unsigned: true,
         default: 0,
@@ -79,6 +105,10 @@ export const ProductDocs: SwaggerFieldDoc<Product> = {
   // check 옵션
   show() {
     return applyDecorators(
+      ApiProperty({
+        description: '진열 여부',
+        example: true,
+      }),
       Column({
         type: 'tinyint',
         default: 1,
@@ -88,6 +118,10 @@ export const ProductDocs: SwaggerFieldDoc<Product> = {
 
   onSale() {
     return applyDecorators(
+      ApiProperty({
+        description: '판매 여부',
+        example: true,
+      }),
       Column({
         type: 'tinyint',
         default: 1,
