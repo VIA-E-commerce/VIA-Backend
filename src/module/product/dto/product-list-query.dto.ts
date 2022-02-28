@@ -1,5 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { PagingQuery } from '@/common';
+
+import { ProductSort } from '../enum';
 
 export class ProductListQuery extends PagingQuery {
   @ApiProperty({
@@ -8,4 +11,11 @@ export class ProductListQuery extends PagingQuery {
     required: false,
   })
   group: string;
+
+  @ApiProperty({
+    description: '정렬 기준',
+    example: ProductSort.PRICE_ASC,
+    required: false,
+  })
+  sort: ProductSort;
 }

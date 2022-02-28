@@ -9,6 +9,7 @@ export function getPagination<T>(
 
   return {
     list,
+    totalElements,
     totalPages,
     isFirst: pageNum === 1,
     isLast: pageNum === totalPages,
