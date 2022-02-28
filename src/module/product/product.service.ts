@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { getPagination, Pagination, PagingOptions } from '@/common';
+import { getPagination, Pagination } from '@/common';
 
+import { ProductListQuery } from './dto';
 import { Product } from './entity';
 
 @Injectable()
@@ -13,15 +14,25 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async list(pagingOptions: PagingOptions): Promise<Pagination<Product>> {
-    const { pageNum, pageSize } = pagingOptions;
+  async list({
+    pageNum,
+    pageSize,
+    group,
+  }: ProductListQuery): Promise<Pagination<Product>> {
+    const [productAlias, productGroupAlias] = ['product', 'group'];
 
-    const product = await this.productRepository.findAndCount({
-      skip: (pageNum - 1) * pageSize,
-      take: pageSize,
-      where: { show: true },
-    });
+    const query = this.productRepository
+      .createQueryBuilder(productAlias)
+      .skip((pageNum - 1) * pageSize)
+      .take(pageSize)
+      .leftJoinAndSelect(`${productAlias}.ProductGroup`, productGroupAlias);
 
-    return getPagination(product[0], product[1], pagingOptions);
+    if (group) {
+      query.where(`${productGroupAlias}.code = :group`, { group });
+    }
+
+    const [productList, count] = await query.getManyAndCount();
+
+    return getPagination(productList, count, { pageNum, pageSize });
   }
 }

@@ -1,8 +1,9 @@
-import { Entity } from 'typeorm';
+import { Entity, ManyToOne } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 
 import { ProductMetaInfo as MetaInfo } from './meta-info';
+import { ProductGroup } from './product-group.entity';
 
 @Entity()
 export class Product extends CommonIdEntity {
@@ -31,4 +32,10 @@ export class Product extends CommonIdEntity {
 
   @MetaInfo.onSale()
   onSale: boolean;
+
+  @ManyToOne(() => ProductGroup, {
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
+  })
+  ProductGroup?: ProductGroup;
 }
