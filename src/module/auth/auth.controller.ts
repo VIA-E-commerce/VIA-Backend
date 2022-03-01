@@ -18,7 +18,7 @@ import {
 } from './guard';
 import { JwtPayload } from './interface';
 import { AuthService } from './auth.service';
-import { Docs } from './auth.docs';
+import { ControllerDoc as Doc } from './auth.doc';
 
 @ApiTags('인증/인가 API')
 @Controller('auth')
@@ -28,13 +28,13 @@ export class AuthController {
     private readonly authService: AuthService,
   ) {}
 
-  @Docs.join('회원가입')
+  @Doc.join('회원가입')
   @Post('join')
   async join(@Body() joinForm: JoinForm): Promise<void> {
     await this.authService.join(joinForm);
   }
 
-  @Docs.login('로그인')
+  @Doc.login('로그인')
   @Post('login')
   @UseGuards(LocalAuthGuard)
   async login(
@@ -44,7 +44,7 @@ export class AuthController {
     return this.issueTokens(user, res);
   }
 
-  @Docs.logout('로그아웃')
+  @Doc.logout('로그아웃')
   @Post('logout')
   @UseGuards(JwtAuthGuard)
   async logout(
@@ -59,35 +59,35 @@ export class AuthController {
     });
   }
 
-  @Docs.kakao('카카오 회원가입/로그인')
+  @Doc.kakao('카카오 회원가입/로그인')
   @Get('kakao')
   @UseGuards(KakaoAuthGuard)
   kakao(): void {
     // 카카오 아이디로 로그인
   }
 
-  @Docs.kakaoCallback('카카오 OAuth 콜백')
+  @Doc.kakaoCallback('카카오 OAuth 콜백')
   @Get('kakao/oauth')
   @UseGuards(KakaoAuthGuard)
   async kakaoCallback(@CurrentUser() user: User, @Res() res: Response) {
     await this.oAuthLogin(user, res);
   }
 
-  @Docs.naver('네이버 회원가입/로그인')
+  @Doc.naver('네이버 회원가입/로그인')
   @Get('naver')
   @UseGuards(NaverAuthGuard)
   naver(): void {
     // 네이버 아이디로 로그인
   }
 
-  @Docs.naverCallback('네이버 OAuth 콜백')
+  @Doc.naverCallback('네이버 OAuth 콜백')
   @Get('naver/oauth')
   @UseGuards(NaverAuthGuard)
   async naverCallback(@CurrentUser() user: User, @Res() res: Response) {
     await this.oAuthLogin(user, res);
   }
 
-  @Docs.refresh('Access 토큰 갱신')
+  @Doc.refresh('Access 토큰 갱신')
   @Get('refresh')
   @UseGuards(JwtRefreshAuthGuard)
   refresh(@CurrentUser() user: User): LoginResponse {

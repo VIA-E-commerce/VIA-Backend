@@ -3,9 +3,9 @@ import { ApiOperation } from '@nestjs/swagger';
 
 import { SwaggerMethodDoc } from '@/common';
 
-import { ProductController } from './product.controller';
+import { ProductController } from '../product.controller';
 
-export const Docs: SwaggerMethodDoc<ProductController> = {
+export const ControllerDoc: SwaggerMethodDoc<ProductController> = {
   list(summary: string) {
     return applyDecorators(
       ApiOperation({

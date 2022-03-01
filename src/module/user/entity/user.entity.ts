@@ -1,31 +1,53 @@
-import { Entity, Index } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 
 import { UserRole, SNSProvider } from '../enum';
-import { UserMetaInfo as MetaInfo } from './user.meta-info';
+import { UserDoc as Doc } from '../doc';
+import { USER } from '../user.constant';
 
 @Index('email', ['email'], { unique: true })
 @Entity()
 export class User extends CommonIdEntity {
-  @MetaInfo.email()
+  @Doc.email()
+  @Column({
+    unique: true,
+    length: USER.EMAIL.MAX_LENGTH,
+  })
   email: string;
 
-  @MetaInfo.password()
+  @Doc.password()
+  @Column({
+    length: USER.PASSWORD.MAX_LENGTH,
+    nullable: true,
+    select: false,
+  })
   password: string;
 
-  @MetaInfo.name()
+  @Doc.name()
+  @Column({
+    length: USER.NAME.MAX_LENGTH,
+  })
   name: string;
 
-  @MetaInfo.role()
+  @Column({
+    default: UserRole.USER,
+  })
   role: UserRole;
 
-  @MetaInfo.provider()
+  @Column({
+    default: SNSProvider.LOCAL,
+  })
   provider: SNSProvider;
 
-  @MetaInfo.snsId()
+  @Column({
+    nullable: true,
+  })
   snsId: string;
 
-  @MetaInfo.refreshToken()
+  @Column({
+    nullable: true,
+    select: false,
+  })
   refreshToken: string;
 }

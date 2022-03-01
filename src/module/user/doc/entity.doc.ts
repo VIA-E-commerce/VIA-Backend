@@ -1,15 +1,10 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column } from 'typeorm';
 import { IsEmail, IsNotEmpty, Length, MaxLength } from 'class-validator';
 
-import { SwaggerFieldDoc } from '@/common';
-
-import { UserRole, SNSProvider } from '../enum';
 import { USER } from '../user.constant';
-import { User } from './user.entity';
 
-export const UserMetaInfo: SwaggerFieldDoc<User> = {
+export const UserDoc = {
   email() {
     return applyDecorators(
       ApiProperty({
@@ -20,10 +15,6 @@ export const UserMetaInfo: SwaggerFieldDoc<User> = {
       IsEmail({}, { message: USER.EMAIL.MESSAGE.IS_EMAIL }),
       IsNotEmpty({ message: USER.EMAIL.MESSAGE.IS_NOT_EMPTY }),
       MaxLength(USER.EMAIL.MAX_LENGTH),
-      Column({
-        unique: true,
-        length: USER.EMAIL.MAX_LENGTH,
-      }),
     );
   },
 
@@ -35,11 +26,6 @@ export const UserMetaInfo: SwaggerFieldDoc<User> = {
       }),
       IsNotEmpty({ message: USER.PASSWORD.MESSAGE.IS_NOT_EMPTY }),
       Length(USER.PASSWORD.MIN_LENGTH, USER.PASSWORD.MAX_LENGTH),
-      Column({
-        length: USER.PASSWORD.MAX_LENGTH,
-        nullable: true,
-        select: false,
-      }),
     );
   },
 
@@ -51,42 +37,6 @@ export const UserMetaInfo: SwaggerFieldDoc<User> = {
         required: true,
       }),
       Length(USER.NAME.MIN_LENGTH, USER.NAME.MAX_LENGTH),
-      Column({
-        length: USER.NAME.MAX_LENGTH,
-      }),
-    );
-  },
-
-  role() {
-    return applyDecorators(
-      Column({
-        default: UserRole.USER,
-      }),
-    );
-  },
-
-  provider() {
-    return applyDecorators(
-      Column({
-        default: SNSProvider.LOCAL,
-      }),
-    );
-  },
-
-  snsId() {
-    return applyDecorators(
-      Column({
-        nullable: true,
-      }),
-    );
-  },
-
-  refreshToken() {
-    return applyDecorators(
-      Column({
-        nullable: true,
-        select: false,
-      }),
     );
   },
 };
