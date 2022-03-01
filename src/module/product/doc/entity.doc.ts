@@ -1,8 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column } from 'typeorm';
-
-import { PRODUCT, PRODUCT_GROUP } from '../product.constant';
 
 export const ProductDoc = {
   name() {
@@ -12,9 +9,6 @@ export const ProductDoc = {
         example: '남녀공용 기모 오버핏 무지 맨투맨',
         required: true,
       }),
-      Column({
-        length: PRODUCT.NAME.MAX_LENGTH,
-      }),
     );
   },
 
@@ -23,11 +17,6 @@ export const ProductDoc = {
       ApiProperty({
         description: '소비자가',
         example: 39900,
-      }),
-      Column({
-        type: 'mediumint',
-        unsigned: true,
-        nullable: true,
       }),
     );
   },
@@ -39,11 +28,6 @@ export const ProductDoc = {
         example: 19900,
         required: true,
       }),
-      Column({
-        type: 'mediumint',
-        unsigned: true,
-        default: 0,
-      }),
     );
   },
 
@@ -54,10 +38,6 @@ export const ProductDoc = {
         description: '판매량',
         example: 2761,
       }),
-      Column({
-        unsigned: true,
-        default: 0,
-      }),
     );
   },
 
@@ -67,10 +47,6 @@ export const ProductDoc = {
         description: '리뷰 수',
         example: 137,
       }),
-      Column({
-        unsigned: true,
-        default: 0,
-      }),
     );
   },
 
@@ -79,10 +55,6 @@ export const ProductDoc = {
       ApiProperty({
         description: '찜 수',
         example: 12,
-      }),
-      Column({
-        unsigned: true,
-        default: 0,
       }),
     );
   },
@@ -94,10 +66,6 @@ export const ProductDoc = {
         description: '진열 여부',
         example: true,
       }),
-      Column({
-        type: 'tinyint',
-        default: 1,
-      }),
     );
   },
 
@@ -106,10 +74,6 @@ export const ProductDoc = {
       ApiProperty({
         description: '판매 여부',
         example: true,
-      }),
-      Column({
-        type: 'tinyint',
-        default: 1,
       }),
     );
   },
@@ -123,9 +87,6 @@ export const ProductGroupDoc = {
         example: 'OUTER',
         required: true,
       }),
-      Column({
-        length: PRODUCT_GROUP.NAME.MAX_LENGTH,
-      }),
     );
   },
 
@@ -135,10 +96,6 @@ export const ProductGroupDoc = {
         description: '상품 그룹 코드',
         example: 'outer',
         required: true,
-      }),
-      Column({
-        length: PRODUCT_GROUP.CODE.MAX_LENGTH,
-        unique: true,
       }),
     );
   },
