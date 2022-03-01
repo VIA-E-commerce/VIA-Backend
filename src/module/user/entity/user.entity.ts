@@ -1,6 +1,6 @@
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
-import { CommonIdEntity } from '@/common';
+import { CommonEntity, SwaggerDoc } from '@/common';
 
 import { UserRole, SNSProvider } from '../enum';
 import { UserDoc as Doc } from '../doc';
@@ -8,7 +8,14 @@ import { USER } from '../user.constant';
 
 @Index('email', ['email'], { unique: true })
 @Entity()
-export class User extends CommonIdEntity {
+export class User extends CommonEntity {
+  @SwaggerDoc.id()
+  @PrimaryGeneratedColumn({
+    unsigned: true,
+    name: 'user_id',
+  })
+  id: number;
+
   @Doc.email()
   @Column({
     unique: true,
