@@ -17,6 +17,12 @@ export const USER = {
     MIN_LENGTH: 2,
     MAX_LENGTH: 17,
   },
+  ROLE: {
+    MAX_LENGTH: 5,
+  },
+  PROVIDER: {
+    MAX_LENGTH: 20,
+  },
 };
 
 export const USER_ERROR = {

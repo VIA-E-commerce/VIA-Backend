@@ -33,7 +33,6 @@ export class Product extends CommonEntity {
   @Column({
     type: 'mediumint',
     unsigned: true,
-    default: 0,
   })
   sellingPrice: number;
 
@@ -60,16 +59,14 @@ export class Product extends CommonEntity {
   wishCount: number;
 
   // check 옵션
-  @Doc.show()
+  @Doc.display()
   @Column({
-    type: 'tinyint',
     default: 1,
   })
-  show: boolean;
+  display: boolean;
 
   @Doc.onSale()
   @Column({
-    type: 'tinyint',
     default: 1,
   })
   onSale: boolean;

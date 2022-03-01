@@ -38,11 +38,14 @@ export class User extends CommonEntity {
   name: string;
 
   @Column({
+    type: 'char',
+    length: USER.ROLE.MAX_LENGTH,
     default: UserRole.USER,
   })
   role: UserRole;
 
   @Column({
+    length: USER.PROVIDER.MAX_LENGTH,
     default: SNSProvider.LOCAL,
   })
   provider: SNSProvider;

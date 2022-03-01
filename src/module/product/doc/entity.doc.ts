@@ -60,7 +60,7 @@ export const ProductDoc = {
   },
 
   // check 옵션
-  show() {
+  display() {
     return applyDecorators(
       ApiProperty({
         description: '진열 여부',

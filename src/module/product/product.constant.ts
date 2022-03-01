@@ -1,6 +1,6 @@
 export const PRODUCT = {
   NAME: {
-    MAX_LENGTH: 40,
+    MAX_LENGTH: 50,
   },
 };
 
