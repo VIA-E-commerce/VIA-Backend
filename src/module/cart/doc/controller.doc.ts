@@ -10,4 +10,13 @@ export const CartControllerDoc = {
       }),
     );
   },
+
+  delete(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '장바구니에 등록된 상품을 하나 제거합니다.',
+      }),
+    );
+  },
 };
