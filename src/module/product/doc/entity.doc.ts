@@ -79,7 +79,7 @@ export const ProductDoc = {
   },
 };
 
-export const ProductGroupDoc = {
+export const CategoryDoc = {
   name() {
     return applyDecorators(
       ApiProperty({

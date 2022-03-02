@@ -10,7 +10,7 @@ export class ProductListQuery extends PagingQuery {
     example: 'outer',
     required: false,
   })
-  group: string;
+  category: string;
 
   @ApiProperty({
     description: '정렬 기준',

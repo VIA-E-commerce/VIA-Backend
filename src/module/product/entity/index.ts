@@ -1,2 +1,2 @@
 export * from './product.entity';
-export * from './product-group.entity';
+export * from './category.entity';

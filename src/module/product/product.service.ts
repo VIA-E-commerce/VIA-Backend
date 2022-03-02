@@ -18,21 +18,21 @@ export class ProductService {
   async list({
     pageNum,
     pageSize,
-    group,
+    category,
     sort,
   }: ProductListQuery): Promise<Pagination<Product>> {
-    const [productAlias, productGroupAlias] = ['product', 'group'];
+    const [productAlias, categoryAlias] = ['product', 'category'];
 
     // 상품 목록 조회 (+ 페이지네이션)
     const query = this.productRepository
       .createQueryBuilder(productAlias)
       .skip((pageNum - 1) * pageSize)
       .take(pageSize)
-      .leftJoinAndSelect(`${productAlias}.ProductGroup`, productGroupAlias);
+      .leftJoinAndSelect(`${productAlias}.Category`, categoryAlias);
 
     // 상품 그룹별 필터링
-    if (group) {
-      query.where(`${productGroupAlias}.code = :group`, { group });
+    if (category) {
+      query.where(`${categoryAlias}.code = :category`, { category });
     }
 
     // 정렬 방식 지정

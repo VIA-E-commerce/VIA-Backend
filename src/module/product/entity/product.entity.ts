@@ -4,7 +4,7 @@ import { CommonIdEntity } from '@/common';
 
 import { ProductDoc as Doc } from '../doc';
 import { PRODUCT } from '../product.constant';
-import { ProductGroup } from './product-group.entity';
+import { Category } from './category.entity';
 
 @Entity()
 export class Product extends CommonIdEntity {
@@ -64,9 +64,9 @@ export class Product extends CommonIdEntity {
   })
   onSale: boolean;
 
-  @ManyToOne(() => ProductGroup, {
+  @ManyToOne(() => Category, {
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
   })
-  ProductGroup: ProductGroup;
+  Category: Category;
 }

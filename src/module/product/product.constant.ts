@@ -4,7 +4,7 @@ export const PRODUCT = {
   },
 };
 
-export const PRODUCT_GROUP = {
+export const CATEGORY = {
   NAME: {
     MAX_LENGTH: 15,
   },
