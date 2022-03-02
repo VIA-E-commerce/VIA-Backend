@@ -1,20 +1,13 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
-import { CommonEntity, SwaggerDoc } from '@/common';
+import { CommonIdEntity } from '@/common';
 
 import { ProductDoc as Doc } from '../doc';
 import { PRODUCT } from '../product.constant';
 import { ProductGroup } from './product-group.entity';
 
 @Entity()
-export class Product extends CommonEntity {
-  @SwaggerDoc.id()
-  @PrimaryGeneratedColumn({
-    unsigned: true,
-    name: 'product_id',
-  })
-  id: number;
-
+export class Product extends CommonIdEntity {
   @Doc.name()
   @Column({
     length: PRODUCT.NAME.MAX_LENGTH,
