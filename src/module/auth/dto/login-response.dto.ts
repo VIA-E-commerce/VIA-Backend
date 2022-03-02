@@ -4,7 +4,6 @@ export class LoginResponse {
   @ApiProperty({
     example: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9',
     description: 'JWT Access 토큰',
-    required: true,
   })
   accessToken: string;
 }

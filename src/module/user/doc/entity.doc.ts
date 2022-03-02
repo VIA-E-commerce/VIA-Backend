@@ -10,7 +10,6 @@ export const UserDoc = {
       ApiProperty({
         description: '이메일',
         example: 'user@example.com',
-        required: true,
       }),
       IsEmail({}, { message: USER.EMAIL.MESSAGE.IS_EMAIL }),
       IsNotEmpty({ message: USER.EMAIL.MESSAGE.IS_NOT_EMPTY }),
@@ -34,7 +33,6 @@ export const UserDoc = {
       ApiProperty({
         description: '회원의 실명',
         example: '홍길동',
-        required: true,
       }),
       Length(USER.NAME.MIN_LENGTH, USER.NAME.MAX_LENGTH),
     );

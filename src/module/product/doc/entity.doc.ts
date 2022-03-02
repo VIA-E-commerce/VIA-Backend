@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export const ProductDoc = {
   name() {
@@ -7,14 +7,13 @@ export const ProductDoc = {
       ApiProperty({
         description: '상품명',
         example: '남녀공용 기모 오버핏 무지 맨투맨',
-        required: true,
       }),
     );
   },
 
   retailPrice() {
     return applyDecorators(
-      ApiProperty({
+      ApiPropertyOptional({
         description: '소비자가',
         example: 39900,
       }),
@@ -26,7 +25,6 @@ export const ProductDoc = {
       ApiProperty({
         description: '판매가',
         example: 19900,
-        required: true,
       }),
     );
   },
@@ -34,7 +32,7 @@ export const ProductDoc = {
   // 통계 속성
   salesVolume() {
     return applyDecorators(
-      ApiProperty({
+      ApiPropertyOptional({
         description: '판매량',
         example: 2761,
       }),
@@ -43,7 +41,7 @@ export const ProductDoc = {
 
   reviewCount() {
     return applyDecorators(
-      ApiProperty({
+      ApiPropertyOptional({
         description: '리뷰 수',
         example: 137,
       }),
@@ -52,7 +50,7 @@ export const ProductDoc = {
 
   wishCount() {
     return applyDecorators(
-      ApiProperty({
+      ApiPropertyOptional({
         description: '찜 수',
         example: 12,
       }),
@@ -62,7 +60,7 @@ export const ProductDoc = {
   // check 옵션
   display() {
     return applyDecorators(
-      ApiProperty({
+      ApiPropertyOptional({
         description: '진열 여부',
         example: true,
       }),
@@ -71,7 +69,7 @@ export const ProductDoc = {
 
   onSale() {
     return applyDecorators(
-      ApiProperty({
+      ApiPropertyOptional({
         description: '판매 여부',
         example: true,
       }),
@@ -85,7 +83,6 @@ export const CategoryDoc = {
       ApiProperty({
         description: '상품 그룹명',
         example: 'OUTER',
-        required: true,
       }),
     );
   },
@@ -95,7 +92,6 @@ export const CategoryDoc = {
       ApiProperty({
         description: '상품 그룹 코드',
         example: 'outer',
-        required: true,
       }),
     );
   },
