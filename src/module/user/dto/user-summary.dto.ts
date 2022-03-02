@@ -1,16 +1,10 @@
-import { PickType } from '@nestjs/swagger';
+import { OmitType } from '@nestjs/swagger';
 
 import { User } from '../entity';
 
-export class UserSummary extends PickType(User, [
-  'id',
-  'email',
-  'name',
-  'role',
-  'provider',
-  'snsId',
-  'createdAt',
-  'updatedAt',
+export class UserSummary extends OmitType(User, [
+  'password',
+  'refreshToken',
 ] as const) {
   constructor(user: User) {
     super();
