@@ -13,12 +13,12 @@ import { ProductService } from './product.service';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Doc.list('상품 목록 조회')
+  @Doc.getAll('상품 목록 조회')
   @Get()
-  async list(
+  async getAll(
     @Query() { pageNum = 1, pageSize = 10, ...rest }: ProductListQuery,
   ): Promise<Pagination<Product>> {
-    return this.productService.list({ pageNum, pageSize, ...rest });
+    return this.productService.getAll({ pageNum, pageSize, ...rest });
   }
 
   @Doc.getOne('상품 상세 정보 조회')

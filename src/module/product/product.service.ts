@@ -15,7 +15,7 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async list({
+  async getAll({
     pageNum,
     pageSize,
     category,
