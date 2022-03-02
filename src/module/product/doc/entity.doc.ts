@@ -115,6 +115,15 @@ export const OptionSetDoc = {
       }),
     );
   },
+
+  order() {
+    return applyDecorators(
+      ApiProperty({
+        description: '정렬 순서 (0부터 시작)',
+        example: 0,
+      }),
+    );
+  },
 };
 
 export const OptionValueDoc = {
@@ -132,6 +141,15 @@ export const OptionValueDoc = {
       ApiPropertyOptional({
         description: '품목 옵션 추가 금액',
         example: 5000,
+      }),
+    );
+  },
+
+  order() {
+    return applyDecorators(
+      ApiProperty({
+        description: '정렬 순서 (0부터 시작)',
+        example: 0,
       }),
     );
   },

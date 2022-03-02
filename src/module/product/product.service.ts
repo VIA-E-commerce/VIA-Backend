@@ -57,4 +57,23 @@ export class ProductService {
 
     return getPagination(productList, count, { pageNum, pageSize });
   }
+
+  async getOne(id: number): Promise<Product> {
+    const query = this.productRepository
+      .createQueryBuilder('product')
+      .select(['product'])
+      .where('product.id = :id', { id });
+
+    // Option Set 조인
+    query
+      .leftJoin('product.optionSets', 'opt')
+      .addSelect(['opt.id', 'opt.name', 'opt.inputType', 'opt.order']);
+
+    // Option Value 조인
+    query
+      .leftJoin('opt.values', 'val')
+      .addSelect(['val.id', 'val.name', 'val.additionalCharge', 'val.order']);
+
+    return query.getOne();
+  }
 }

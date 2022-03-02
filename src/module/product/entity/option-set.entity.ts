@@ -33,6 +33,7 @@ export class OptionSet extends CommonIdEntity {
   })
   inputType: InputType;
 
+  @Doc.order()
   @Column({
     type: 'tinyint',
     unsigned: true,
