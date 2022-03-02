@@ -46,7 +46,9 @@ export class OptionSet extends CommonIdEntity {
   })
   values: OptionValue[];
 
-  @ManyToOne(() => Category)
+  @ManyToOne(() => Category, {
+    onDelete: 'SET NULL',
+  })
   category: Category;
 
   @ManyToMany(() => Product, (product) => product.optionSets)

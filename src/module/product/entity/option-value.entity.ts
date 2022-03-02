@@ -42,6 +42,7 @@ export class OptionValue extends CommonIdEntity {
   @ManyToOne(() => OptionSet, (optionSet) => optionSet.values, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
+    nullable: false,
   })
   optionSet: OptionSet;
 

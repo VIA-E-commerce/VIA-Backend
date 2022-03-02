@@ -25,6 +25,7 @@ export class Variant extends CommonIdEntity {
   // 연관 관계
   @ManyToOne(() => Product, {
     onDelete: 'CASCADE',
+    nullable: false,
   })
   product: Product;
 
