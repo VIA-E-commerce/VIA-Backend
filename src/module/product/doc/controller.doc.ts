@@ -5,7 +5,7 @@ import { SwaggerMethodDoc } from '@/common';
 
 import { ProductController } from '../product.controller';
 
-export const ControllerDoc: SwaggerMethodDoc<ProductController> = {
+export const ProductControllerDoc: SwaggerMethodDoc<ProductController> = {
   getAll(summary: string) {
     return applyDecorators(
       ApiOperation({

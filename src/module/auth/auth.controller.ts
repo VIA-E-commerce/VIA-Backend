@@ -18,7 +18,7 @@ import {
 } from './guard';
 import { JwtPayload } from './interface';
 import { AuthService } from './auth.service';
-import { ControllerDoc as Doc } from './auth.doc';
+import { AuthControllerDoc as Doc } from './auth.doc';
 
 @ApiTags('인증/인가 API')
 @Controller('auth')

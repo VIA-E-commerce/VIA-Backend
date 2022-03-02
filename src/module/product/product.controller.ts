@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { Pagination } from '@/common';
 
-import { ControllerDoc as Doc } from './doc';
+import { ProductControllerDoc as Doc } from './doc';
 import { ProductListQuery } from './dto';
 import { Product } from './entity';
 import { ProductService } from './product.service';
