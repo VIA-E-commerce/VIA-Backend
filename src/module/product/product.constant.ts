@@ -12,3 +12,15 @@ export const CATEGORY = {
     MAX_LENGTH: 15,
   },
 };
+
+export const OPTION_SET = {
+  NAME: {
+    MAX_LENGTH: 20,
+  },
+};
+
+export const OPTION_VALUE = {
+  NAME: {
+    MAX_LENGTH: 20,
+  },
+};

@@ -96,3 +96,63 @@ export const CategoryDoc = {
     );
   },
 };
+
+export const OptionSetDoc = {
+  name() {
+    return applyDecorators(
+      ApiProperty({
+        description: '옵션세트 이름',
+        example: '사이즈',
+      }),
+    );
+  },
+
+  inputType() {
+    return applyDecorators(
+      ApiPropertyOptional({
+        description: '옵션 Input 종류',
+        example: 'CHECKBOX',
+      }),
+    );
+  },
+};
+
+export const OptionValueDoc = {
+  name() {
+    return applyDecorators(
+      ApiProperty({
+        description: '옵션값 이름',
+        example: '사이즈',
+      }),
+    );
+  },
+
+  additionalCharge() {
+    return applyDecorators(
+      ApiPropertyOptional({
+        description: '품목 옵션 추가 금액',
+        example: 5000,
+      }),
+    );
+  },
+};
+
+export const VariantDoc = {
+  quantity() {
+    return applyDecorators(
+      ApiProperty({
+        description: '재고 수량',
+        example: 100,
+      }),
+    );
+  },
+
+  hide() {
+    return applyDecorators(
+      ApiPropertyOptional({
+        description: '품목 표시 여부',
+        example: false,
+      }),
+    );
+  },
+};
