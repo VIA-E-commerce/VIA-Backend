@@ -10,7 +10,6 @@ import {
 
 import { CommonIdEntity } from '@/common';
 
-import { OptionSetDoc as Doc } from '../doc';
 import { InputType } from '../enum';
 import { OPTION_SET } from '../product.constant';
 import { Category } from './category.entity';
@@ -21,19 +20,16 @@ import { OptionValue } from './option-value.entity';
 @Unique('unq_option_set_category_order', ['category', 'order'])
 @Entity()
 export class OptionSet extends CommonIdEntity {
-  @Doc.name()
   @Column({
     length: OPTION_SET.NAME.MAX_LENGTH,
   })
   name: string;
 
-  @Doc.inputType()
   @Column({
     default: InputType.CHECKBOX,
   })
   inputType: InputType;
 
-  @Doc.order()
   @Column({
     type: 'tinyint',
     unsigned: true,

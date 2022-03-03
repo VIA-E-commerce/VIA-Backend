@@ -37,4 +37,31 @@ export const UserDoc = {
       Length(USER.NAME.MIN_LENGTH, USER.NAME.MAX_LENGTH),
     );
   },
+
+  role() {
+    return applyDecorators(
+      ApiProperty({
+        description: '회원 권한',
+        example: 'USER',
+      }),
+    );
+  },
+
+  provider() {
+    return applyDecorators(
+      ApiProperty({
+        description: '로그인 서비스 제공사',
+        example: 'LOCAL',
+      }),
+    );
+  },
+
+  snsId() {
+    return applyDecorators(
+      ApiProperty({
+        description: '연동된 SNS 아이디',
+        example: 1633204891,
+      }),
+    );
+  },
 };

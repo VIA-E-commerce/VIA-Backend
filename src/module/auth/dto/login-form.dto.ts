@@ -1,5 +1,9 @@
-import { PickType } from '@nestjs/swagger';
+import { UserDoc } from '@/module/user';
 
-import { User } from '@/module/user';
+export class LoginForm {
+  @UserDoc.email()
+  email: string;
 
-export class LoginForm extends PickType(User, ['email', 'password'] as const) {}
+  @UserDoc.password()
+  password: string;
+}

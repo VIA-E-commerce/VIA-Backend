@@ -3,15 +3,17 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 
-import { UserSummary } from './dto';
+import { UserResponse } from './dto';
 import { User } from './entity';
+import { UserControllerDoc as Doc } from './controller.doc';
 
 @ApiTags('회원 API')
 @Controller('users')
 export class UserController {
+  @Doc.getMe('본인 정보 조회')
   @Get('me')
   @UseGuards(JwtAuthGuard)
-  async me(@CurrentUser() user: User) {
-    return new UserSummary(user);
+  async getMe(@CurrentUser() user: User) {
+    return new UserResponse(user);
   }
 }

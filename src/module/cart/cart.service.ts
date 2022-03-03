@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { User } from '@/module/user';
 
-import { CreateCartDto } from './dto';
+import { CreateCartRequest } from './dto';
 import { Cart } from './entity';
 import { CART_ERROR } from './cart.constant';
 
@@ -15,7 +15,7 @@ export class CartService {
     private readonly cartRepository: Repository<Cart>,
   ) {}
 
-  async create({ variantId, ...rest }: CreateCartDto, user: User) {
+  async create({ variantId, ...rest }: CreateCartRequest, user: User) {
     const newCart = await this.cartRepository.save(
       this.cartRepository.create({
         ...rest,

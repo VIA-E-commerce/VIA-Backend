@@ -6,4 +6,8 @@ export class LoginResponse {
     description: 'JWT Access 토큰',
   })
   accessToken: string;
+
+  constructor(accessToken: string) {
+    this.accessToken = accessToken;
+  }
 }
