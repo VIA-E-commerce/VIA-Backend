@@ -25,8 +25,8 @@ export class CartController {
   @Doc.create('장바구니에 상품 추가')
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(@Body() dto: CreateCartRequest, @CurrentUser() user: User) {
-    await this.cartService.create(dto, user);
+  async add(@Body() dto: CreateCartRequest, @CurrentUser() user: User) {
+    await this.cartService.add(dto, user);
   }
 
   @Doc.getAll('장바구니 상품 목록 조회')
