@@ -1,8 +1,9 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 
 import { CATEGORY } from '../product.constant';
+import { Option } from './option.entity';
 
 @Entity()
 export class Category extends CommonIdEntity {
@@ -16,4 +17,8 @@ export class Category extends CommonIdEntity {
     unique: true,
   })
   code: string;
+
+  @ManyToMany(() => Option, (option) => option.categories)
+  @JoinColumn()
+  options: Option[];
 }

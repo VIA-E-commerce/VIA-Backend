@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   UseGuards,
@@ -12,7 +13,7 @@ import { IdParam } from '@/common';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 import { User } from '@/module/user';
 
-import { CreateCartRequest } from './dto';
+import { CreateCartRequest, CartItemResponse } from './dto';
 import { CartService } from './cart.service';
 import { CartControllerDoc as Doc } from './controller.doc';
 
@@ -26,6 +27,13 @@ export class CartController {
   @UseGuards(JwtAuthGuard)
   async create(@Body() dto: CreateCartRequest, @CurrentUser() user: User) {
     await this.cartService.create(dto, user);
+  }
+
+  @Doc.getAll('장바구니 상품 목록 조회')
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async getAll(@CurrentUser() user: User): Promise<CartItemResponse[]> {
+    return this.cartService.getAll(user);
   }
 
   @Doc.delete('장바구니에서 상품 제거')

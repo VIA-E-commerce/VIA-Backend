@@ -16,11 +16,13 @@ export class Cart extends CommonIdEntity {
   // 연관 관계
   @ManyToOne(() => User, {
     onDelete: 'CASCADE',
+    nullable: false,
   })
   user: User;
 
   @ManyToOne(() => Variant, {
     onDelete: 'CASCADE',
+    nullable: false,
   })
   variant: Variant;
 }

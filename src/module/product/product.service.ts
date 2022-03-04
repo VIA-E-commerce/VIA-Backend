@@ -66,7 +66,7 @@ export class ProductService {
 
     // Option Set 조인
     query
-      .leftJoin('product.optionSets', 'opt')
+      .leftJoin('product.options', 'opt')
       .addSelect(['opt.id', 'opt.name', 'opt.inputType', 'opt.order']);
 
     // Option Value 조인

@@ -4,7 +4,7 @@ import { CommonIdEntity } from '@/common';
 
 import { PRODUCT } from '../product.constant';
 import { Category } from './category.entity';
-import { OptionSet } from './option-set.entity';
+import { Option } from './option.entity';
 
 @Entity()
 export class Product extends CommonIdEntity {
@@ -63,7 +63,7 @@ export class Product extends CommonIdEntity {
   })
   category: Category;
 
-  @ManyToMany(() => OptionSet, (optionSet) => optionSet.products)
+  @ManyToMany(() => Option, (option) => option.products)
   @JoinColumn()
-  optionSets: OptionSet[];
+  options: Option[];
 }

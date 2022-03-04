@@ -13,14 +13,17 @@ export const CATEGORY = {
   },
 };
 
-export const OPTION_SET = {
-  NAME: {
+export const OPTION = {
+  LABEL: {
     MAX_LENGTH: 20,
+  },
+  DESCRIPTION: {
+    MAX_LENGTH: 50,
   },
 };
 
 export const OPTION_VALUE = {
-  NAME: {
+  VALUE: {
     MAX_LENGTH: 20,
   },
 };

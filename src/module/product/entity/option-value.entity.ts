@@ -1,26 +1,17 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToMany,
-  ManyToOne,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 
 import { OPTION_VALUE } from '../product.constant';
-import { OptionSet } from './option-set.entity';
-import { Variant } from './variant.entity';
+import { Option } from './option.entity';
+import { Variant } from '@/module/product';
 
-@Unique('unq_option_value_option_set_name', ['optionSet', 'name'])
-@Unique('unq_option_value_option_set_order', ['optionSet', 'order'])
 @Entity()
 export class OptionValue extends CommonIdEntity {
   @Column({
-    length: OPTION_VALUE.NAME.MAX_LENGTH,
+    length: OPTION_VALUE.VALUE.MAX_LENGTH,
   })
-  name: string;
+  value: string;
 
   @Column({
     type: 'mediumint',
@@ -35,14 +26,13 @@ export class OptionValue extends CommonIdEntity {
   order: number;
 
   // 연관 관계
-  @ManyToOne(() => OptionSet, (optionSet) => optionSet.values, {
+  @ManyToOne(() => Option, ({ values }) => values, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
-    nullable: false,
+    primary: true,
   })
-  optionSet: OptionSet;
+  option: Option;
 
-  @ManyToMany(() => Variant, (variant) => variant.optionValues)
-  @JoinColumn()
+  @ManyToMany(() => Variant, ({ optionValues }: Variant) => optionValues)
   variants: Variant[];
 }

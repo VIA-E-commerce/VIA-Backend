@@ -1,5 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+
+import { CartItemResponse } from './dto';
 
 export const CartControllerDoc = {
   create(summary: string) {
@@ -7,6 +9,18 @@ export const CartControllerDoc = {
       ApiOperation({
         summary,
         description: '장바구니에 상품을 담습니다.',
+      }),
+    );
+  },
+
+  getAll(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '로그인된 회원의 장바구니에 담긴 상품 목록을 가져옵니다.',
+      }),
+      ApiOkResponse({
+        type: [CartItemResponse],
       }),
     );
   },
