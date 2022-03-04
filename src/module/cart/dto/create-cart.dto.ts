@@ -1,9 +1,9 @@
-import { PickType } from '@nestjs/swagger';
-
-import { Cart } from '../entity';
 import { CartDoc } from './dto.doc';
 
-export class CreateCartRequest extends PickType(Cart, ['quantity']) {
+export class CreateCartRequest {
   @CartDoc.variantId()
   variantId: number;
+
+  @CartDoc.quantity()
+  quantity: number;
 }

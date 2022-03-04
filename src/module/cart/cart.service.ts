@@ -1,4 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { User } from '@/module/user';
 
 import { CreateCartRequest, CartItemResponse } from './dto';
@@ -26,17 +29,16 @@ export class CartService {
     }
   }
 
-  async getAll(user: User): Promise<any> {
-    const cartItems = await this.cartRepository.findAllByUserId(user.id);
+  async getMyCart(user: User): Promise<CartItemResponse[]> {
+    const cart = await this.cartRepository.findByUserId(user.id);
 
-    return cartItems.map((cartItem) => new CartItemResponse(cartItem));
+    if (!cart || !cart.items) return [];
+
+    return cart.items.map((cartItem) => new CartItemResponse(cartItem));
   }
 
   async remove(cartId: number, user: User) {
-    const result = await this.cartRepository.delete({
-      id: cartId,
-      user,
-    });
+    const result = await this.cartRepository.delete({ id: cartId, user });
 
     if (result.affected <= 0) {
       throw new HttpException(

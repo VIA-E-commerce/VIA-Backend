@@ -26,13 +26,13 @@ export class OptionValue extends CommonIdEntity {
   order: number;
 
   // 연관 관계
-  @ManyToOne(() => Option, ({ values }) => values, {
+  @ManyToOne(() => Option, (option) => option.values, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
     primary: true,
   })
   option: Option;
 
-  @ManyToMany(() => Variant, ({ optionValues }: Variant) => optionValues)
+  @ManyToMany(() => Variant, (variant) => variant.optionValues)
   variants: Variant[];
 }

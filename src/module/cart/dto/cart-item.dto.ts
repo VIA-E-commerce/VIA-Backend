@@ -1,7 +1,7 @@
 import { CartDoc } from '@/module/cart/dto';
 import { ProductDoc, VariantOptionResponse } from '@/module/product';
 import { ApiProperty } from '@nestjs/swagger';
-import { Cart } from '../entity';
+import { CartItem } from '../entity';
 
 export class CartItemResponse {
   @ApiProperty({
@@ -33,8 +33,8 @@ export class CartItemResponse {
   })
   variantOptions: VariantOptionResponse[];
 
-  constructor(cart: Cart) {
-    const variant = cart.variant;
+  constructor(cartItem: CartItem) {
+    const variant = cartItem.variant;
     const product = variant.product;
 
     this.productId = product.id;
@@ -42,7 +42,7 @@ export class CartItemResponse {
     this.retailPrice = product.retailPrice;
     this.sellingPrice = product.sellingPrice;
 
-    this.quantity = cart.quantity;
+    this.quantity = cartItem.quantity;
     this.disabled = variant.hide || !product.onSale;
 
     this.variantOptions = variant.optionValues.map(

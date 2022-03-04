@@ -1,28 +1,20 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Entity, OneToOne, OneToMany, JoinColumn } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 import { User } from '@/module/user';
-import { Variant } from '@/module/product';
+
+import { CartItem } from './cart-item.entity';
 
 @Entity()
 export class Cart extends CommonIdEntity {
-  @Column({
-    type: 'tinyint',
-    unsigned: true,
-    default: 1,
-  })
-  quantity: number;
-
   // 연관 관계
-  @ManyToOne(() => User, {
+  @OneToOne(() => User, {
+    onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
-    nullable: false,
   })
+  @JoinColumn()
   user: User;
 
-  @ManyToOne(() => Variant, {
-    onDelete: 'CASCADE',
-    nullable: false,
-  })
-  variant: Variant;
+  @OneToMany(() => CartItem, (cartItem) => cartItem.cart)
+  items: CartItem[];
 }
