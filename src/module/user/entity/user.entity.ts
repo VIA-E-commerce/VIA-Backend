@@ -1,11 +1,10 @@
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 
 import { UserRole, SNSProvider } from '../enum';
 import { USER } from '../user.constant';
 
-@Index('email', ['email'], { unique: true })
 @Entity()
 export class User extends CommonIdEntity {
   @Column({
