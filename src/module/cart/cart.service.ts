@@ -17,7 +17,7 @@ export class CartService {
     private readonly cartItemRepository: Repository<CartItem>,
   ) {}
 
-  async add({ variantId, quantity }: CreateCartRequest, user: User) {
+  async addItem({ variantId, quantity }: CreateCartRequest, user: User) {
     let cart = await this.cartRepository.findOne({ user });
 
     if (!cart) {
@@ -42,7 +42,7 @@ export class CartService {
     }
   }
 
-  async getMyCart(user: User): Promise<CartItemResponse[]> {
+  async getAllItems(user: User): Promise<CartItemResponse[]> {
     const cart = await this.cartRepository.findByUserId(user.id);
 
     if (!cart || !cart.items) return [];
@@ -50,8 +50,21 @@ export class CartService {
     return cart.items.map((cartItem) => new CartItemResponse(cartItem));
   }
 
-  async remove(cartId: number, user: User) {
-    const result = await this.cartRepository.delete({ id: cartId, user });
+  async removeItem(variantId: number, user: User) {
+    const cart = await this.cartRepository.findOne({
+      user,
+    });
+
+    if (!cart) {
+      throw new HttpException(CART_ERROR.CART_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+
+    const result = await this.cartItemRepository.delete({
+      cart,
+      variant: {
+        id: variantId,
+      },
+    });
 
     if (result.affected <= 0) {
       throw new HttpException(

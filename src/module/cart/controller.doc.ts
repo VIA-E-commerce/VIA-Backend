@@ -3,8 +3,8 @@ import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 
 import { CartItemResponse } from './dto';
 
-export const CartControllerDoc = {
-  create(summary: string) {
+export const CartItemControllerDoc = {
+  add(summary: string) {
     return applyDecorators(
       ApiOperation({
         summary,
@@ -13,7 +13,7 @@ export const CartControllerDoc = {
     );
   },
 
-  getMyCart(summary: string) {
+  getAll(summary: string) {
     return applyDecorators(
       ApiOperation({
         summary,
@@ -25,7 +25,7 @@ export const CartControllerDoc = {
     );
   },
 
-  delete(summary: string) {
+  remove(summary: string) {
     return applyDecorators(
       ApiOperation({
         summary,
