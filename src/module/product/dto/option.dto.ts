@@ -6,7 +6,7 @@ import { InputType } from '../enum';
 import { OptionDoc, OptionValueDoc } from './dto.doc';
 
 export class OptionValueResponse {
-  @SwaggerDoc.id()
+  @SwaggerDoc.id('상품 옵션 값 식별자')
   id: number;
 
   @OptionValueDoc.value()
@@ -29,7 +29,7 @@ export class OptionValueResponse {
 }
 
 export class OptionResponse {
-  @SwaggerDoc.id()
+  @SwaggerDoc.id('상품 옵션 식별자')
   id: number;
 
   @OptionDoc.label()

@@ -2,10 +2,10 @@ import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
 export const SwaggerDoc = {
-  id() {
+  id(description: string) {
     return applyDecorators(
       ApiProperty({
-        description: '식별자',
+        description,
         example: 1,
       }),
     );

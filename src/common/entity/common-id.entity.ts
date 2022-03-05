@@ -4,7 +4,7 @@ import { PrimaryGeneratedColumn } from 'typeorm';
 import { CommonEntity } from './common.entity';
 
 export abstract class CommonIdEntity extends CommonEntity {
-  @SwaggerDoc.id()
+  @SwaggerDoc.id('식별자')
   @PrimaryGeneratedColumn({
     unsigned: true,
   })
