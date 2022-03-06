@@ -27,11 +27,11 @@ export class CartService {
     }
 
     const result = await this.cartItemRepository.save({
+      quantity,
       cart,
       variant: {
         id: variantId,
       },
-      quantity,
     });
 
     if (!result) {

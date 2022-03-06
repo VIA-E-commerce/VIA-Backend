@@ -1,10 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 
 import { PRODUCT } from '../product.constant';
 import { Category } from './category.entity';
-import { Option } from './option.entity';
+import { Variant } from './variant.entity';
 
 @Entity()
 export class Product extends CommonIdEntity {
@@ -63,7 +63,8 @@ export class Product extends CommonIdEntity {
   })
   category: Category;
 
-  @ManyToMany(() => Option, (option) => option.products)
-  @JoinColumn()
-  options: Option[];
+  @OneToMany(() => Variant, (variant) => variant.product, {
+    cascade: ['insert'],
+  })
+  variants: Variant[];
 }

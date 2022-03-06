@@ -7,12 +7,10 @@ export class CartRepository extends Repository<Cart> {
   findByUserId(userId: number) {
     return this.createQueryBuilder('cart')
       .innerJoinAndSelect('cart.items', 'cartItem')
-      .leftJoinAndSelect('cartItem.variant', 'variant')
-      .leftJoinAndSelect('variant.product', 'product')
-      .leftJoinAndSelect('variant.optionValues', 'optionValue')
-      .leftJoinAndSelect('optionValue.option', 'option')
+      .innerJoinAndSelect('cartItem.variant', 'variant')
+      .innerJoinAndSelect('variant.product', 'product')
+      .innerJoinAndSelect('variant.color', 'color')
       .where('cart.user.id = :userId', { userId })
-      .orderBy({ 'option.order': 'ASC' })
       .getOne();
   }
 }

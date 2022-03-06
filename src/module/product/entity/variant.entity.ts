@@ -1,7 +1,7 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
-import { OptionValue } from '@/module/product';
+import { Color } from '@/module/color';
 
 import { Product } from './product.entity';
 
@@ -26,20 +26,10 @@ export class Variant extends CommonIdEntity {
   })
   product: Product;
 
-  @ManyToMany(() => OptionValue, (optionValue) => optionValue.variants, {
-    cascade: ['insert'],
+  @ManyToOne(() => Color, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+    nullable: false,
   })
-  @JoinTable({
-    name: 'variant_option',
-    joinColumns: [
-      {
-        name: 'variant_id',
-      },
-    ],
-    inverseJoinColumns: [
-      { name: 'option_id', referencedColumnName: 'option' },
-      { name: 'value_id', referencedColumnName: 'id' },
-    ],
-  })
-  optionValues: OptionValue[];
+  color: Color;
 }
