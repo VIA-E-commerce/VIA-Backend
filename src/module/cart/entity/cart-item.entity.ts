@@ -3,15 +3,14 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { Variant } from '@/module/product';
 
 import { Cart } from './cart.entity';
-import { CommonEntity } from '@/common';
+import { CommonIdEntity } from '@/common';
 
 @Entity()
-export class CartItem extends CommonEntity {
+export class CartItem extends CommonIdEntity {
   @ManyToOne(() => Cart, (cart) => cart.items, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
     nullable: false,
-    primary: true,
   })
   cart: Cart;
 
@@ -19,7 +18,6 @@ export class CartItem extends CommonEntity {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
     nullable: false,
-    primary: true,
   })
   variant: Variant;
 

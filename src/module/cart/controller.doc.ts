@@ -13,7 +13,7 @@ export const CartItemControllerDoc = {
     );
   },
 
-  getAll(summary: string) {
+  getMyCartItems(summary: string) {
     return applyDecorators(
       ApiOperation({
         summary,

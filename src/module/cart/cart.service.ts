@@ -42,7 +42,7 @@ export class CartService {
     }
   }
 
-  async getAllItems(user: User): Promise<CartItemResponse[]> {
+  async getMyCartItems(user: User): Promise<CartItemResponse[]> {
     const cart = await this.cartRepository.findByUserId(user.id);
 
     if (!cart || !cart.items) return [];
@@ -50,27 +50,22 @@ export class CartService {
     return cart.items.map((cartItem) => new CartItemResponse(cartItem));
   }
 
-  async removeItem(variantId: number, user: User) {
+  async removeItem(id: number, user: User) {
     const cart = await this.cartRepository.findOne({
       user,
     });
 
     if (!cart) {
-      throw new HttpException(CART_ERROR.CART_NOT_FOUND, HttpStatus.NOT_FOUND);
+      throw new HttpException(CART_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
     const result = await this.cartItemRepository.delete({
+      id,
       cart,
-      variant: {
-        id: variantId,
-      },
     });
 
     if (result.affected <= 0) {
-      throw new HttpException(
-        CART_ERROR.DELETE_ERROR,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new HttpException(CART_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
     }
   }
 }
