@@ -12,7 +12,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 import { User } from '@/module/user';
 
-import { CreateCartRequest, CartItemResponse, CartItemIdParam } from './dto';
+import { AddCartItemRequest, CartItemResponse, CartItemIdParam } from './dto';
 import { CartService } from './cart.service';
 import { CartItemControllerDoc as Doc } from './controller.doc';
 
@@ -24,7 +24,7 @@ export class CartItemController {
   @Doc.add('장바구니에 상품 추가')
   @Post()
   @UseGuards(JwtAuthGuard)
-  async add(@Body() dto: CreateCartRequest, @CurrentUser() user: User) {
+  async add(@Body() dto: AddCartItemRequest, @CurrentUser() user: User) {
     await this.cartService.addItem(dto, user);
   }
 

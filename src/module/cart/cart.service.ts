@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { User } from '@/module/user';
 
-import { CreateCartRequest, CartItemResponse } from './dto';
+import { AddCartItemRequest, CartItemResponse } from './dto';
 import { CartItem } from './entity';
 import { CART_ERROR } from './cart.constant';
 import { CartRepository } from './cart.repository';
@@ -17,7 +17,7 @@ export class CartService {
     private readonly cartItemRepository: Repository<CartItem>,
   ) {}
 
-  async addItem({ variantId, quantity }: CreateCartRequest, user: User) {
+  async addItem({ variantId, quantity }: AddCartItemRequest, user: User) {
     let cart = await this.cartRepository.findOne({ user });
 
     if (!cart) {

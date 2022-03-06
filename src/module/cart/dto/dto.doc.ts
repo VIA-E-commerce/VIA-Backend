@@ -10,13 +10,4 @@ export const CartDoc = {
       }),
     );
   },
-
-  variantId() {
-    return applyDecorators(
-      ApiProperty({
-        description: '상품 품목 식별자',
-        example: 1,
-      }),
-    );
-  },
 };

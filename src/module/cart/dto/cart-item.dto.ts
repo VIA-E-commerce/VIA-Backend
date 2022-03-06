@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { SwaggerDoc } from '@/common';
-import { ProductDoc, VariantOptionResponse } from '@/module/product';
+import { ProductDoc } from '@/module/product';
 
 import { CartItem } from '../entity';
 import { CartDoc } from './dto.doc';
@@ -28,11 +28,6 @@ export class CartItemResponse {
   })
   disabled: boolean;
 
-  @ApiProperty({
-    description: '상품 옵션',
-  })
-  variantOptions: VariantOptionResponse[];
-
   constructor(cartItem: CartItem) {
     const variant = cartItem.variant;
     const product = variant.product;
@@ -44,9 +39,5 @@ export class CartItemResponse {
 
     this.quantity = cartItem.quantity;
     this.disabled = variant.hide || !product.onSale;
-
-    this.variantOptions = variant.optionValues.map(
-      (optionValue) => new VariantOptionResponse(optionValue),
-    );
   }
 }
