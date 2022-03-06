@@ -9,7 +9,7 @@ import { ProductService } from './product.service';
 import { ProductControllerDoc as Doc } from './controller.doc';
 
 @ApiTags('상품 API')
-@Controller('product')
+@Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
