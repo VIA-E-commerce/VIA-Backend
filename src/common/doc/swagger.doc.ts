@@ -28,4 +28,13 @@ export const SwaggerDoc = {
       }),
     );
   },
+
+  order(description: string) {
+    return applyDecorators(
+      ApiProperty({
+        description,
+        example: 0,
+      }),
+    );
+  },
 };

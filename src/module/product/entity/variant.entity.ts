@@ -4,6 +4,7 @@ import { CommonIdEntity } from '@/common';
 import { Color } from '@/module/color';
 
 import { Product } from './product.entity';
+import { SizeValue } from '@/module/size';
 
 @Entity()
 export class Variant extends CommonIdEntity {
@@ -26,10 +27,15 @@ export class Variant extends CommonIdEntity {
   })
   product: Product;
 
-  @ManyToOne(() => Color, {
+  @ManyToOne(() => Color, (color) => color.variants, {
     onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
     nullable: false,
   })
   color: Color;
+
+  @ManyToOne(() => SizeValue, (sizeValue) => sizeValue.variants, {
+    onUpdate: 'CASCADE',
+    nullable: false,
+  })
+  sizeValue: SizeValue;
 }

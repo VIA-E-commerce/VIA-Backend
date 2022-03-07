@@ -3,16 +3,21 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Repository } from 'typeorm';
 
 import { getPagination, Pagination } from '@/common';
+import { ColorRepository } from '@/module/color';
+import { SizeValueRepository } from '@/module/size';
 
 import { ProductListQuery, ProductDetailResponse } from './dto';
 import { Product } from './entity';
 import { ProductSort } from './enum';
+import { PRODUCT_ERROR } from './product.constant';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    private readonly colorRepository: ColorRepository,
+    private readonly sizeValueRepository: SizeValueRepository,
   ) {}
 
   async getAll({
@@ -64,16 +69,18 @@ export class ProductService {
 
   async getOne(id: number): Promise<ProductDetailResponse> {
     const product = await this.productRepository.findOne({
-      relations: ['variants', 'variants.color'],
       where: {
-        id,
+        id: id,
       },
     });
 
     if (!product) {
-      throw new HttpException('', HttpStatus.NOT_FOUND);
+      throw new HttpException(PRODUCT_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
-    return new ProductDetailResponse(product);
+    const colors = await this.colorRepository.findByProductId(id);
+    const sizeValues = await this.sizeValueRepository.findByProductId(id);
+
+    return new ProductDetailResponse(product, colors, sizeValues);
   }
 }
