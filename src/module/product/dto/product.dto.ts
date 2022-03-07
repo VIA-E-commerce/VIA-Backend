@@ -1,6 +1,6 @@
 import { Product } from '../entity';
 
-export class ProductResponse {
+export class ProductDetailResponse {
   id: number;
 
   name: string;

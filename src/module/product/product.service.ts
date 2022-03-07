@@ -4,7 +4,7 @@ import { FindManyOptions, Repository } from 'typeorm';
 
 import { getPagination, Pagination } from '@/common';
 
-import { ProductListQuery } from './dto';
+import { ProductListQuery, ProductDetailResponse } from './dto';
 import { Product } from './entity';
 import { ProductSort } from './enum';
 
@@ -62,7 +62,7 @@ export class ProductService {
     return getPagination(productList, count, { pageNum, pageSize });
   }
 
-  async getOne(id: number): Promise<Product> {
+  async getOne(id: number): Promise<ProductDetailResponse> {
     const product = await this.productRepository.findOne({
       relations: ['variants', 'variants.color'],
       where: {
@@ -74,6 +74,6 @@ export class ProductService {
       throw new HttpException('', HttpStatus.NOT_FOUND);
     }
 
-    return product;
+    return new ProductDetailResponse(product);
   }
 }

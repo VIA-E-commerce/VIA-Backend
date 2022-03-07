@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { Pagination } from '@/common';
 
-import { ProductListQuery } from './dto';
+import { ProductListQuery, ProductIdParam, ProductDetailResponse } from './dto';
 import { Product } from './entity';
 import { ProductService } from './product.service';
 import { ProductControllerDoc as Doc } from './controller.doc';
@@ -23,7 +23,9 @@ export class ProductController {
 
   @Doc.getOne('상품 상세 정보 조회')
   @Get(':id')
-  async getOne(@Param('id') id: number): Promise<Product> {
+  async getOne(
+    @Param() { id }: ProductIdParam,
+  ): Promise<ProductDetailResponse> {
     return this.productService.getOne(id);
   }
 }
