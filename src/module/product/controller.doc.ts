@@ -45,6 +45,7 @@ export const ProductControllerDoc: SwaggerMethodDoc<ProductController> = {
         description: '상품 옵션을 포함한 상품 상세 정보를 조회합니다.',
       }),
       ApiOkResponse({
+        description: '상품 상세 정보 조회 성공',
         type: ProductDetailResponse,
       }),
     );
