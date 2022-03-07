@@ -6,7 +6,11 @@ import { getPagination, Pagination } from '@/common';
 import { ColorRepository } from '@/module/color';
 import { SizeValueRepository } from '@/module/size';
 
-import { ProductListQuery, ProductDetailResponse } from './dto';
+import {
+  ProductListQuery,
+  ProductCardResponse,
+  ProductDetailResponse,
+} from './dto';
 import { Product } from './entity';
 import { ProductSort } from './enum';
 import { PRODUCT_ERROR } from './product.constant';
@@ -25,7 +29,7 @@ export class ProductService {
     pageSize,
     category,
     sort,
-  }: ProductListQuery): Promise<Pagination<Product>> {
+  }: ProductListQuery): Promise<Pagination<ProductCardResponse>> {
     const findOptions: FindManyOptions<Product> = {
       relations: ['category'],
       skip: (pageNum - 1) * pageSize,
@@ -64,7 +68,11 @@ export class ProductService {
       findOptions,
     );
 
-    return getPagination(productList, count, { pageNum, pageSize });
+    const responseData = productList.map(
+      (item) => new ProductCardResponse(item),
+    );
+
+    return getPagination(responseData, count, { pageNum, pageSize });
   }
 
   async getOne(id: number): Promise<ProductDetailResponse> {

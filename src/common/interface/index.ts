@@ -22,11 +22,3 @@ export interface PagingOptions {
   pageNum: number;
   pageSize: number;
 }
-
-export interface Pagination<T> {
-  list: T[];
-  totalElements: number;
-  totalPages: number;
-  isFirst: boolean;
-  isLast: boolean;
-}

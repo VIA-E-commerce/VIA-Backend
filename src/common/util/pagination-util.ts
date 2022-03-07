@@ -1,4 +1,5 @@
-import { Pagination, PagingOptions } from '@/common/interface';
+import { Pagination } from '@/common/dto';
+import { PagingOptions } from '@/common/interface';
 
 export function getPagination<T>(
   list: T[],
