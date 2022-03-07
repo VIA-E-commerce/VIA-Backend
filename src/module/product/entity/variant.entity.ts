@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, RelationId, Unique } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 import { Color } from '@/module/color';
@@ -6,6 +6,7 @@ import { Color } from '@/module/color';
 import { Product } from './product.entity';
 import { SizeValue } from '@/module/size';
 
+@Unique(['product', 'color', 'sizeValue'])
 @Entity()
 export class Variant extends CommonIdEntity {
   @Column({
@@ -26,6 +27,9 @@ export class Variant extends CommonIdEntity {
     nullable: false,
   })
   product: Product;
+
+  @RelationId((variant: Variant) => variant.product)
+  productId: number;
 
   @ManyToOne(() => Color, (color) => color.variants, {
     onUpdate: 'CASCADE',
