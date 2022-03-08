@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
-import { User } from '@/module/user';
+import { USER, User } from '@/module/user';
 
 import { ADDRESS } from '../address.constant';
 
@@ -11,6 +11,17 @@ export class Address extends CommonIdEntity {
     length: ADDRESS.LABEL.MAX_LENGTH,
   })
   label: string;
+
+  @Column({
+    length: USER.NAME.MAX_LENGTH,
+  })
+  recipient: string;
+
+  @Column({
+    type: 'char',
+    length: USER.PHONE.LENGTH,
+  })
+  recipientPhone: string;
 
   @Column({
     type: 'char',
@@ -29,7 +40,7 @@ export class Address extends CommonIdEntity {
   @Column({
     default: false,
   })
-  isHome: boolean;
+  isDefault: boolean;
 
   @Column({
     nullable: true,
