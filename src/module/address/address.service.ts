@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { User } from '@/module/user';
 
-import { CreateAddressRequest } from './dto';
+import { CreateAddressRequest, AddressResponse } from './dto';
 import { Address } from './entity';
 import { ADDRESS_ERROR } from './address.constant';
 
@@ -29,6 +29,19 @@ export class AddressService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async getOne(id: number, user: User): Promise<AddressResponse> {
+    const address = await this.addressRepository.findOne({
+      id,
+      user,
+    });
+
+    if (!address) {
+      throw new HttpException(ADDRESS_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+
+    return new AddressResponse(address);
   }
 
   async remove(id: number, user: User) {
