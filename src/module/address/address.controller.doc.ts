@@ -10,4 +10,13 @@ export const AddressControllerDoc = {
       }),
     );
   },
+
+  remove(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '주소 정보를 삭제합니다.',
+      }),
+    );
+  },
 };
