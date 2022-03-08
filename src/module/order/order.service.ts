@@ -3,12 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { PagingQuery } from '@/common';
-import { User } from '@/module/user';
+import { User, UserRole } from '@/module/user';
 
-import { CreateOrderRequest, OrderResponse } from './dto';
+import { CreateOrderRequest, EditOrderRequest, OrderResponse } from './dto';
 import { Order } from './entity';
 import { OrderStatus } from './enum';
 import { ORDER_ERROR } from './order.constant';
+import { MESSAGE } from '@/constant';
 
 @Injectable()
 export class OrderService {
@@ -59,6 +60,30 @@ export class OrderService {
     });
 
     return orders.map((order) => new OrderResponse(order));
+  }
+
+  async edit(id: number, dto: EditOrderRequest, user: User) {
+    if (user.role === UserRole.USER && dto.status) {
+      switch (dto.status) {
+        case OrderStatus.AWAITING_SHIPMENT:
+        case OrderStatus.SHIPPED:
+        case OrderStatus.DELIVERED:
+        case OrderStatus.EXCHANGED:
+        case OrderStatus.REFUNDED:
+          throw new HttpException(
+            MESSAGE.ERROR.FORBIDDEN,
+            HttpStatus.FORBIDDEN,
+          );
+        default:
+          break;
+      }
+    }
+
+    const result = await this.orderRepository.update({ id, user }, dto);
+
+    if (result.affected <= 0) {
+      throw new HttpException(ORDER_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
   }
 
   async cancel(id: number, user: User): Promise<void> {

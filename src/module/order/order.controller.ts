@@ -6,6 +6,8 @@ import {
   Patch,
   Post,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -13,7 +15,12 @@ import { PagingQuery } from '@/common';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 import { User } from '@/module/user';
 
-import { CreateOrderRequest, OrderIdParam, OrderResponse } from './dto';
+import {
+  CreateOrderRequest,
+  EditOrderRequest,
+  OrderIdParam,
+  OrderResponse,
+} from './dto';
 import { OrderService } from './order.service';
 import { OrderControllerDoc as Doc } from './order.controller.doc';
 
@@ -50,6 +57,18 @@ export class OrderController {
     @CurrentUser() user: User,
   ): Promise<OrderResponse[]> {
     return this.orderService.getMe(pagingQuery, user);
+  }
+
+  @Doc.edit('주문 정보 수정')
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(ValidationPipe)
+  async edit(
+    @Param() { id }: OrderIdParam,
+    @Body() dto: EditOrderRequest,
+    @CurrentUser() user: User,
+  ): Promise<void> {
+    await this.orderService.edit(id, dto, user);
   }
 
   @Doc.cancel('주문 취소')

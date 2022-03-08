@@ -39,6 +39,15 @@ export const OrderControllerDoc = {
     );
   },
 
+  edit(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '회원의 주문 정보를 수정합니다.',
+      }),
+    );
+  },
+
   cancel(summary: string) {
     return applyDecorators(
       ApiOperation({
