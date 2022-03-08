@@ -2,10 +2,12 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { PagingQuery } from '@/common';
 import { User } from '@/module/user';
 
 import { CreateOrderRequest, OrderResponse } from './dto';
 import { Order } from './entity';
+import { OrderStatus } from './enum';
 import { ORDER_ERROR } from './order.constant';
 
 @Injectable()
@@ -39,6 +41,24 @@ export class OrderService {
     }
 
     return new OrderResponse(order);
+  }
+
+  async getMe(
+    { pageNum, pageSize }: PagingQuery,
+    user: User,
+  ): Promise<OrderResponse[]> {
+    const orders = await this.orderRepository.find({
+      where: {
+        user,
+      },
+      skip: (pageNum - 1) * pageSize,
+      take: pageSize,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return orders.map((order) => new OrderResponse(order));
   }
 
   async cancel(id: number, user: User): Promise<void> {

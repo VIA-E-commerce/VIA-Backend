@@ -1,14 +1,15 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { PagingQuery } from '@/common';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 import { User } from '@/module/user';
 
@@ -32,13 +33,23 @@ export class OrderController {
   }
 
   @Doc.getOne('주문 조회')
-  @Get(':id')
+  @Get(':id(\\d+)')
   @UseGuards(JwtAuthGuard)
   async getOne(
     @Param() { id }: OrderIdParam,
     @CurrentUser() user: User,
   ): Promise<OrderResponse> {
     return this.orderService.getOne(id, user);
+  }
+
+  @Doc.getMe('내 주문 목록 조회')
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  async getMe(
+    @Param() pagingQuery: PagingQuery,
+    @CurrentUser() user: User,
+  ): Promise<OrderResponse[]> {
+    return this.orderService.getMe(pagingQuery, user);
   }
 
   @Doc.cancel('주문 취소')

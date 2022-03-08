@@ -30,6 +30,15 @@ export const OrderControllerDoc = {
     );
   },
 
+  getMe(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '로그인된 회원 본인의 주문 목록을 조회합니다.',
+      }),
+    );
+  },
+
   cancel(summary: string) {
     return applyDecorators(
       ApiOperation({
