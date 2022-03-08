@@ -20,4 +20,13 @@ export const OrderControllerDoc = {
       }),
     );
   },
+
+  getOne(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '주문 데이터를 조회합니다.',
+      }),
+    );
+  },
 };

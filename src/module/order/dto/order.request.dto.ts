@@ -1,6 +1,6 @@
-import { Order } from '@/module/order';
 import { User } from '@/module/user';
 
+import { Order } from '../entity';
 import { OrderStatus, PaymentMethod } from '../enum';
 import { OrderDoc } from './order.dto.doc';
 

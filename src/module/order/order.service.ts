@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { User } from '@/module/user';
 
-import { CreateOrderRequest } from './dto';
+import { CreateOrderRequest, OrderResponse } from './dto';
 import { Order } from './entity';
 import { ORDER_ERROR } from './order.constant';
 
@@ -25,5 +25,19 @@ export class OrderService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async getOne(id: number, user: User): Promise<OrderResponse> {
+    const order = await this.orderRepository.findOne(id, {
+      where: {
+        user,
+      },
+    });
+
+    if (!order) {
+      throw new HttpException(ORDER_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+
+    return new OrderResponse(order);
   }
 }
