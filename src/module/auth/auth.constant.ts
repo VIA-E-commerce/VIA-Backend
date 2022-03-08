@@ -9,6 +9,7 @@ export const AUTH_ERROR = {
   JWT_ERROR: '토큰 발급 중 오류가 발생했습니다.',
   MISMATCHED_SNS_INFO: '다른 SNS 아이디가 계정과 연동되어 있습니다.',
   UNAUTHORIZED: '접근 권한이 없습니다.',
+  REFRESH_FAILURE: 'Refresh 토큰 갱신에 실패했습니다.',
 };
 
 export const STRATEGY = {
