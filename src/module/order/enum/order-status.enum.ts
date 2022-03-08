@@ -4,6 +4,7 @@ export enum OrderStatus {
   AWAITING_SHIPMENT = 'AWAITING_SHIPMENT', // 배송준비중
   SHIPPED = 'SHIPPED', // 배송중
   DELIVERED = 'DELIVERED', // 배송완료
+  CANCELLED = 'CANCELLED', // 주문 취소
   EXCHANGED = 'EXCHANGED', // 교환
   REFUNDED = 'REFUNDED', // 환불
 }

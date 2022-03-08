@@ -29,4 +29,13 @@ export const OrderControllerDoc = {
       }),
     );
   },
+
+  cancel(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '주문을 취소 상태로 변경합니다.',
+      }),
+    );
+  },
 };

@@ -40,4 +40,20 @@ export class OrderService {
 
     return new OrderResponse(order);
   }
+
+  async cancel(id: number, user: User): Promise<void> {
+    const result = await this.orderRepository.update(
+      { id, user },
+      {
+        status: OrderStatus.CANCELLED,
+      },
+    );
+
+    if (result.affected <= 0) {
+      throw new HttpException(
+        ORDER_ERROR.CANCEL_FAILURE,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 }

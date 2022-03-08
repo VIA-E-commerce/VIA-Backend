@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
@@ -31,5 +39,15 @@ export class OrderController {
     @CurrentUser() user: User,
   ): Promise<OrderResponse> {
     return this.orderService.getOne(id, user);
+  }
+
+  @Doc.cancel('주문 취소')
+  @Patch(':id/cancel')
+  @UseGuards(JwtAuthGuard)
+  async cancel(
+    @Param() { id }: OrderIdParam,
+    @CurrentUser() user: User,
+  ): Promise<void> {
+    await this.orderService.cancel(id, user);
   }
 }
