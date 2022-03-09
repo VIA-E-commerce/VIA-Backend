@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Patch,
   Post,
@@ -12,7 +13,12 @@ import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 import { User } from '@/module/user';
 
-import { CreateReviewRequest, EditReviewRequest, ReviewIdParam } from './dto';
+import {
+  CreateReviewRequest,
+  EditReviewRequest,
+  ReviewIdParam,
+  ReviewResponse,
+} from './dto';
 import { ReviewService } from './review.service';
 import { ReviewControllerDoc as Doc } from './review.controller.doc';
 
@@ -29,6 +35,13 @@ export class ReviewController {
     @CurrentUser() user: User,
   ): Promise<void> {
     await this.reviewService.addReview(dto, user);
+  }
+
+  @Doc.getReview('리뷰 조회')
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  async getReview(@Param() { id }: ReviewIdParam): Promise<ReviewResponse> {
+    return this.reviewService.getReview(id);
   }
 
   @Doc.editReview('리뷰 수정')
