@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { User } from '@/module/user';
 
-import { CreateReviewRequest } from './dto';
+import { CreateReviewRequest, EditReviewRequest } from './dto';
 import { Review as Review } from './entity';
 import { REVIEW_ERROR } from './review.constant';
 
@@ -32,6 +32,21 @@ export class ReviewService {
     } catch (err) {
       throw new HttpException(
         REVIEW_ERROR.CREATE_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async editReview(id: number, dto: EditReviewRequest, user: User) {
+    try {
+      const result = await this.reviewRepository.update({ id, user }, dto);
+
+      if (result.affected <= 0) {
+        throw new HttpException(REVIEW_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
+      }
+    } catch (err) {
+      throw new HttpException(
+        REVIEW_ERROR.UPDATE_ERROR,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

@@ -20,6 +20,24 @@ export const ReviewControllerDoc = {
     );
   },
 
+  editReview(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '상품 리뷰를 수정합니다.',
+      }),
+      ApiOkResponse({
+        description: '리뷰 수정 성공',
+      }),
+      ApiNotFoundResponse({
+        description: '존재하지 않는 리뷰',
+      }),
+      ApiInternalServerErrorResponse({
+        description: '서버 내부 오류 발생',
+      }),
+    );
+  },
+
   removeReview(summary: string) {
     return applyDecorators(
       ApiOperation({
