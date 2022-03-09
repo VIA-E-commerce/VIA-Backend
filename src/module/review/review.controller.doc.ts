@@ -20,7 +20,7 @@ export const ReviewControllerDoc = {
     );
   },
 
-  remove(summary: string) {
+  removeReview(summary: string) {
     return applyDecorators(
       ApiOperation({
         summary,

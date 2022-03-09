@@ -37,7 +37,7 @@ export class ReviewService {
     }
   }
 
-  async remove(id: number, user: User) {
+  async removeReview(id: number, user: User) {
     try {
       const result = await this.reviewRepository.delete({
         id,

@@ -30,13 +30,13 @@ export class ReviewController {
     await this.reviewService.addReview(dto, user);
   }
 
-  @Doc.remove('리뷰 삭제')
+  @Doc.removeReview('리뷰 삭제')
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async remove(
+  async removeReview(
     @Param() { id }: ReviewIdParam,
     @CurrentUser() user: User,
   ): Promise<void> {
-    await this.reviewService.remove(id, user);
+    await this.reviewService.removeReview(id, user);
   }
 }
