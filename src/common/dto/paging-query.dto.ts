@@ -14,7 +14,7 @@ export class PagingQuery {
   pageNum: number;
 
   @ApiPropertyOptional({
-    description: '한 페이지의 상품 개수',
+    description: '한 페이지의 아이템 개수',
     example: 10,
   })
   @Type(() => Number)
