@@ -1,10 +1,17 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 import { User } from '@/module/user';
 
-import { CreateReviewRequest } from './dto';
+import { CreateReviewRequest, ReviewIdParam } from './dto';
 import { ReviewService } from './review.service';
 import { ReviewControllerDoc as Doc } from './review.controller.doc';
 
@@ -21,5 +28,15 @@ export class ReviewController {
     @CurrentUser() user: User,
   ): Promise<void> {
     await this.reviewService.addReview(dto, user);
+  }
+
+  @Doc.remove('리뷰 삭제')
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  async remove(
+    @Param() { id }: ReviewIdParam,
+    @CurrentUser() user: User,
+  ): Promise<void> {
+    await this.reviewService.remove(id, user);
   }
 }

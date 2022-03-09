@@ -36,4 +36,22 @@ export class ReviewService {
       );
     }
   }
+
+  async remove(id: number, user: User) {
+    try {
+      const result = await this.reviewRepository.delete({
+        id,
+        user,
+      });
+
+      if (result.affected <= 0) {
+        throw new HttpException(REVIEW_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
+      }
+    } catch (err) {
+      throw new HttpException(
+        REVIEW_ERROR.DELETE_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
