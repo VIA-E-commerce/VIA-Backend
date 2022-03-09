@@ -2,9 +2,10 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { PagingQuery } from '@/common';
 import { User } from '@/module/user';
 
-import { CreateReviewRequest, EditReviewRequest } from './dto';
+import { CreateReviewRequest, EditReviewRequest, ReviewResponse } from './dto';
 import { Review as Review } from './entity';
 import { REVIEW_ERROR } from './review.constant';
 
@@ -68,5 +69,26 @@ export class ReviewService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async getReviewsByProductId(
+    productId: number,
+    { pageNum, pageSize }: PagingQuery,
+  ): Promise<ReviewResponse[]> {
+    const reviews = await this.reviewRepository.find({
+      relations: ['user'],
+      where: {
+        product: {
+          id: productId,
+        },
+      },
+      skip: (pageNum - 1) * pageSize,
+      take: pageSize,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return reviews.map((review) => new ReviewResponse(review));
   }
 }
