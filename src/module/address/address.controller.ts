@@ -5,10 +5,12 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { PagingQuery } from '@/common';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 import { User } from '@/module/user';
 
@@ -29,13 +31,23 @@ export class AddressController {
   }
 
   @Doc.getOne('주소 조회')
-  @Get(':id')
+  @Get(':id(\\d+)')
   @UseGuards(JwtAuthGuard)
   async getOne(
     @Param() { id }: AddressIdParam,
     @CurrentUser() user: User,
   ): Promise<AddressResponse> {
     return this.addressService.getOne(id, user);
+  }
+
+  @Doc.getMe('내 주소 목록 조회')
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  async getMe(
+    @Query() pagingQuery: PagingQuery,
+    @CurrentUser() user: User,
+  ): Promise<AddressResponse[]> {
+    return this.addressService.getMe(pagingQuery, user);
   }
 
   @Doc.remove('주소 삭제')

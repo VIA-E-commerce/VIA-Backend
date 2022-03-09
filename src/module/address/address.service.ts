@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { PagingQuery } from '@/common';
 import { User } from '@/module/user';
 
 import { CreateAddressRequest, AddressResponse } from './dto';
@@ -42,6 +43,25 @@ export class AddressService {
     }
 
     return new AddressResponse(address);
+  }
+
+  async getMe(
+    { pageNum, pageSize }: PagingQuery,
+    user: User,
+  ): Promise<AddressResponse[]> {
+    const addresses = await this.addressRepository.find({
+      where: {
+        user,
+      },
+      skip: (pageNum - 1) * pageSize,
+      take: pageSize,
+      order: {
+        isDefault: 'DESC',
+        createdAt: 'DESC',
+      },
+    });
+
+    return addresses.map((address) => new AddressResponse(address));
   }
 
   async remove(id: number, user: User) {

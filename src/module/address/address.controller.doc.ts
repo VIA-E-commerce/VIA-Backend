@@ -26,6 +26,19 @@ export const AddressControllerDoc = {
     );
   },
 
+  getMe(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '로그인된 회원의 주소록 목록을 조회합니다.',
+      }),
+      ApiOkResponse({
+        description: '내 주소 목록 조회 성공',
+        type: [AddressResponse],
+      }),
+    );
+  },
+
   remove(summary: string) {
     return applyDecorators(
       ApiOperation({
