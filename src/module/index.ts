@@ -6,6 +6,7 @@ import { ColorModule } from './color';
 import { SizeModule } from './size';
 import { OrderModule } from './order';
 import { AddressModule } from './address';
+import { ReviewModule } from './review';
 
 export const modules = [
   AuthModule,
@@ -16,4 +17,5 @@ export const modules = [
   SizeModule,
   OrderModule,
   AddressModule,
+  ReviewModule,
 ];
