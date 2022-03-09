@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -14,7 +15,12 @@ import { PagingQuery } from '@/common';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 import { User } from '@/module/user';
 
-import { CreateAddressRequest, AddressIdParam, AddressResponse } from './dto';
+import {
+  CreateAddressRequest,
+  EditAddressRequest,
+  AddressIdParam,
+  AddressResponse,
+} from './dto';
 import { AddressService } from './address.service';
 import { AddressControllerDoc as Doc } from './address.controller.doc';
 
@@ -48,6 +54,17 @@ export class AddressController {
     @CurrentUser() user: User,
   ): Promise<AddressResponse[]> {
     return this.addressService.getMe(pagingQuery, user);
+  }
+
+  @Doc.edit('주소 수정')
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  async edit(
+    @Param() { id }: AddressIdParam,
+    @Body() dto: EditAddressRequest,
+    @CurrentUser() user: User,
+  ): Promise<void> {
+    await this.addressService.edit(id, dto, user);
   }
 
   @Doc.remove('주소 삭제')

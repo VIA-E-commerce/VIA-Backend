@@ -39,6 +39,18 @@ export const AddressControllerDoc = {
     );
   },
 
+  edit(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '회원의 주소록에서 특정 주소 정보를 수정합니다.',
+      }),
+      ApiOkResponse({
+        description: '주소 정보 수정 성공',
+      }),
+    );
+  },
+
   remove(summary: string) {
     return applyDecorators(
       ApiOperation({
