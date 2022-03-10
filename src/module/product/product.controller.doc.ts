@@ -57,7 +57,7 @@ export const ProductControllerDoc: SwaggerMethodDoc<ProductController> = {
     return applyDecorators(
       ApiOperation({
         summary,
-        description: '',
+        description: '상품에 달린 리뷰 목록을 조회합니다.',
       }),
       ApiOkResponse({
         description: '리뷰 목록 조회 성공',
