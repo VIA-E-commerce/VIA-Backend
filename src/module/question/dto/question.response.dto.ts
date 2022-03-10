@@ -22,6 +22,12 @@ export class QuestionResponse {
   @SwaggerDoc.id('작성자 식별자')
   userId: number;
 
+  @SwaggerDoc.createdAt()
+  createdAt: Date;
+
+  @SwaggerDoc.updatedAt()
+  updatedAt: Date;
+
   constructor(question: Question) {
     this.id = question.id;
     this.title = question.title;
@@ -30,5 +36,8 @@ export class QuestionResponse {
 
     this.productId = question.productId;
     this.userId = question.user.id;
+
+    this.createdAt = question.createdAt;
+    this.updatedAt = question.updatedAt;
   }
 }

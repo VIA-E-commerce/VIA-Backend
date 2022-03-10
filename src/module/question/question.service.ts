@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { PagingQuery } from '@/common';
 import { User, UserRole } from '@/module/user';
 
 import {
@@ -87,6 +88,27 @@ export class QuestionService {
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  async getQuestionsByProductId(
+    productId: number,
+    { pageNum, pageSize }: PagingQuery,
+  ): Promise<QuestionResponse[]> {
+    const questions = await this.questionRepository.find({
+      relations: ['user'],
+      where: {
+        product: {
+          id: productId,
+        },
+      },
+      skip: (pageNum - 1) * pageSize,
+      take: pageSize,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return questions.map((question) => new QuestionResponse(question));
   }
 
   private authPrivateQuestion(question: Question, user: User) {
