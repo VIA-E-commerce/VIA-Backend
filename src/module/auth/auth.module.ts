@@ -1,15 +1,15 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 
+import { AuthConfig } from '@/config';
+import { CONFIG } from '@/constant';
 import { UserModule, UserRepository } from '@/module/user';
 
 import { strategies } from './strategy';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthConfig } from '@/config';
-import { CONFIG } from '@/constant';
 
 @Module({
   imports: [
@@ -27,6 +27,6 @@ import { CONFIG } from '@/constant';
     UserModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, ...strategies],
+  providers: [Logger, AuthService, ...strategies],
 })
 export class AuthModule {}

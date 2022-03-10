@@ -3,6 +3,7 @@ import { KakaoStrategy } from './kakao.strategy';
 import { NaverStrategy } from './naver.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtRefreshStrategy } from './jwt-refresh.strategy';
+import { GuestStrategy } from './guest.strategy';
 
 export const strategies = [
   LocalStrategy,
@@ -10,4 +11,5 @@ export const strategies = [
   NaverStrategy,
   JwtStrategy,
   JwtRefreshStrategy,
+  GuestStrategy,
 ];
