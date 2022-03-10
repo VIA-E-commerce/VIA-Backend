@@ -4,7 +4,11 @@ import { Repository } from 'typeorm';
 
 import { User, UserRole } from '@/module/user';
 
-import { CreateQuestionRequest, QuestionResponse } from './dto';
+import {
+  CreateQuestionRequest,
+  EditQuestionRequest,
+  QuestionResponse,
+} from './dto';
 import { Question } from './entity';
 import { QUESTION_ERROR } from './question.constant';
 
@@ -52,6 +56,23 @@ export class QuestionService {
     }
 
     return new QuestionResponse(question);
+  }
+
+  async editQuestion(id: number, dto: EditQuestionRequest, user: User) {
+    const result = await this.questionRepository.update(
+      {
+        id,
+        user,
+      },
+      dto,
+    );
+
+    if (result.affected === 0) {
+      throw new HttpException(
+        QUESTION_ERROR.UPDATE_ERROR,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   async removeQuestion(id: number, user: User): Promise<void> {

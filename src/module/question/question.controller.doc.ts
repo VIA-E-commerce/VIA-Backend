@@ -46,6 +46,21 @@ export const QuestionControllerDoc = {
     );
   },
 
+  editQuestion(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '상품 문의 정보를 수정합니다.',
+      }),
+      ApiOkResponse({
+        description: '상품 문의 수정 성공',
+      }),
+      ApiBadRequestResponse({
+        description: '잘못된 요청으로 수정 실패',
+      }),
+    );
+  },
+
   removeQuestion(summary: string) {
     return applyDecorators(
       ApiOperation({

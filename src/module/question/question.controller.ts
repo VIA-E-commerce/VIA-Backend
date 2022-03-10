@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { User } from '@/module/user';
 
 import {
   CreateQuestionRequest,
+  EditQuestionRequest,
   QuestionIdParam,
   QuestionResponse,
 } from './dto';
@@ -43,6 +45,16 @@ export class QuestionController {
     @CurrentUser() user: User,
   ): Promise<QuestionResponse> {
     return this.questionService.getQuestion(id, user);
+  }
+
+  @Doc.editQuestion('상품 문의 수정')
+  @Patch(':id')
+  async editQuestion(
+    @Param() { id }: QuestionIdParam,
+    @Body() dto: EditQuestionRequest,
+    @CurrentUser() user: User,
+  ): Promise<void> {
+    await this.questionService.editQuestion(id, dto, user);
   }
 
   @Doc.removeQuestion('상품 문의 제거')

@@ -15,3 +15,14 @@ export class CreateQuestionRequest {
   @SwaggerDoc.id('상품 식별자')
   productId: number;
 }
+
+export class EditQuestionRequest {
+  @QuestionDoc.title()
+  title: string;
+
+  @QuestionDoc.content()
+  content: string;
+
+  @QuestionDoc.isPrivate()
+  isPrivate: boolean;
+}
