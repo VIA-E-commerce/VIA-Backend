@@ -1,10 +1,17 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 import { User } from '@/module/user';
 
-import { CreateQuestionRequest } from './dto';
+import { CreateQuestionRequest, QuestionIdParam } from './dto';
 import { QuestionService } from './question.service';
 import { QuestionControllerDoc as Doc } from './question.controller.doc';
 
@@ -21,5 +28,15 @@ export class QuestionController {
     @CurrentUser() user: User,
   ): Promise<void> {
     await this.questionService.registerQuestion(dto, user);
+  }
+
+  @Doc.removeQuestion('상품 문의 제거')
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  async removeQuestion(
+    @Param() { id }: QuestionIdParam,
+    @CurrentUser() user: User,
+  ): Promise<void> {
+    await this.questionService.removeQuestion(id, user);
   }
 }
