@@ -1,10 +1,11 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, Unique } from 'typeorm';
 
 import { Variant } from '@/module/product';
 
 import { Cart } from './cart.entity';
 import { CommonIdEntity } from '@/common';
 
+@Unique('uq_cart_variant', ['cart', 'variant'])
 @Entity()
 export class CartItem extends CommonIdEntity {
   @ManyToOne(() => Cart, (cart) => cart.items, {
