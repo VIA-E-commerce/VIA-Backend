@@ -27,6 +27,13 @@ export class User extends CommonIdEntity {
 
   @Column({
     type: 'char',
+    length: USER.PHONE.MAX_LENGTH,
+    nullable: true,
+  })
+  phone: string;
+
+  @Column({
+    type: 'char',
     length: USER.ROLE.MAX_LENGTH,
     default: UserRole.USER,
   })

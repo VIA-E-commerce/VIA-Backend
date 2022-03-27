@@ -38,6 +38,16 @@ export const UserDoc = {
     );
   },
 
+  phone() {
+    return applyDecorators(
+      ApiProperty({
+        description: '휴대폰 번호',
+        example: '01012345678',
+      }),
+      Length(USER.PHONE.MIN_LENGTH, USER.PHONE.MAX_LENGTH),
+    );
+  },
+
   role() {
     return applyDecorators(
       ApiProperty({

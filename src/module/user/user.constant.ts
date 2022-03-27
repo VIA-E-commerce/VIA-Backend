@@ -18,7 +18,8 @@ export const USER = {
     MAX_LENGTH: 17,
   },
   PHONE: {
-    LENGTH: 11,
+    MIN_LENGTH: 10,
+    MAX_LENGTH: 11,
   },
   ROLE: {
     MAX_LENGTH: 5,

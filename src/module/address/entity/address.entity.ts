@@ -19,7 +19,7 @@ export class Address extends CommonIdEntity {
 
   @Column({
     type: 'char',
-    length: USER.PHONE.LENGTH,
+    length: USER.PHONE.MAX_LENGTH,
   })
   recipientPhone: string;
 
