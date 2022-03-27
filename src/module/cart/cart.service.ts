@@ -33,13 +33,35 @@ export class CartService {
       });
     }
 
-    const result = await this.cartItemRepository.save({
-      quantity,
-      cart,
-      variant: {
-        id: variantId,
+    // 이미 담겨있는 아이템인지 확인
+    let cartItem = await this.cartItemRepository.findOne({
+      relations: ['variant'],
+      where: {
+        cart,
+        variant: {
+          id: variantId,
+        },
       },
     });
+
+    if (cartItem) {
+      // 1) 이미 담겨있으면? 수량만 추가
+      cartItem.quantity = Math.min(
+        cartItem.variant.quantity,
+        cartItem.quantity + quantity,
+      );
+    } else {
+      // 2) 새 아이템이면? 장바구니에 새로 등록
+      cartItem = this.cartItemRepository.create({
+        cart,
+        quantity,
+        variant: {
+          id: variantId,
+        },
+      });
+    }
+
+    const result = await this.cartItemRepository.save(cartItem);
 
     if (!result) {
       throw new HttpException(
