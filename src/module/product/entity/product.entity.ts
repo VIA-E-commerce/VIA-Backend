@@ -1,11 +1,12 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
+import { Wishlist } from '@/module/wishlist';
 
 import { PRODUCT } from '../product.constant';
 import { Category } from './category.entity';
-import { Variant } from './variant.entity';
 import { ProductImage } from './product-image.entity';
+import { Variant } from './variant.entity';
 
 @Entity()
 export class Product extends CommonIdEntity {
@@ -73,4 +74,7 @@ export class Product extends CommonIdEntity {
     cascade: ['insert'],
   })
   images: ProductImage[];
+
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.product)
+  wishlist?: Wishlist[];
 }

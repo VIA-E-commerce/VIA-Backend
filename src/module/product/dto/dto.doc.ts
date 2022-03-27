@@ -93,6 +93,15 @@ export const ProductDoc = {
       }),
     );
   },
+
+  wished() {
+    return applyDecorators(
+      ApiProperty({
+        description: '위시리스트 추가 여부',
+        example: true,
+      }),
+    );
+  },
 };
 
 export const CategoryDoc = {

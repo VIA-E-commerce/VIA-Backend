@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { getPagination, Pagination } from '@/common';
 import { ColorRepository } from '@/module/color';
 import { SizeValueRepository } from '@/module/size';
+import { User } from '@/module/user';
+import { Wishlist } from '@/module/wishlist';
 
 import {
   ProductListQuery,
@@ -22,6 +24,8 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
     private readonly colorRepository: ColorRepository,
     private readonly sizeValueRepository: SizeValueRepository,
+    @InjectRepository(Wishlist)
+    private readonly wishlistRepository: Repository<Wishlist>,
   ) {}
 
   async getAll({
@@ -79,11 +83,12 @@ export class ProductService {
     return getPagination(responseData, count, { pageNum, pageSize });
   }
 
-  async getOne(productId: number): Promise<ProductDetailResponse> {
+  async getOne(productId: number, user: User): Promise<ProductDetailResponse> {
     const [productAlias, productImageAlias, variantAlias] = [
       'product',
       'image',
       'variant',
+      'wishlist',
     ];
 
     const product = await this.productRepository
@@ -98,15 +103,57 @@ export class ProductService {
       .orderBy(`${productImageAlias}.order`, 'ASC')
       .getOne();
 
-    if (!product) {
-      throw new HttpException(PRODUCT_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
+    this.checkProductExistence(product);
+
+    const wished = await this.wishlistRepository.findOne({
+      where: {
+        product: { id: productId },
+        user,
+      },
+    });
 
     const colors = await this.colorRepository.findByProductId(productId);
     const sizeValues = await this.sizeValueRepository.findByProductId(
       productId,
     );
 
-    return new ProductDetailResponse(product, colors, sizeValues);
+    return new ProductDetailResponse(product, colors, sizeValues, !!wished);
+  }
+
+  async addToWishlist(productId: number, user: User) {
+    console.log('위시리스트 추가', productId, user);
+    const result = await this.wishlistRepository.insert({
+      product: { id: productId },
+      user,
+    });
+
+    if (result.raw === 0) {
+      throw new HttpException(
+        '위시리스트에 상품 추가 중 오류가 발생했습니다.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async removeFromWishlist(productId: number, user: User) {
+    const result = await this.wishlistRepository.delete({
+      product: {
+        id: productId,
+      },
+      user,
+    });
+
+    if (result.affected === 0) {
+      throw new HttpException(
+        '위시리스트에서 상품 제거 중 오류가 발생했습니다.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  private checkProductExistence(product: Product) {
+    if (!product) {
+      throw new HttpException(PRODUCT_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
   }
 }

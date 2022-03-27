@@ -90,4 +90,28 @@ export const ProductControllerDoc: SwaggerMethodDoc<ProductController> = {
       }),
     );
   },
+
+  addToWishlist(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '선택한 상품을 위시리스트에 추가합니다.',
+      }),
+      ApiOkResponse({
+        description: '위시리스트 추가 성공',
+      }),
+    );
+  },
+
+  removeFromWishlist(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '상품을 위시리스트에서 제거합니다.',
+      }),
+      ApiOkResponse({
+        description: '위시리스트 제거 성공',
+      }),
+    );
+  },
 };
