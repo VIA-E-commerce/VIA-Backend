@@ -71,8 +71,14 @@ export class CartService {
     }
   }
 
-  async getMyCartItems(user: User): Promise<CartItemResponse[]> {
-    const cart = await this.cartRepository.findByUserId(user.id);
+  async getCartItems(
+    cartItemIds: number[],
+    user: User,
+  ): Promise<CartItemResponse[]> {
+    const cart = await this.cartRepository.findAllByUserIdAndId(
+      user.id,
+      cartItemIds,
+    );
 
     if (!cart || !cart.items) return [];
 

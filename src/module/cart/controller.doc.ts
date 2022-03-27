@@ -3,25 +3,8 @@ import {
   ApiBadRequestResponse,
   ApiConflictResponse,
   ApiNotFoundResponse,
-  ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-
-import { CartItemResponse } from './dto';
-
-export const CartControllerDoc = {
-  getMyCartItems(summary: string) {
-    return applyDecorators(
-      ApiOperation({
-        summary,
-        description: '로그인된 회원의 장바구니에 담긴 상품 목록을 가져옵니다.',
-      }),
-      ApiOkResponse({
-        type: [CartItemResponse],
-      }),
-    );
-  },
-};
 
 const CartItemNotFoundResponse = () =>
   ApiNotFoundResponse({
@@ -33,6 +16,15 @@ export const CartItemControllerDoc = {
       ApiOperation({
         summary,
         description: '장바구니에 상품을 담습니다.',
+      }),
+    );
+  },
+
+  getCartItems(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '로그인된 회원의 장바구니 상품 목록을 조회합니다.',
       }),
     );
   },

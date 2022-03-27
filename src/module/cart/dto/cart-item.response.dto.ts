@@ -21,6 +21,9 @@ export class CartItemResponse {
   @ProductDoc.name()
   productName: string;
 
+  @ProductDoc.thumbnail()
+  thumbnail: string;
+
   @ProductDoc.retailPrice()
   retailPrice: number;
 
@@ -63,6 +66,9 @@ export class CartItemResponse {
     this.variantId = variant.id;
 
     this.productName = product.name;
+    if (product.images.length > 0) {
+      this.thumbnail = product.images[0].url;
+    }
     this.retailPrice = product.retailPrice;
     this.sellingPrice = product.sellingPrice;
 
