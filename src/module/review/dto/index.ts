@@ -1,5 +1,6 @@
 export * from './review.dto.doc';
 
+export * from './review.param.dto';
+export * from './review.query.dto';
 export * from './review.request.dto';
 export * from './review.response.dto';
-export * from './review.param.dto';

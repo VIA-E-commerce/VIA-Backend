@@ -12,6 +12,7 @@ import {
   ReviewListQuery,
 } from './dto';
 import { Review as Review } from './entity';
+import { ReviewSort } from './enum';
 import { REVIEW_ERROR } from './review.constant';
 
 @Injectable()
@@ -90,8 +91,26 @@ export class ReviewService {
 
   async getReviewsByProductId(
     productId: number,
-    { pageNum, pageSize }: PagingQuery,
+    { pageNum, pageSize, sort }: ReviewListQuery,
   ): Promise<Pagination<ReviewResponse>> {
+    let order: Record<string, 'ASC' | 'DESC'> = {
+      createdAt: 'DESC',
+    };
+
+    switch (sort) {
+      case ReviewSort.RATING_DESC:
+        order = {
+          rating: 'DESC',
+          createdAt: 'DESC',
+        };
+        break;
+      case ReviewSort.RATING_ASC:
+        order = {
+          rating: 'ASC',
+          createdAt: 'DESC',
+        };
+        break;
+    }
 
     const [reviews, count] = await this.reviewRepository.findAndCount({
       relations: ['user'],
@@ -102,9 +121,7 @@ export class ReviewService {
       },
       skip: (pageNum - 1) * pageSize,
       take: pageSize,
-      order: {
-        createdAt: 'DESC',
-      },
+      order,
     });
 
     const reviewList = reviews.map((review) => new ReviewResponse(review));
