@@ -22,7 +22,7 @@ import { CartService } from './cart.service';
 import { CartItemControllerDoc as Doc } from './controller.doc';
 
 @ApiTags('장바구니 API')
-@Controller('car-items')
+@Controller('cart-items')
 export class CartItemController {
   constructor(private readonly cartService: CartService) {}
 
