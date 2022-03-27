@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 import { Variant } from '@/module/product';
+
 import { Order } from './order.entity';
 
 @Entity()
@@ -25,7 +26,10 @@ export class OrderDetail extends CommonIdEntity {
   })
   variant: Variant;
 
-  @ManyToOne(() => Order, {
+  @RelationId((orderDetail: OrderDetail) => orderDetail.variant)
+  variantId: number;
+
+  @ManyToOne(() => Order, (order) => order.orderDetails, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
     nullable: false,

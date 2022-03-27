@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 
@@ -6,6 +6,7 @@ import { User, USER } from '@/module/user';
 
 import { OrderStatus, PaymentMethod } from '../enum';
 import { ORDER } from '../order.constant';
+import { OrderDetail } from './order-detail.entity';
 
 @Entity()
 export class Order extends CommonIdEntity {
@@ -19,6 +20,21 @@ export class Order extends CommonIdEntity {
     default: 0,
   })
   discount: number;
+
+  @Column({
+    length: USER.NAME.MAX_LENGTH,
+  })
+  purchaser: string;
+
+  @Column({
+    length: USER.PHONE.MAX_LENGTH,
+  })
+  purchaserPhone: string;
+
+  @Column({
+    length: USER.EMAIL.MAX_LENGTH,
+  })
+  purchaserEmail: string;
 
   @Column({
     length: USER.NAME.MAX_LENGTH,
@@ -69,4 +85,9 @@ export class Order extends CommonIdEntity {
     nullable: false,
   })
   user: User;
+
+  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order, {
+    cascade: ['insert'],
+  })
+  orderDetails: OrderDetail[];
 }

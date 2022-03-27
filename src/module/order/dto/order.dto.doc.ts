@@ -22,6 +22,33 @@ export const OrderDoc = {
     );
   },
 
+  purchaser() {
+    return applyDecorators(
+      ApiProperty({
+        description: '주문자',
+        example: '홍길동',
+      }),
+    );
+  },
+
+  purchaserPhone() {
+    return applyDecorators(
+      ApiProperty({
+        description: '주문자 연락처',
+        example: '01012345678',
+      }),
+    );
+  },
+
+  purchaserEmail() {
+    return applyDecorators(
+      ApiProperty({
+        description: '주문자 이메일',
+        example: 'purchaser@example.com',
+      }),
+    );
+  },
+
   recipient() {
     return applyDecorators(
       ApiProperty({
@@ -99,6 +126,35 @@ export const OrderDoc = {
       ApiProperty({
         description: '결제일',
         example: '2022-01-01 00:00:00',
+      }),
+    );
+  },
+
+  orderDetails() {
+    return applyDecorators(
+      ApiProperty({
+        description: '주문 상세 정보 목록',
+        example: [],
+      }),
+    );
+  },
+};
+
+export const OrderDetailDoc = {
+  price() {
+    return applyDecorators(
+      ApiProperty({
+        description: '가격',
+        example: 10000,
+      }),
+    );
+  },
+
+  quantity() {
+    return applyDecorators(
+      ApiProperty({
+        description: '수량',
+        example: 1,
       }),
     );
   },

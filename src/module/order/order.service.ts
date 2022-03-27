@@ -3,13 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { PagingQuery } from '@/common';
+import { MESSAGE } from '@/constant';
 import { User, UserRole } from '@/module/user';
 
 import { CreateOrderRequest, EditOrderRequest, OrderResponse } from './dto';
 import { Order } from './entity';
 import { OrderStatus } from './enum';
 import { ORDER_ERROR } from './order.constant';
-import { MESSAGE } from '@/constant';
 
 @Injectable()
 export class OrderService {
@@ -18,7 +18,7 @@ export class OrderService {
     private readonly orderRepository: Repository<Order>,
   ) {}
 
-  async register(dto: CreateOrderRequest, user: User): Promise<void> {
+  async register(dto: CreateOrderRequest, user: User): Promise<number> {
     const requestOrder = dto.toEntity(user);
     const savedOrder = await this.orderRepository.save(requestOrder);
 
@@ -28,6 +28,8 @@ export class OrderService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+
+    return savedOrder.id;
   }
 
   async getOne(id: number, user: User): Promise<OrderResponse> {

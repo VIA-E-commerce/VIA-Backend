@@ -35,8 +35,8 @@ export class OrderController {
   async register(
     @Body() dto: CreateOrderRequest,
     @CurrentUser() user: User,
-  ): Promise<void> {
-    await this.orderService.register(dto, user);
+  ): Promise<number> {
+    return this.orderService.register(dto, user);
   }
 
   @Doc.getOne('주문 조회')
