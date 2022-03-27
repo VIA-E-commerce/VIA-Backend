@@ -4,6 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Pagination, PagingQuery } from '@/common';
 import { ReviewService, ReviewResponse } from '@/module/review';
 import { QuestionService, QuestionResponse } from '@/module/question';
+import { ReviewListQuery } from '@/module/review';
 
 import {
   ProductListQuery,
@@ -43,17 +44,24 @@ export class ProductController {
   @Get(':productId/reviews')
   async getReviews(
     @Param() { productId }: ProductIdParam,
-    @Query() pagingQuery: PagingQuery,
-  ): Promise<ReviewResponse[]> {
-    return this.reviewService.getReviewsByProductId(productId, pagingQuery);
+    @Query() { pageNum = 1, pageSize = 5, sort }: ReviewListQuery,
+  ): Promise<Pagination<ReviewResponse>> {
+    return this.reviewService.getReviewsByProductId(productId, {
+      pageNum,
+      pageSize,
+      sort,
+    });
   }
 
   @Doc.getQuestions('상품 관련 문의 목록 조회')
   @Get(':productId/questions')
   async getQuestions(
     @Param() { productId }: ProductIdParam,
-    @Query() pagingQuery: PagingQuery,
-  ): Promise<QuestionResponse[]> {
-    return this.questionService.getQuestionsByProductId(productId, pagingQuery);
+    @Query() { pageNum = 1, pageSize = 5 }: PagingQuery,
+  ): Promise<Pagination<QuestionResponse>> {
+    return this.questionService.getQuestionsByProductId(productId, {
+      pageNum,
+      pageSize,
+    });
   }
 }
