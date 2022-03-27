@@ -1,11 +1,13 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 import { SwaggerDoc } from '@/common';
 import { Color, ColorResponse } from '@/module/color';
 import { SizeValue, SizeValueResponse } from '@/module/size';
 
 import { Product } from '../entity';
 import { ProductDoc } from './dto.doc';
-import { CategoryResponse } from './category.dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { CategoryResponse } from './category.response.dto';
+import { VariantResponse } from './variant.response.dto';
 
 export class ProductCardResponse {
   @SwaggerDoc.id('상품 식별자')
@@ -13,6 +15,9 @@ export class ProductCardResponse {
 
   @ProductDoc.name()
   name: string;
+
+  @ProductDoc.thumbnail()
+  thumbnail: string;
 
   @ProductDoc.retailPrice()
   retailPrice: number;
@@ -50,6 +55,10 @@ export class ProductCardResponse {
   constructor(product: Product) {
     this.id = product.id;
     this.name = product.name;
+    if (product.images.length > 0) {
+      this.thumbnail = product.images[0].url;
+    }
+
     this.retailPrice = product.retailPrice;
     this.sellingPrice = product.sellingPrice;
 
@@ -74,6 +83,9 @@ export class ProductDetailResponse {
   @ProductDoc.name()
   name: string;
 
+  @ProductDoc.images()
+  images: string[];
+
   @ProductDoc.retailPrice()
   retailPrice: number;
 
@@ -96,6 +108,12 @@ export class ProductDetailResponse {
   onSale: boolean;
 
   @ApiProperty({
+    description: '상품 품목 목록',
+    type: [VariantResponse],
+  })
+  variants: VariantResponse[];
+
+  @ApiProperty({
     description: '상품 색상 목록',
     type: [ColorResponse],
   })
@@ -110,14 +128,21 @@ export class ProductDetailResponse {
   constructor(product: Product, colors: Color[], sizeValues: SizeValue[]) {
     this.id = product.id;
     this.name = product.name;
+    this.images = product.images.map((image) => image.url);
+
     this.retailPrice = product.retailPrice;
     this.sellingPrice = product.sellingPrice;
+
     this.salesVolume = product.salesVolume;
     this.reviewCount = product.reviewCount;
     this.wishCount = product.wishCount;
+
     this.display = product.display;
     this.onSale = product.onSale;
 
+    this.variants = product.variants.map(
+      (variant) => new VariantResponse(variant),
+    );
     this.colors = colors.map((color) => new ColorResponse(color));
     this.sizes = sizeValues.map(
       (sizeValue) => new SizeValueResponse(sizeValue),

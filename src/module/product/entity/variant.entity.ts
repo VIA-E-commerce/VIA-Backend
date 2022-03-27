@@ -37,9 +37,15 @@ export class Variant extends CommonIdEntity {
   })
   color: Color;
 
+  @RelationId((variant: Variant) => variant.color)
+  colorId: number;
+
   @ManyToOne(() => SizeValue, (sizeValue) => sizeValue.variants, {
     onUpdate: 'CASCADE',
     nullable: false,
   })
   sizeValue: SizeValue;
+
+  @RelationId((variant: Variant) => variant.sizeValue)
+  sizeValueId: number;
 }

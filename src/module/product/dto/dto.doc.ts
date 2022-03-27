@@ -11,6 +11,24 @@ export const ProductDoc = {
     );
   },
 
+  thumbnail() {
+    return applyDecorators(
+      ApiProperty({
+        description: '상품 썸네일',
+        example:
+          'https://s3.ap-northeast-2.amazonaws.com/img.stibee.com/43159_1633018317.jpeg',
+      }),
+    );
+  },
+
+  images() {
+    return applyDecorators(
+      ApiProperty({
+        description: '상품 이미지 목록',
+      }),
+    );
+  },
+
   retailPrice() {
     return applyDecorators(
       ApiPropertyOptional({

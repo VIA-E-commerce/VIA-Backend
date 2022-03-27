@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { getPagination, Pagination } from '@/common';
 import { ColorRepository } from '@/module/color';
@@ -30,43 +30,47 @@ export class ProductService {
     category,
     sort,
   }: ProductListQuery): Promise<Pagination<ProductCardResponse>> {
-    const findOptions: FindManyOptions<Product> = {
-      relations: ['category'],
-      skip: (pageNum - 1) * pageSize,
-      take: pageSize,
-    };
+    const [productAlias, categoryAlias, productImageAlias] = [
+      'product',
+      'category',
+      'image',
+    ];
+
+    const query = this.productRepository
+      .createQueryBuilder(productAlias)
+      .leftJoinAndSelect(`${productAlias}.category`, categoryAlias)
+      .leftJoinAndSelect(`${productAlias}.images`, productImageAlias)
+      .orderBy(`${productImageAlias}.order`, 'ASC')
+      .skip((pageNum - 1) * pageSize)
+      .take(pageSize);
 
     // 정렬 방식 지정
     switch (sort) {
       case ProductSort.PRICE_ASC:
-        findOptions.order = { sellingPrice: 'ASC' };
+        query.orderBy(`${productAlias}.sellingPrice`, 'ASC');
         break;
       case ProductSort.PRICE_DESC:
-        findOptions.order = { sellingPrice: 'DESC' };
+        query.orderBy(`${productAlias}.sellingPrice`, 'DESC');
         break;
       case ProductSort.BEST_SELLING:
-        findOptions.order = { salesVolume: 'DESC' };
+        query.orderBy(`${productAlias}.salesVolume`, 'DESC');
         break;
       case ProductSort.REVIEW_DESC:
-        findOptions.order = { reviewCount: 'DESC' };
+        query.orderBy(`${productAlias}.reviewCount`, 'DESC');
         break;
       default:
-        findOptions.order = { createdAt: 'DESC' };
+        query.orderBy(`${productAlias}.createdAt`, 'DESC');
     }
 
     // // 상품 그룹별 필터링
     if (category) {
-      findOptions.where = {
-        category: {
-          code: category,
-        },
-      };
+      query.where(`${categoryAlias}.code = :code`, {
+        code: category,
+      });
     }
 
     // 상품 목록 조회 (+ 페이지네이션)
-    const [productList, count] = await this.productRepository.findAndCount(
-      findOptions,
-    );
+    const [productList, count] = await query.getManyAndCount();
 
     const responseData = productList.map(
       (item) => new ProductCardResponse(item),
@@ -75,19 +79,33 @@ export class ProductService {
     return getPagination(responseData, count, { pageNum, pageSize });
   }
 
-  async getOne(id: number): Promise<ProductDetailResponse> {
-    const product = await this.productRepository.findOne({
-      where: {
-        id: id,
-      },
-    });
+  async getOne(productId: number): Promise<ProductDetailResponse> {
+    const [productAlias, productImageAlias, variantAlias] = [
+      'product',
+      'image',
+      'variant',
+    ];
+
+    const product = await this.productRepository
+      .createQueryBuilder(productAlias)
+      .leftJoinAndSelect(`${productAlias}.images`, productImageAlias)
+      .where(`${productAlias}.id = :productId`, { productId })
+      .leftJoinAndSelect(
+        `${productAlias}.variants`,
+        variantAlias,
+        `${variantAlias}.product.id = ${productAlias}.id AND ${variantAlias}.hide = false`,
+      )
+      .orderBy(`${productImageAlias}.order`, 'ASC')
+      .getOne();
 
     if (!product) {
       throw new HttpException(PRODUCT_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
-    const colors = await this.colorRepository.findByProductId(id);
-    const sizeValues = await this.sizeValueRepository.findByProductId(id);
+    const colors = await this.colorRepository.findByProductId(productId);
+    const sizeValues = await this.sizeValueRepository.findByProductId(
+      productId,
+    );
 
     return new ProductDetailResponse(product, colors, sizeValues);
   }
