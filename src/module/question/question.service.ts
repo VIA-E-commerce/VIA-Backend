@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { PagingQuery } from '@/common';
+import { getPagination, Pagination, PagingQuery } from '@/common';
 import { User, UserRole } from '@/module/user';
 
 import {
@@ -93,8 +93,8 @@ export class QuestionService {
   async getQuestionsByProductId(
     productId: number,
     { pageNum, pageSize }: PagingQuery,
-  ): Promise<QuestionResponse[]> {
-    const questions = await this.questionRepository.find({
+  ): Promise<Pagination<QuestionResponse>> {
+    const [questions, count] = await this.questionRepository.findAndCount({
       relations: ['user'],
       where: {
         product: {
@@ -108,7 +108,11 @@ export class QuestionService {
       },
     });
 
-    return questions.map((question) => new QuestionResponse(question));
+    const questionList = questions.map(
+      (question) => new QuestionResponse(question),
+    );
+
+    return getPagination(questionList, count, { pageNum, pageSize });
   }
 
   private authPrivateQuestion(question: Question, user: User) {
