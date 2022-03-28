@@ -1,12 +1,12 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
-import { Wishlist } from '@/module/wishlist';
 
 import { PRODUCT } from '../product.constant';
 import { Category } from './category.entity';
 import { ProductImage } from './product-image.entity';
 import { Variant } from './variant.entity';
+import { Wishlist } from './wishlist.entity';
 
 @Entity()
 export class Product extends CommonIdEntity {

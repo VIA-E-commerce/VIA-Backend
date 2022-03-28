@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
+import { Wishlist } from '@/module/product';
 
 import { UserRole, SNSProvider } from '../enum';
 import { USER } from '../user.constant';
@@ -55,4 +56,8 @@ export class User extends CommonIdEntity {
     select: false,
   })
   refreshToken: string;
+
+  // 관계 설정
+  @ManyToOne(() => Wishlist, (wishlist) => wishlist.user)
+  wishlist: Wishlist[];
 }

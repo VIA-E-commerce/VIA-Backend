@@ -55,7 +55,7 @@ export class ProductCardResponse {
   })
   category: CategoryResponse;
 
-  constructor(product: Product) {
+  constructor(product: Product, wished?: boolean) {
     this.id = product.id;
     this.name = product.name;
     if (product.images.length > 0) {
@@ -71,12 +71,14 @@ export class ProductCardResponse {
 
     this.display = product.display;
     this.onSale = product.onSale;
-    if (product.wishlist?.length > 0) this.wished = true;
+    this.wished = wished;
 
     this.createdAt = product.createdAt;
     this.updatedAt = product.updatedAt;
 
-    this.category = new CategoryResponse(product.category);
+    if (product.category) {
+      this.category = new CategoryResponse(product.category);
+    }
   }
 }
 

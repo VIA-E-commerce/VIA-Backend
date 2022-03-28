@@ -6,14 +6,13 @@ import { getPagination, Pagination } from '@/common';
 import { ColorRepository } from '@/module/color';
 import { SizeValueRepository } from '@/module/size';
 import { User } from '@/module/user';
-import { Wishlist } from '@/module/wishlist';
 
 import {
   ProductListQuery,
   ProductCardResponse,
   ProductDetailResponse,
 } from './dto';
-import { Product } from './entity';
+import { Product, Wishlist } from './entity';
 import { ProductSort } from './enum';
 import { PRODUCT_ERROR } from './product.constant';
 
@@ -121,7 +120,6 @@ export class ProductService {
   }
 
   async addToWishlist(productId: number, user: User) {
-    console.log('위시리스트 추가', productId, user);
     const result = await this.wishlistRepository.insert({
       product: { id: productId },
       user,

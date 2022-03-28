@@ -15,4 +15,16 @@ export const UserControllerDoc = {
       }),
     );
   },
+
+  getMyWishlist(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '로그인된 회원이 추가한 위시리스트를 가져옵니다.',
+      }),
+      ApiOkResponse({
+        description: '내 위시리스트 목록 조회 성공',
+      }),
+    );
+  },
 };
