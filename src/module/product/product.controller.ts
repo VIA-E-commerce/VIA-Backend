@@ -10,12 +10,14 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { Pagination, PagingQuery } from '@/common';
+import { CurrentUser, JwtAuthGuard, JwtAuthOrGuestGuard } from '@/module/auth';
 import { QuestionService, QuestionResponse } from '@/module/question';
 import {
   ReviewService,
   ReviewResponse,
   ReviewListQuery,
 } from '@/module/review';
+import { User } from '@/module/user';
 
 import {
   ProductListQuery,
@@ -25,8 +27,6 @@ import {
 } from './dto';
 import { ProductService } from './product.service';
 import { ProductControllerDoc as Doc } from './product.controller.doc';
-import { CurrentUser, JwtAuthGuard, JwtAuthOrGuestGuard } from '@/module/auth';
-import { User } from '@/module/user';
 
 @ApiTags('상품 API')
 @Controller('products')
