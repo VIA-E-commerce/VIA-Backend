@@ -4,6 +4,15 @@ import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { UserResponse } from './dto';
 
 export const UserControllerDoc = {
+  editUserInfo(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '로그인된 회원의 개인 정보를 수정합니다.',
+      }),
+    );
+  },
+
   getMe(summary: string) {
     return applyDecorators(
       ApiOperation({

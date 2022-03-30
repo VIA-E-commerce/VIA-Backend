@@ -8,6 +8,7 @@ import { ProductCardResponse, Wishlist } from '@/module/product';
 import { User } from './entity';
 import { USER_ERROR } from './user.constant';
 import { UserRepository } from './user.repository';
+import { EditUserRequest } from '@/module/user/dto';
 
 @Injectable()
 export class UserService {
@@ -25,6 +26,20 @@ export class UserService {
     }
 
     return user;
+  }
+
+  async editUserInfo({ name, phone }: EditUserRequest, user: User) {
+    const result = await this.userRepository.update(user.id, {
+      name,
+      phone,
+    });
+
+    if (!result) {
+      throw new HttpException(
+        '회원 정보 수정 중 오류가 발생했습니다.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async getMyWishlist(user: User, pagingQuery: PagingQuery) {
