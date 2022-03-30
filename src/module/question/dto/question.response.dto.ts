@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { maskUsername, SwaggerDoc } from '@/common';
+import { User } from '@/module/user';
 
 import { Question } from '../entity';
 import { QuestionDoc } from './question.dto.doc';
@@ -36,15 +37,20 @@ export class QuestionResponse {
   @SwaggerDoc.updatedAt()
   updatedAt: Date;
 
-  constructor(question: Question) {
+  constructor(question: Question, user?: User) {
     this.id = question.id;
 
     this.title = question.title;
-    this.content = question.content;
+
     this.userId = question.user.id;
     this.username = maskUsername(question.user.name);
 
     this.isPrivate = question.isPrivate;
+
+    // 비밀글 처리
+    if (!this.isPrivate || (user && user.id === this.userId)) {
+      this.content = question.content;
+    }
 
     this.productId = question.productId;
 

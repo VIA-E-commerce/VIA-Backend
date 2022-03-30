@@ -93,6 +93,7 @@ export class QuestionService {
   async getQuestionsByProductId(
     productId: number,
     { pageNum, pageSize }: PagingQuery,
+    user: User,
   ): Promise<Pagination<QuestionResponse>> {
     const [questions, count] = await this.questionRepository.findAndCount({
       relations: ['user'],
@@ -109,7 +110,7 @@ export class QuestionService {
     });
 
     const questionList = questions.map(
-      (question) => new QuestionResponse(question),
+      (question) => new QuestionResponse(question, user),
     );
 
     return getPagination(questionList, count, { pageNum, pageSize });

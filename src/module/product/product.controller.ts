@@ -10,9 +10,12 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { Pagination, PagingQuery } from '@/common';
-import { ReviewService, ReviewResponse } from '@/module/review';
 import { QuestionService, QuestionResponse } from '@/module/question';
-import { ReviewListQuery } from '@/module/review';
+import {
+  ReviewService,
+  ReviewResponse,
+  ReviewListQuery,
+} from '@/module/review';
 
 import {
   ProductListQuery,
@@ -67,14 +70,20 @@ export class ProductController {
 
   @Doc.getQuestions('상품 관련 문의 목록 조회')
   @Get(':productId/questions')
+  @UseGuards(JwtAuthOrGuestGuard)
   async getQuestions(
     @Param() { productId }: ProductIdParam,
     @Query() { pageNum = 1, pageSize = 5 }: PagingQuery,
+    @CurrentUser() user: User,
   ): Promise<Pagination<QuestionResponse>> {
-    return this.questionService.getQuestionsByProductId(productId, {
-      pageNum,
-      pageSize,
-    });
+    return this.questionService.getQuestionsByProductId(
+      productId,
+      {
+        pageNum,
+        pageSize,
+      },
+      user,
+    );
   }
 
   @Doc.addToWishlist('위시리스트에 상품 추가')
