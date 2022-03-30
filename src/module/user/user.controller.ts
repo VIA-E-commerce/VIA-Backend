@@ -12,13 +12,13 @@ import { UserService } from './user.service';
 @ApiTags('회원 API')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userSerivce: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Doc.editUserInfo('내 정보 수정')
   @Patch('me')
   @UseGuards(JwtAuthGuard)
   async editUserInfo(@Body() dto: EditUserRequest, @CurrentUser() user: User) {
-    await this.userSerivce.editUserInfo(dto, user);
+    await this.userService.editUserInfo(dto, user);
   }
 
   @Doc.getMe('본인 정보 조회')
@@ -35,6 +35,6 @@ export class UserController {
     @CurrentUser() user: User,
     @Query() { pageNum = 1, pageSize = 5 }: PagingQuery,
   ) {
-    return this.userSerivce.getMyWishlist(user, { pageNum, pageSize });
+    return this.userService.getMyWishlist(user, { pageNum, pageSize });
   }
 }
