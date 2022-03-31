@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { maskUsername, SwaggerDoc } from '@/common';
+import { ProductDoc } from '@/module/product';
 import { User } from '@/module/user';
 
 import { Question } from '../entity';
@@ -31,6 +32,9 @@ export class QuestionResponse {
   @SwaggerDoc.id('상품 식별자')
   productId: number;
 
+  @ProductDoc.name()
+  productName: string;
+
   @SwaggerDoc.createdAt()
   createdAt: Date;
 
@@ -52,9 +56,23 @@ export class QuestionResponse {
       this.content = question.content;
     }
 
-    this.productId = question.productId;
+    this.productId = question.product.id;
+    this.productName = question.product.name;
 
     this.createdAt = question.createdAt;
     this.updatedAt = question.updatedAt;
+  }
+}
+
+export class MyQuestionResponse extends QuestionResponse {
+  @ProductDoc.thumbnail()
+  thumbnail: string;
+
+  constructor(question: Question, user?: User) {
+    super(question, user);
+
+    if (question.product.images.length > 0) {
+      this.thumbnail = question.product.images[0].url;
+    }
   }
 }

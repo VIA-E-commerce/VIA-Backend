@@ -36,4 +36,16 @@ export const UserControllerDoc = {
       }),
     );
   },
+
+  getMyQuestions(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '로그인된 회원이 작성한 문의 목록를 가져옵니다.',
+      }),
+      ApiOkResponse({
+        description: '내 문의 목록 조회 성공',
+      }),
+    );
+  },
 };

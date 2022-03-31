@@ -44,7 +44,7 @@ export class QuestionService {
 
   async getQuestion(id: number, user: User): Promise<QuestionResponse> {
     const question = await this.questionRepository.findOne(id, {
-      relations: ['user'],
+      relations: ['user', 'product'],
     });
 
     if (!question) {
@@ -96,7 +96,7 @@ export class QuestionService {
     user: User,
   ): Promise<Pagination<QuestionResponse>> {
     const [questions, count] = await this.questionRepository.findAndCount({
-      relations: ['user'],
+      relations: ['user', 'product'],
       where: {
         product: {
           id: productId,
