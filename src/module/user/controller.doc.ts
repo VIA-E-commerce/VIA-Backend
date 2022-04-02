@@ -48,4 +48,16 @@ export const UserControllerDoc = {
       }),
     );
   },
+
+  getMyReviews(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '로그인된 회원이 작성한 후기 목록를 가져옵니다.',
+      }),
+      ApiOkResponse({
+        description: '내 후기 목록 조회 성공',
+      }),
+    );
+  },
 };

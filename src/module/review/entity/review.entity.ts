@@ -21,7 +21,7 @@ export class Review extends CommonIdEntity {
   @Column({
     type: 'tinyint',
     unsigned: true,
-    default: 10,
+    default: REVIEW.RATING.MAX,
   })
   rating: number;
 

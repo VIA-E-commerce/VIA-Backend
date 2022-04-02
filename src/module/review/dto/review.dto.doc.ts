@@ -25,7 +25,7 @@ export const ReviewDoc = {
     return applyDecorators(
       ApiProperty({
         description: '상품 평점',
-        example: 10,
+        example: 5,
       }),
     );
   },

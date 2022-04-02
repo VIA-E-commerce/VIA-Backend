@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { getPagination, Pagination, PagingQuery } from '@/common';
 import { ProductCardResponse, Wishlist } from '@/module/product';
 import { Question, MyQuestionResponse } from '@/module/question';
+import { Review, MyReviewResponse } from '@/module/review';
 
 import { EditUserRequest } from './dto';
 import { User } from './entity';
@@ -19,6 +20,8 @@ export class UserService {
     private readonly wishlistRepository: Repository<Wishlist>,
     @InjectRepository(Question)
     private readonly questionRepository: Repository<Question>,
+    @InjectRepository(Review)
+    private readonly reviewRepository: Repository<Review>,
   ) {}
 
   async getUserById(id: number) {
@@ -86,6 +89,29 @@ export class UserService {
     });
 
     const dtos = myQuestions.map((item) => new MyQuestionResponse(item, user));
+
+    return getPagination(dtos, count, pagingQuery);
+  }
+
+  async getMyReviews(
+    user: User,
+    pagingQuery: PagingQuery,
+  ): Promise<Pagination<MyReviewResponse>> {
+    const { pageNum, pageSize } = pagingQuery;
+
+    const [myReivews, count] = await this.reviewRepository.findAndCount({
+      relations: ['user', 'product', 'product.images'],
+      where: {
+        user,
+      },
+      skip: (pageNum - 1) * pageSize,
+      take: pageSize,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    const dtos = myReivews.map((item) => new MyReviewResponse(item));
 
     return getPagination(dtos, count, pagingQuery);
   }
