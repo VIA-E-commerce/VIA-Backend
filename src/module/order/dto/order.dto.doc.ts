@@ -7,16 +7,16 @@ export const OrderDoc = {
   totalPrice() {
     return applyDecorators(
       ApiProperty({
-        description: '총 상품 가격',
+        description: '총 상품 금액',
         example: 49900,
       }),
     );
   },
 
-  discount() {
+  paymentReal() {
     return applyDecorators(
       ApiProperty({
-        description: '할인액',
+        description: '실결제액',
         example: 10000,
       }),
     );

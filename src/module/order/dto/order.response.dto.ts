@@ -11,8 +11,8 @@ export class OrderResponse {
   @OrderDoc.totalPrice()
   totalPrice: number;
 
-  @OrderDoc.discount()
-  discount: number;
+  @OrderDoc.paymentReal()
+  paymentReal: number;
 
   @OrderDoc.purchaser()
   purchaser: string;
@@ -59,7 +59,7 @@ export class OrderResponse {
   constructor(order: Order) {
     this.id = order.id;
     this.totalPrice = order.totalPrice;
-    this.discount = order.discount;
+    this.paymentReal = order.paymentReal;
 
     this.purchaser = order.purchaser;
     this.purchaserPhone = order.purchaserPhone;

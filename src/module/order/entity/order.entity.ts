@@ -19,7 +19,7 @@ export class Order extends CommonIdEntity {
     unsigned: true,
     default: 0,
   })
-  discount: number;
+  paymentReal: number;
 
   @Column({
     length: USER.NAME.MAX_LENGTH,
@@ -66,7 +66,9 @@ export class Order extends CommonIdEntity {
   })
   status: OrderStatus;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   paymentMethod: PaymentMethod;
 
   @Column({

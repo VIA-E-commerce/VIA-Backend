@@ -1,4 +1,7 @@
 export const APP = {
   VERSION: '0.0.1',
   GLOBAL_PREFIX: 'api',
+
+  MINIMUM_AMOUNT_FOR_FREE_SHIPPING: 30000,
+  SHIPPING_FEE: 3000,
 };
