@@ -1,10 +1,11 @@
 export enum OrderStatus {
-  AWAITING_PAYMENT = 'AWAITING_PAYMENT', // 입금대기
-  PAYMENT_ACCEPTED = 'PAYMENT_ACCEPTED', // 입금확인
-  AWAITING_SHIPMENT = 'AWAITING_SHIPMENT', // 배송준비중
-  SHIPPED = 'SHIPPED', // 배송중
-  DELIVERED = 'DELIVERED', // 배송완료
-  CANCELLED = 'CANCELLED', // 주문 취소
-  EXCHANGED = 'EXCHANGED', // 교환
-  REFUNDED = 'REFUNDED', // 환불
+  AWAITING_PAYMENT = '입금 대기',
+  PAYMENT_ACCEPTED = '입금 확인',
+  AWAITING_SHIPMENT = '배송 준비중',
+  SHIPPED = '배송중',
+  DELIVERED = '배송 완료',
+  CANCELLED = '주문 취소',
+  EXCHANGED = '교환',
+  REFUNDED = '환불',
+  FAILED = '주문 실패',
 }

@@ -89,6 +89,7 @@ export const OrderDoc = {
     return applyDecorators(
       ApiProperty({
         description: '배송 메시지',
+        required: false,
         example: '부재시 경비실에 맡겨주세요',
       }),
     );
@@ -107,7 +108,7 @@ export const OrderDoc = {
     return applyDecorators(
       ApiProperty({
         description: '결제 수단',
-        example: PaymentMethod.ACCOUNT_TRANSFER,
+        example: PaymentMethod.card,
       }),
     );
   },

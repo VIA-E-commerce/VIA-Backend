@@ -66,10 +66,13 @@ export class Order extends CommonIdEntity {
   })
   status: OrderStatus;
 
-  @Column({
-    nullable: true,
-  })
+  @Column()
   paymentMethod: PaymentMethod;
+
+  @Column({
+    unique: true,
+  })
+  merchantUID: string;
 
   @Column({
     nullable: true,
@@ -92,4 +95,10 @@ export class Order extends CommonIdEntity {
     cascade: ['insert'],
   })
   orderDetails: OrderDetail[];
+
+  paid(paymentMethod: PaymentMethod, paidAt: Date) {
+    this.status = OrderStatus.PAYMENT_ACCEPTED;
+    this.paymentMethod = paymentMethod;
+    this.paidAt = paidAt;
+  }
 }

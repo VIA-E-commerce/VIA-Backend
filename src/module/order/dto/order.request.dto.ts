@@ -2,6 +2,7 @@ import { User } from '@/module/user';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { SwaggerDoc } from '@/common';
+import { PaymentDoc } from '@/module/payment/dto';
 
 import { Order, OrderDetail } from '../entity';
 import { OrderStatus, PaymentMethod } from '../enum';
@@ -31,6 +32,9 @@ export class CreateOrderRequest {
 
   @OrderDoc.message()
   message: string;
+
+  @PaymentDoc.impUID()
+  impUID: string;
 
   @ApiProperty({
     description: '장바구니 아이템 식별자 목록',
