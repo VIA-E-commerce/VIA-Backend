@@ -12,6 +12,8 @@ export function getPagination<T>(
     list,
     totalElements,
     totalPages,
+    pageNum,
+    pageSize,
     isFirst: pageNum === 1,
     isLast: pageNum === totalPages,
   };

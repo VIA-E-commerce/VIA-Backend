@@ -14,6 +14,18 @@ export class Pagination<T> {
   totalPages: number;
 
   @ApiProperty({
+    description: '현재 페이지 번호',
+    example: 1,
+  })
+  pageNum: number;
+
+  @ApiProperty({
+    description: '페이지 당 아이템 개수',
+    example: 10,
+  })
+  pageSize: number;
+
+  @ApiProperty({
     description: '첫 페이지인지 여부',
     example: true,
   })
