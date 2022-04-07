@@ -66,7 +66,7 @@ export class Product extends CommonIdEntity {
   category: Category;
 
   @OneToMany(() => Variant, (variant) => variant.product, {
-    cascade: ['insert'],
+    cascade: ['insert', 'update'],
   })
   variants: Variant[];
 

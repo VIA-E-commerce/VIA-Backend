@@ -1,11 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 
-import { getPagination, Pagination, PagingQuery } from '@/common';
+import {
+  getPagination,
+  Pagination,
+  PagingQuery,
+  useTransaction,
+} from '@/common';
 import { APP, MESSAGE } from '@/constant';
 import { CartItem } from '@/module/cart';
 import { PaymentService } from '@/module/payment';
+import { Product, Variant } from '@/module/product';
 import { User, UserRole } from '@/module/user';
 
 import { CreateOrderRequest, EditOrderRequest, OrderResponse } from './dto';
@@ -16,6 +22,7 @@ import { ORDER_ERROR } from './order.constant';
 @Injectable()
 export class OrderService {
   constructor(
+    private readonly connection: Connection,
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
     @InjectRepository(CartItem)
@@ -61,16 +68,48 @@ export class OrderService {
     order.status = orderStatus;
 
     // DB 저장
-    const savedOrder = await this.orderRepository.save(order);
+    let response: number;
 
-    if (!savedOrder) {
-      throw new HttpException(
-        ORDER_ERROR.CREATE_ERROR,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    await useTransaction(this.connection, async (manager) => {
+      // 주문 등록
+      const orderRepository = manager.getRepository(Order);
 
-    return savedOrder.id;
+      const savedOrder = await orderRepository.save(order);
+
+      if (!savedOrder) {
+        throw new HttpException(
+          ORDER_ERROR.CREATE_ERROR,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+
+      // 아이템 판매처리
+      cartItems.forEach(async (item) => {
+        const { variant } = item;
+
+        const calcedQuantity = variant.quantity - item.quantity;
+
+        if (calcedQuantity < 0) {
+          throw new HttpException(
+            '재고 수량이 부족합니다.',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+
+        variant.quantity = calcedQuantity;
+
+        variant.product.salesVolume += item.quantity;
+
+        await manager.getRepository(Variant).save(variant);
+      });
+
+      // 판매 처리된 장바구니 아이템 제거
+      await manager.getRepository(CartItem).remove(cartItems);
+
+      response = savedOrder.id;
+    });
+
+    return response;
   }
 
   async getOne(id: number, user: User): Promise<OrderResponse> {
@@ -80,9 +119,7 @@ export class OrderService {
       },
     });
 
-    if (!order) {
-      throw new HttpException(ORDER_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
+    this.checkOrderExistence(order);
 
     return new OrderResponse(order);
   }
@@ -132,24 +169,58 @@ export class OrderService {
   }
 
   async cancel(id: number, user: User): Promise<void> {
-    const result = await this.orderRepository.update(
-      { id, user },
-      {
-        status: OrderStatus.CANCELLED,
-      },
-    );
+    await useTransaction(this.connection, async (manager) => {
+      const orderRepository = manager.getRepository(Order);
+      const variantRepository = manager.getRepository(Variant);
+      const productRepository = manager.getRepository(Product);
 
-    if (result.affected <= 0) {
-      throw new HttpException(
-        ORDER_ERROR.CANCEL_FAILURE,
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+      const order = await orderRepository.findOne(id, {
+        relations: [
+          'orderDetails',
+          'orderDetails.variant',
+          'orderDetails.variant.product',
+        ],
+        where: { user },
+      });
+
+      this.checkOrderExistence(order);
+
+      if (
+        order.status !== OrderStatus.AWAITING_PAYMENT &&
+        order.status !== OrderStatus.PAYMENT_ACCEPTED &&
+        order.status !== OrderStatus.AWAITING_SHIPMENT
+      ) {
+        throw new HttpException(
+          '취소할 수 없는 주문입니다.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      // 취소 수량 되돌리기
+      order.orderDetails.forEach(async (orderDetail) => {
+        const variant = orderDetail.variant;
+        const product = variant.product;
+
+        variant.quantity += orderDetail.quantity;
+
+        const calcedSalesVolume = product.salesVolume - orderDetail.quantity;
+        product.salesVolume = Math.max(0, calcedSalesVolume);
+
+        console.log(variant);
+        await variantRepository.save(variant);
+        await productRepository.save(product);
+      });
+
+      order.status = OrderStatus.CANCELLED;
+
+      await orderRepository.save(order);
+    });
   }
 
   private calcOrderPrices(cartItems: CartItem[]): [number, number] {
     let [totalPrice, paymentReal] = [0, 0];
-    cartItems.forEach((item) => {
+
+    cartItems.forEach(async (item) => {
       const { retailPrice, sellingPrice } = item.variant.product;
       const { quantity } = item;
 
@@ -157,11 +228,18 @@ export class OrderService {
       paymentReal += sellingPrice * quantity;
     });
 
-    // Logic B : 배송비 추가
+    // Logic B : 주문 금액이 적으면 배송비 추가
     if (paymentReal < APP.MINIMUM_AMOUNT_FOR_FREE_SHIPPING) {
       paymentReal += APP.SHIPPING_FEE;
     }
+
     return [totalPrice, paymentReal];
+  }
+
+  private checkOrderExistence(order: Order) {
+    if (!order) {
+      throw new HttpException(ORDER_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
   }
 
   private mapCartItemsToOrderDetails(cartItems: CartItem[]) {

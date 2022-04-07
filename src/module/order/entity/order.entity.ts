@@ -92,13 +92,7 @@ export class Order extends CommonIdEntity {
   user: User;
 
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order, {
-    cascade: ['insert'],
+    cascade: ['insert', 'update'],
   })
   orderDetails: OrderDetail[];
-
-  paid(paymentMethod: PaymentMethod, paidAt: Date) {
-    this.status = OrderStatus.PAYMENT_ACCEPTED;
-    this.paymentMethod = paymentMethod;
-    this.paidAt = paidAt;
-  }
 }

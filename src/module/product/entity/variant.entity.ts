@@ -2,9 +2,9 @@ import { Column, Entity, ManyToOne, RelationId, Unique } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 import { Color } from '@/module/color';
+import { SizeValue } from '@/module/size';
 
 import { Product } from './product.entity';
-import { SizeValue } from '@/module/size';
 
 @Unique(['product', 'color', 'sizeValue'])
 @Entity()
@@ -23,8 +23,10 @@ export class Variant extends CommonIdEntity {
 
   // 연관 관계
   @ManyToOne(() => Product, {
+    onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
     nullable: false,
+    cascade: true,
   })
   product: Product;
 

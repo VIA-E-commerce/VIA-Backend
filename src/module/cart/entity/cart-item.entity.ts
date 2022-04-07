@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, Unique } from 'typeorm';
 
+import { CommonIdEntity } from '@/common';
 import { Variant } from '@/module/product';
 
 import { Cart } from './cart.entity';
-import { CommonIdEntity } from '@/common';
 
 @Unique('uq_cart_variant', ['cart', 'variant'])
 @Entity()
