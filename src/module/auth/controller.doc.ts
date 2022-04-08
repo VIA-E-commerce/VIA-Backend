@@ -29,6 +29,15 @@ export const AuthControllerDoc: SwaggerMethodDoc<AuthController> = {
     );
   },
 
+  deleteLocalAccount(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '이메일로 가입한 회원의 계정을 탈퇴 처리합니다.',
+      }),
+    );
+  },
+
   login(summary: string) {
     return applyDecorators(
       ApiOperation({

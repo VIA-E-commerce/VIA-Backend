@@ -22,7 +22,12 @@ export class AuthService {
   async join(joinForm: JoinForm): Promise<void> {
     const { email, password, name } = joinForm;
 
-    const exUser: User = await this.userRepository.findOne({ email });
+    const exUser: User = await this.userRepository.findOne(
+      { email },
+      {
+        withDeleted: true,
+      },
+    );
 
     if (exUser) {
       throw new HttpException(
@@ -46,6 +51,10 @@ export class AuthService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async deleteAccount(user: User) {
+    await this.userRepository.softDelete(user.id);
   }
 
   async removeRefreshToken(userId: number) {

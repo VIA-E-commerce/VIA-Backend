@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ApiTags } from '@nestjs/swagger';
 import { CookieOptions, Response } from 'express';
@@ -33,6 +41,17 @@ export class AuthController {
   @Post('join')
   async join(@Body() joinForm: JoinForm): Promise<void> {
     await this.authService.join(joinForm);
+  }
+
+  @Doc.deleteLocalAccount('회원탈퇴')
+  @Delete('local')
+  @UseGuards(JwtAuthGuard)
+  async deleteLocalAccount(
+    @CurrentUser() user: User,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
+    await this.authService.deleteAccount(user);
+    removeCookie(res, COOKIE.REFRESH_TOKEN, { httpOnly: true });
   }
 
   @Doc.login('로그인')
