@@ -1,7 +1,6 @@
 import { SwaggerDoc } from '@/common';
+import { SizeValueDoc } from '@/docs';
 import { SizeValue } from '@/models';
-
-import { SizeValueDoc } from './dto.doc';
 
 export class SizeValueResponse {
   @SwaggerDoc.id('사이즈 값 식별자')

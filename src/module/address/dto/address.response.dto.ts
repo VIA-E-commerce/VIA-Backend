@@ -1,7 +1,6 @@
 import { SwaggerDoc } from '@/common';
+import { AddressDoc } from '@/docs';
 import { Address } from '@/models';
-
-import { AddressDoc } from './address.dto.doc';
 
 export class AddressResponse {
   @SwaggerDoc.id('주소 식별자')

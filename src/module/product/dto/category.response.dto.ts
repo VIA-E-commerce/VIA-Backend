@@ -1,7 +1,6 @@
 import { SwaggerDoc } from '@/common';
+import { CategoryDoc } from '@/docs';
 import { Category } from '@/models';
-
-import { CategoryDoc } from './dto.doc';
 
 export class CategoryResponse {
   @SwaggerDoc.id('카테고리 식별자')

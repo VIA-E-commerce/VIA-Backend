@@ -1,6 +1,5 @@
 import { SwaggerDoc } from '@/common';
-
-import { ReviewDoc } from './review.dto.doc';
+import { ReviewDoc } from '@/docs';
 
 export class CreateReviewRequest {
   @ReviewDoc.content()

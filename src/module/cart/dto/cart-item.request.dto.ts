@@ -1,6 +1,5 @@
 import { SwaggerDoc } from '@/common';
-
-import { CartDoc } from './dto.doc';
+import { CartDoc } from '@/docs';
 
 export class AddCartItemRequest {
   @SwaggerDoc.id('상품 품목 식별자')

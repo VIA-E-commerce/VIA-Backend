@@ -1,10 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { maskUsername, SwaggerDoc } from '@/common';
+import { ProductDoc, QuestionDoc } from '@/docs';
 import { Question, User } from '@/models';
-import { ProductDoc } from '@/module/product';
-
-import { QuestionDoc } from './question.dto.doc';
 
 export class QuestionResponse {
   @SwaggerDoc.id('문의 식별자')

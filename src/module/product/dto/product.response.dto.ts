@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { SwaggerDoc } from '@/common';
+import { ProductDoc } from '@/docs';
 import { Color, Product, SizeValue } from '@/models';
 import { ColorResponse } from '@/module/color';
 import { SizeValueResponse } from '@/module/size';
 
-import { ProductDoc } from './dto.doc';
 import { CategoryResponse } from './category.response.dto';
 import { VariantResponse } from './variant.response.dto';
 

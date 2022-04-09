@@ -1,10 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { SwaggerDoc } from '@/common';
+import { OrderDoc, OrderDetailDoc, PaymentDoc } from '@/docs';
 import { User, Order, OrderDetail, OrderStatus, PaymentMethod } from '@/models';
-import { PaymentDoc } from '@/module/payment/dto';
-
-import { OrderDoc, OrderDetailDoc } from './order.dto.doc';
 
 export class CreateOrderRequest {
   @OrderDoc.purchaser()

@@ -1,4 +1,4 @@
-import { AddressDoc } from './address.dto.doc';
+import { AddressDoc } from '@/docs';
 
 export class CreateAddressRequest {
   @AddressDoc.label()

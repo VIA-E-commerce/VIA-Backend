@@ -1,7 +1,6 @@
 import { SwaggerDoc } from '@/common';
+import { ColorDoc } from '@/docs';
 import { Color } from '@/models';
-
-import { ColorDoc } from './dto.doc';
 
 export class ColorResponse {
   @SwaggerDoc.id('색상 식별자')

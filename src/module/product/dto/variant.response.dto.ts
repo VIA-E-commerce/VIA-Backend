@@ -1,7 +1,6 @@
 import { SwaggerDoc } from '@/common';
+import { VariantDoc } from '@/docs';
 import { Variant } from '@/models';
-
-import { VariantDoc } from './dto.doc';
 
 export class VariantResponse {
   @SwaggerDoc.id('상품 품목 식별자')

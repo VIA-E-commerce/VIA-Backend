@@ -1,4 +1,4 @@
-import { PaymentDoc } from './dto.doc';
+import { PaymentDoc } from '@/docs';
 
 interface ImpRestApiResponse {
   access_token: string;

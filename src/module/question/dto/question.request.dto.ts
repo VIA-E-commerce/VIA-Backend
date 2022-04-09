@@ -1,6 +1,5 @@
 import { SwaggerDoc } from '@/common';
-
-import { QuestionDoc } from './question.dto.doc';
+import { QuestionDoc } from '@/docs';
 
 export class CreateQuestionRequest {
   @QuestionDoc.title()

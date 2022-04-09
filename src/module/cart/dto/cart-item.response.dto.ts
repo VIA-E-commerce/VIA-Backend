@@ -1,12 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { SwaggerDoc } from '@/common';
+import { CartDoc, ProductDoc } from '@/docs';
 import { CartItem } from '@/models';
 import { ColorResponse } from '@/module/color';
-import { ProductDoc } from '@/module/product';
 import { SizeValueResponse } from '@/module/size';
-
-import { CartDoc } from './dto.doc';
 
 export class CartItemResponse {
   @SwaggerDoc.id('장바구니 아이템 식별자')
