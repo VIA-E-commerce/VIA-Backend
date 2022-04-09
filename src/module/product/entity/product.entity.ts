@@ -91,4 +91,17 @@ export class Product extends CommonIdEntity {
 
     this.reviewCount--;
   }
+
+  public increaseWishCount() {
+    this.wishCount++;
+  }
+
+  public descreaseWishCount() {
+    if (this.wishCount <= 0) {
+      this.wishCount = 0;
+      return;
+    }
+
+    this.wishCount--;
+  }
 }
