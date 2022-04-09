@@ -1,5 +1,4 @@
 export * from './dto';
-export * from './entity';
 
 export * from './review.constant';
 export * from './review.service';

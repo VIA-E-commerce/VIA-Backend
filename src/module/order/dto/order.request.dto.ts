@@ -1,11 +1,9 @@
-import { User } from '@/module/user';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { SwaggerDoc } from '@/common';
+import { User, Order, OrderDetail, OrderStatus, PaymentMethod } from '@/models';
 import { PaymentDoc } from '@/module/payment/dto';
 
-import { Order, OrderDetail } from '../entity';
-import { OrderStatus, PaymentMethod } from '../enum';
 import { OrderDoc, OrderDetailDoc } from './order.dto.doc';
 
 export class CreateOrderRequest {

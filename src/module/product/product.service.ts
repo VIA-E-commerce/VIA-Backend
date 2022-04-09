@@ -3,16 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository } from 'typeorm';
 
 import { getPagination, Pagination, useTransaction } from '@/common';
-import { ColorRepository } from '@/module/color';
-import { SizeValueRepository } from '@/module/size';
-import { User } from '@/module/user';
+import {
+  User,
+  Product,
+  Category,
+  Wishlist,
+  ColorRepository,
+  SizeValueRepository,
+} from '@/models';
 
 import {
   ProductListQuery,
   ProductCardResponse,
   ProductDetailResponse,
 } from './dto';
-import { Product, Category, Wishlist } from './entity';
 import { ProductSort } from './enum';
 import { PRODUCT_ERROR } from './product.constant';
 

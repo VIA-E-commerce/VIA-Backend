@@ -1,7 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { OrderStatus, PaymentMethod } from '../enum';
+import { OrderStatus, PaymentMethod } from '@/models';
 
 export const OrderDoc = {
   totalPrice() {

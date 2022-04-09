@@ -1,6 +1,6 @@
 import { SwaggerDoc } from '@/common';
+import { Category } from '@/models';
 
-import { Category } from '../entity';
 import { CategoryDoc } from './dto.doc';
 
 export class CategoryResponse {

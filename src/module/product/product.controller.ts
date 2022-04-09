@@ -10,6 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { Pagination, PagingQuery } from '@/common';
+import { User } from '@/models';
 import { CurrentUser, JwtAuthGuard, JwtAuthOrGuestGuard } from '@/module/auth';
 import { QuestionService, QuestionResponse } from '@/module/question';
 import {
@@ -17,7 +18,6 @@ import {
   ReviewResponse,
   ReviewListQuery,
 } from '@/module/review';
-import { User } from '@/module/user';
 
 import {
   ProductListQuery,

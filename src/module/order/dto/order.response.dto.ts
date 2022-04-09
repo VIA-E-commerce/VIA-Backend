@@ -1,8 +1,7 @@
 import { SwaggerDoc } from '@/common';
-import { OrderDoc } from './order.dto.doc';
+import { Order, OrderStatus, PaymentMethod } from '@/models';
 
-import { Order } from '../entity';
-import { OrderStatus, PaymentMethod } from '../enum';
+import { OrderDoc } from './order.dto.doc';
 
 export class OrderResponse {
   @SwaggerDoc.id('주문 식별자')

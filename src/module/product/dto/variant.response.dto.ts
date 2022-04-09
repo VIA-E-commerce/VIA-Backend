@@ -1,6 +1,6 @@
 import { SwaggerDoc } from '@/common';
+import { Variant } from '@/models';
 
-import { Variant } from '../entity';
 import { VariantDoc } from './dto.doc';
 
 export class VariantResponse {

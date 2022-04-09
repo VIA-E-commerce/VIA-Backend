@@ -1,9 +1,3 @@
-export const QUESTION = {
-  TITLE: {
-    MAX_LENGTH: 100,
-  },
-};
-
 export const QUESTION_ERROR = {
   CREATE_ERROR: '상품 문의 등록 중 오류가 발생했습니다.',
   UPDATE_ERROR: '상품 문의 수정 중 오류가 발생했습니다.',

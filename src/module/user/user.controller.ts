@@ -2,10 +2,10 @@ import { Body, Controller, Get, Patch, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { PagingQuery } from '@/common';
+import { User } from '@/models';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 
 import { UserResponse, EditUserRequest } from './dto';
-import { User } from './entity';
 import { UserControllerDoc as Doc } from './controller.doc';
 import { UserService } from './user.service';
 

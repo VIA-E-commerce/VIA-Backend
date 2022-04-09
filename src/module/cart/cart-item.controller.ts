@@ -12,7 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
-import { User } from '@/module/user';
+import { User } from '@/models';
 
 import {
   AddCartItemRequest,

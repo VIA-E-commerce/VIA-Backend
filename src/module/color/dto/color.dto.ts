@@ -1,6 +1,6 @@
 import { SwaggerDoc } from '@/common';
+import { Color } from '@/models';
 
-import { Color } from '../entity';
 import { ColorDoc } from './dto.doc';
 
 export class ColorResponse {

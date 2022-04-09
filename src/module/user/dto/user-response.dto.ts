@@ -1,10 +1,8 @@
 import { Exclude, Expose, plainToInstance } from 'class-transformer';
 
 import { SwaggerDoc } from '@/common';
-
-import { User } from '../entity';
-import { SNSProvider, UserRole } from '../enum';
-import { UserDoc } from './dto.doc';
+import { UserDoc } from '@/docs';
+import { User, SNSProvider, UserRole } from '@/models';
 
 @Exclude()
 export class UserResponse {

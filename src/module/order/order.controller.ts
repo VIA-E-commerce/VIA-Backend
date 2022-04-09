@@ -12,8 +12,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { PagingQuery, Pagination } from '@/common';
+import { User } from '@/models';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
-import { User } from '@/module/user';
 
 import {
   CreateOrderRequest,

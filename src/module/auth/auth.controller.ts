@@ -14,7 +14,7 @@ import { CookieOptions, Response } from 'express';
 import { removeCookie } from '@/common';
 import { AuthConfig } from '@/config';
 import { CONFIG, COOKIE } from '@/constant';
-import { User } from '@/module/user';
+import { User } from '@/models';
 
 import { CurrentUser } from './decorator';
 import { JoinForm, LoginResponse } from './dto';

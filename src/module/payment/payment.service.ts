@@ -5,7 +5,7 @@ import { lastValueFrom } from 'rxjs';
 import * as dayjs from 'dayjs';
 
 import { MESSAGE } from '@/constant';
-import { OrderStatus, PaymentMethod } from '@/module/order';
+import { OrderStatus, PaymentMethod } from '@/models';
 
 import { ImpRestApiDto, ImpRefundRequest } from './dto';
 import { IMPPaymentResponse } from './interface';

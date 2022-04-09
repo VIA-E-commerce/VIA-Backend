@@ -1,16 +1,20 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { getPagination, Pagination, PagingQuery } from '@/common';
-import { ProductCardResponse, Wishlist } from '@/module/product';
-import { Question, MyQuestionResponse } from '@/module/question';
-import { Review, MyReviewResponse } from '@/module/review';
+import { ERROR } from '@/docs';
+import { User, UserRepository, Question, Review, Wishlist } from '@/models';
+import { ProductCardResponse } from '@/module/product';
+import { MyQuestionResponse } from '@/module/question';
+import { MyReviewResponse } from '@/module/review';
 
 import { EditUserRequest } from './dto';
-import { User } from './entity';
-import { USER_ERROR } from './user.constant';
-import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
@@ -28,7 +32,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ id });
 
     if (!user) {
-      throw new HttpException(USER_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
+      throw new NotFoundException(ERROR.USER.NOT_FOUND);
     }
 
     return user;

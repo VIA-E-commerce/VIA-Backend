@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { SwaggerDoc, maskUsername } from '@/common';
-
-import { Review } from '../entity';
-import { ReviewDoc } from './review.dto.doc';
+import { Review } from '@/models';
 import { ProductDoc } from '@/module/product';
+
+import { ReviewDoc } from './review.dto.doc';
 
 export class ReviewResponse {
   @SwaggerDoc.id('리뷰 식별자')

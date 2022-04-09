@@ -1,6 +1,6 @@
 import { SwaggerDoc } from '@/common';
+import { SizeValue } from '@/models';
 
-import { SizeValue } from '../entity';
 import { SizeValueDoc } from './dto.doc';
 
 export class SizeValueResponse {

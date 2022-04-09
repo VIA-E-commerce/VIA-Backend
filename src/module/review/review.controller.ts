@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { User } from '@/models';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
-import { User } from '@/module/user';
 
 import {
   CreateReviewRequest,

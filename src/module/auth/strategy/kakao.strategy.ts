@@ -5,7 +5,7 @@ import { Strategy, Profile } from 'passport-kakao';
 
 import { AuthConfig } from '@/config';
 import { CONFIG } from '@/constant';
-import { SNSProvider } from '@/module/user';
+import { SNSProvider } from '@/models';
 
 import { OAuthRequest } from '../dto';
 import { STRATEGY } from '../auth.constant';

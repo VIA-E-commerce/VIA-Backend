@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
 
 import { getPagination, Pagination, useTransaction } from '@/common';
-import { User } from '@/module/user';
+import { User, Product, Review } from '@/models';
 
 import {
   CreateReviewRequest,
@@ -11,10 +11,8 @@ import {
   ReviewResponse,
   ReviewListQuery,
 } from './dto';
-import { Review as Review } from './entity';
 import { ReviewSort } from './enum';
 import { REVIEW_ERROR } from './review.constant';
-import { Product } from '@/module/product';
 
 @Injectable()
 export class ReviewService {

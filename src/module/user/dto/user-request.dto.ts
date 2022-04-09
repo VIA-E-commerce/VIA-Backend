@@ -1,4 +1,4 @@
-import { UserDoc } from './dto.doc';
+import { UserDoc } from '@/docs';
 
 export class EditUserRequest {
   @UserDoc.name()

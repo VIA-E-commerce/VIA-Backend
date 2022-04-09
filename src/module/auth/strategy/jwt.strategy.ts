@@ -5,10 +5,10 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { AuthConfig } from '@/config';
 import { CONFIG } from '@/constant';
+import { UserService } from '@/module/user';
 
 import { JwtPayload } from '../interface';
 import { STRATEGY } from '../auth.constant';
-import { UserService } from '@/module/user';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, STRATEGY.JWT) {

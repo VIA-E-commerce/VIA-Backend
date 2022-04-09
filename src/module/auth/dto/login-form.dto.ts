@@ -1,4 +1,4 @@
-import { UserDoc } from '@/module/user';
+import { UserDoc } from '@/docs';
 
 export class LoginForm {
   @UserDoc.email()

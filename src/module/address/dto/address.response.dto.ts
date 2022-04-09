@@ -1,6 +1,6 @@
 import { SwaggerDoc } from '@/common';
+import { Address } from '@/models';
 
-import { Address } from '../entity';
 import { AddressDoc } from './address.dto.doc';
 
 export class AddressResponse {

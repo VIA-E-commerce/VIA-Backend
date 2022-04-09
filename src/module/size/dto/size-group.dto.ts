@@ -1,7 +1,8 @@
-import { SwaggerDoc } from '@/common';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { SizeGroup } from '../entity';
+import { SwaggerDoc } from '@/common';
+import { SizeGroup } from '@/models';
+
 import { SizeGroupDoc } from './dto.doc';
 import { SizeValueResponse } from './size-value.dto';
 

@@ -9,14 +9,19 @@ import {
   useTransaction,
 } from '@/common';
 import { APP, MESSAGE } from '@/constant';
-import { CartItem } from '@/module/cart';
+import {
+  CartItem,
+  User,
+  UserRole,
+  Product,
+  Variant,
+  Order,
+  OrderDetail,
+  OrderStatus,
+} from '@/models';
 import { PaymentService } from '@/module/payment';
-import { Product, Variant } from '@/module/product';
-import { User, UserRole } from '@/module/user';
 
 import { CreateOrderRequest, EditOrderRequest, OrderResponse } from './dto';
-import { Order, OrderDetail } from './entity';
-import { OrderStatus } from './enum';
 import { ORDER_ERROR } from './order.constant';
 
 @Injectable()

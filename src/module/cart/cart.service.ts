@@ -2,17 +2,14 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Variant } from '@/module/product';
-import { User } from '@/module/user';
+import { Cart, CartItem, CartRepository, User, Variant } from '@/models';
 
 import {
   AddCartItemRequest,
   EditCartItemRequest,
   CartItemResponse,
 } from './dto';
-import { Cart, CartItem } from './entity';
 import { CART_ERROR } from './cart.constant';
-import { CartRepository } from './cart.repository';
 
 @Injectable()
 export class CartService {

@@ -3,14 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { getPagination, Pagination, PagingQuery } from '@/common';
-import { User, UserRole } from '@/module/user';
+import { Question, User, UserRole } from '@/models';
 
 import {
   CreateQuestionRequest,
   EditQuestionRequest,
   QuestionResponse,
 } from './dto';
-import { Question } from './entity';
 import { QUESTION_ERROR } from './question.constant';
 
 @Injectable()

@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 
 import { CONFIG } from '@/constant';
 import { AuthConfig } from '@/config';
-import { User, UserRepository, UserRole } from '@/module/user';
+import { User, UserRole, UserRepository } from '@/models';
 
 import { JoinForm, OAuthRequest } from './dto';
 import { AUTH, AUTH_ERROR } from './auth.constant';

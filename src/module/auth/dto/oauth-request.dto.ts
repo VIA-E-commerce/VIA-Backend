@@ -1,4 +1,5 @@
-import { SNSProvider, UserDoc } from '@/module/user';
+import { SNSProvider } from '@/models';
+import { UserDoc } from '@/docs';
 
 export class OAuthRequest {
   @UserDoc.email()

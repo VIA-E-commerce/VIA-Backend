@@ -3,14 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository } from 'typeorm';
 
 import { PagingQuery, useTransaction } from '@/common';
-import { User } from '@/module/user';
+import { Address, User } from '@/models';
 
 import {
   CreateAddressRequest,
   EditAddressRequest,
   AddressResponse,
 } from './dto';
-import { Address } from './entity';
 import { ADDRESS_ERROR } from './address.constant';
 
 @Injectable()

@@ -12,8 +12,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { PagingQuery } from '@/common';
+import { User } from '@/models';
 import { CurrentUser, JwtAuthGuard } from '@/module/auth';
-import { User } from '@/module/user';
 
 import {
   CreateAddressRequest,

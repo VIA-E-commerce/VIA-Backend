@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { Order } from '@/module/order';
+import { Order } from '@/models';
 
 import { PaymentController } from './payment.controller';
 import { PaymentService } from './payment.service';
