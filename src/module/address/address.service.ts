@@ -1,8 +1,13 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository } from 'typeorm';
 
 import { PagingQuery, useTransaction } from '@/common';
+import { ERROR } from '@/docs';
 import { Address, User } from '@/models';
 
 import {
@@ -10,7 +15,6 @@ import {
   EditAddressRequest,
   AddressResponse,
 } from './dto';
-import { ADDRESS_ERROR } from './address.constant';
 
 @Injectable()
 export class AddressService {
@@ -29,10 +33,7 @@ export class AddressService {
     );
 
     if (!newAddress) {
-      throw new HttpException(
-        ADDRESS_ERROR.CREATE_ERROR,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException(ERROR.ADDRESS.CREATE_ERROR);
     }
   }
 
@@ -42,9 +43,7 @@ export class AddressService {
       user,
     });
 
-    if (!address) {
-      throw new HttpException(ADDRESS_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
+    this.checkAddressExistence(!!address);
 
     return new AddressResponse(address);
   }
@@ -93,10 +92,7 @@ export class AddressService {
       );
 
       if (result.affected <= 0) {
-        throw new HttpException(
-          ADDRESS_ERROR.UPDATE_ERROR,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new InternalServerErrorException(ERROR.ADDRESS.UPDATE_ERROR);
       }
     });
   }
@@ -108,10 +104,13 @@ export class AddressService {
     });
 
     if (result.affected <= 0) {
-      throw new HttpException(
-        ADDRESS_ERROR.DELETE_ERROR,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new InternalServerErrorException(ERROR.ADDRESS.DELETE_ERROR);
+    }
+  }
+
+  private checkAddressExistence(trueCondition: boolean) {
+    if (!trueCondition) {
+      throw new NotFoundException(ERROR.ADDRESS.NOT_FOUND);
     }
   }
 }

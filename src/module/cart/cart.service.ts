@@ -1,7 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { ERROR } from '@/docs';
 import { Cart, CartItem, CartRepository, User, Variant } from '@/models';
 
 import {
@@ -9,7 +16,6 @@ import {
   EditCartItemRequest,
   CartItemResponse,
 } from './dto';
-import { CART_ERROR } from './cart.constant';
 
 @Injectable()
 export class CartService {
@@ -61,10 +67,7 @@ export class CartService {
     const result = await this.cartItemRepository.save(cartItem);
 
     if (!result) {
-      throw new HttpException(
-        CART_ERROR.CREATE_ERROR,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException(ERROR.CART.CREATE_ERROR);
     }
   }
 
@@ -99,7 +102,7 @@ export class CartService {
       },
     });
     if (duplicateCartItem) {
-      throw new HttpException(CART_ERROR.VARIANT_CONFLICT, HttpStatus.CONFLICT);
+      throw new ConflictException(ERROR.CART.VARIANT_CONFLICT);
     }
 
     const oldVariant = exCartItem.variant;
@@ -111,10 +114,7 @@ export class CartService {
 
     // 3. 존재하지 않는 옵션이거나 다른 상품의 옵션인지 체크 ✅
     if (!newVariant || oldVariant.productId !== newVariant.productId) {
-      throw new HttpException(
-        CART_ERROR.NOT_SUPPORT_VARIANT,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException(ERROR.CART.NOT_SUPPORT_VARIANT);
     }
 
     // 4. 장바구니 아이템 옵션 업데이트
@@ -136,7 +136,7 @@ export class CartService {
     // 2. 구매 제한 재고 수량 체크 ✅
     const maxQuantity = exCartItem.variant.quantity;
     if (quantity > maxQuantity) {
-      throw new HttpException(CART_ERROR.OUT_OF_STOCK, HttpStatus.CONFLICT);
+      throw new ConflictException(ERROR.CART.OUT_OF_STOCK);
     }
 
     // 3. 장바구니 아이템 데이터 업데이트
@@ -152,7 +152,7 @@ export class CartService {
 
     // 4. 업데이트된 레코드 유무 체크 ✅
     if (result.affected <= 0) {
-      throw new HttpException(CART_ERROR.UPDATE_ERROR, HttpStatus.NOT_FOUND);
+      throw new NotFoundException(ERROR.CART.UPDATE_ERROR);
     }
   }
 
@@ -164,9 +164,7 @@ export class CartService {
       cart,
     });
 
-    if (result.affected <= 0) {
-      throw new HttpException(CART_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
+    this.checkCartExistence(result.affected > 0);
   }
 
   private async getUserCart(user: User) {
@@ -174,9 +172,7 @@ export class CartService {
       user,
     });
 
-    if (!cart) {
-      throw new HttpException(CART_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
+    this.checkCartExistence(!!cart);
 
     return cart;
   }
@@ -190,9 +186,15 @@ export class CartService {
     });
 
     if (!exCartItem) {
-      throw new HttpException(CART_ERROR.ITEM_NOT_FOUND, HttpStatus.NOT_FOUND);
+      throw new NotFoundException(ERROR.CART.ITEM_NOT_FOUND);
     }
 
     return exCartItem;
+  }
+
+  private checkCartExistence(trueCondition: boolean) {
+    if (!trueCondition) {
+      throw new NotFoundException(ERROR.CART.NOT_FOUND);
+    }
   }
 }

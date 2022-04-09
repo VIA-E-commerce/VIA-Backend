@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository } from 'typeorm';
 
@@ -9,6 +15,7 @@ import {
   useTransaction,
 } from '@/common';
 import { APP, MESSAGE } from '@/constant';
+import { ERROR } from '@/docs';
 import {
   CartItem,
   User,
@@ -22,7 +29,6 @@ import {
 import { PaymentService } from '@/module/payment';
 
 import { CreateOrderRequest, EditOrderRequest, OrderResponse } from './dto';
-import { ORDER_ERROR } from './order.constant';
 
 @Injectable()
 export class OrderService {
@@ -82,10 +88,7 @@ export class OrderService {
       const savedOrder = await orderRepository.save(order);
 
       if (!savedOrder) {
-        throw new HttpException(
-          ORDER_ERROR.CREATE_ERROR,
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
+        throw new InternalServerErrorException(ERROR.ORDER.CREATE_ERROR);
       }
 
       // 아이템 판매처리
@@ -124,7 +127,7 @@ export class OrderService {
       },
     });
 
-    this.checkOrderExistence(order);
+    this.checkOrderExistence(!!order);
 
     return new OrderResponse(order);
   }
@@ -168,9 +171,7 @@ export class OrderService {
 
     const result = await this.orderRepository.update({ id, user }, dto);
 
-    if (result.affected <= 0) {
-      throw new HttpException(ORDER_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
+    this.checkOrderExistence(result.affected > 0);
   }
 
   async cancel(id: number, user: User): Promise<void> {
@@ -188,7 +189,7 @@ export class OrderService {
         where: { user },
       });
 
-      this.checkOrderExistence(order);
+      this.checkOrderExistence(!!order);
 
       if (
         order.status !== OrderStatus.AWAITING_PAYMENT &&
@@ -241,9 +242,9 @@ export class OrderService {
     return [totalPrice, paymentReal];
   }
 
-  private checkOrderExistence(order: Order) {
-    if (!order) {
-      throw new HttpException(ORDER_ERROR.NOT_FOUND, HttpStatus.NOT_FOUND);
+  private checkOrderExistence(trueCondition: boolean) {
+    if (!trueCondition) {
+      throw new NotFoundException(ERROR.ORDER.NOT_FOUND);
     }
   }
 

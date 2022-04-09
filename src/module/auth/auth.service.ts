@@ -1,15 +1,20 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { CONFIG } from '@/constant';
 import { AuthConfig } from '@/config';
+import { ERROR } from '@/docs';
 import { User, UserRole, UserRepository } from '@/models';
 
 import { JoinForm, OAuthRequest } from './dto';
-import { AUTH, AUTH_ERROR } from './auth.constant';
 import { JwtPayload } from './interface';
+import { AUTH } from './auth.constant';
 
 @Injectable()
 export class AuthService {
@@ -30,10 +35,7 @@ export class AuthService {
     );
 
     if (exUser) {
-      throw new HttpException(
-        AUTH_ERROR.DUPLICATE_EMAIL,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException(ERROR.AUTH.DUPLICATE_EMAIL);
     }
 
     try {
@@ -46,10 +48,7 @@ export class AuthService {
         }),
       );
     } catch (err) {
-      throw new HttpException(
-        AUTH_ERROR.JOIN_ERROR,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException(ERROR.AUTH.JOIN_ERROR);
     }
   }
 
@@ -115,18 +114,12 @@ export class AuthService {
       });
 
       if (result.affected === 0) {
-        throw new HttpException(
-          AUTH_ERROR.REFRESH_FAILURE,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(ERROR.AUTH.REFRESH_FAILURE);
       }
 
       return refreshToken;
     } catch (err) {
-      throw new HttpException(
-        AUTH_ERROR.JWT_ERROR,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException(ERROR.AUTH.JWT_ERROR);
     }
   }
 
@@ -147,10 +140,7 @@ export class AuthService {
 
   private checkOAuthInfo(user: User, { provider, snsId }: OAuthRequest) {
     if (user.provider !== provider || user.snsId != snsId) {
-      throw new HttpException(
-        AUTH_ERROR.MISMATCHED_SNS_INFO,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException(ERROR.AUTH.MISMATCHED_SNS_INFO);
     }
   }
 
@@ -158,19 +148,13 @@ export class AuthService {
     try {
       return this.userRepository.save(this.userRepository.create(oAuthRequest));
     } catch (err) {
-      throw new HttpException(
-        AUTH_ERROR.JOIN_ERROR,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException(ERROR.AUTH.JOIN_ERROR);
     }
   }
 
   private checkAuthValidity(condition: any) {
     if (!!!condition) {
-      throw new HttpException(
-        AUTH_ERROR.BAD_AUTH_REQUEST,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException(ERROR.AUTH.BAD_AUTH_REQUEST);
     }
   }
 }
