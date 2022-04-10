@@ -4,7 +4,7 @@ import { SwaggerDoc } from '@/common';
 import { SizeGroupDoc } from '@/docs';
 import { SizeGroup } from '@/models';
 
-import { SizeValueResponse } from './size-value.dto';
+import { SizeValueResponse } from './size-value-response.dto';
 
 export class SizeGroupResponse {
   @SwaggerDoc.id('사이즈 그룹 식별자')

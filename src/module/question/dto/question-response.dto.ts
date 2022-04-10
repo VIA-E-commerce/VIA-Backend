@@ -60,16 +60,3 @@ export class QuestionResponse {
     this.updatedAt = question.updatedAt;
   }
 }
-
-export class MyQuestionResponse extends QuestionResponse {
-  @ProductDoc.thumbnail()
-  thumbnail: string;
-
-  constructor(question: Question, user?: User) {
-    super(question, user);
-
-    if (question.product.images.length > 0) {
-      this.thumbnail = question.product.images[0].url;
-    }
-  }
-}

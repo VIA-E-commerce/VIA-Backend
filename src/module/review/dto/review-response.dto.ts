@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { SwaggerDoc, maskUsername } from '@/common';
-import { ProductDoc, ReviewDoc } from '@/docs';
+import { ReviewDoc } from '@/docs';
 import { Review } from '@/models';
 
 export class ReviewResponse {
@@ -41,26 +41,5 @@ export class ReviewResponse {
     this.updatedAt = review.updatedAt;
     this.authorId = review.user.id;
     this.author = maskUsername(review.user.name);
-  }
-}
-
-export class MyReviewResponse extends ReviewResponse {
-  @SwaggerDoc.id('상품 식별자')
-  productId: number;
-
-  @ProductDoc.name()
-  productName: string;
-
-  @ProductDoc.thumbnail()
-  productThumbnail: string;
-
-  constructor(review: Review) {
-    super(review);
-
-    this.productId = review.product.id;
-    this.productName = review.product.name;
-    if (review.product.images.length > 0) {
-      this.productThumbnail = review.product.images[0].url;
-    }
   }
 }

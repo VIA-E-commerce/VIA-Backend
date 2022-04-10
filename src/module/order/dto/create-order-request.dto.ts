@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { SwaggerDoc } from '@/common';
-import { OrderDoc, OrderDetailDoc, PaymentDoc } from '@/docs';
-import { User, Order, OrderDetail, OrderStatus, PaymentMethod } from '@/models';
+import { OrderDoc, PaymentDoc } from '@/docs';
+import { User, Order } from '@/models';
 
 export class CreateOrderRequest {
   @OrderDoc.purchaser()
@@ -58,50 +57,4 @@ export class CreateOrderRequest {
 
     return entity;
   }
-}
-
-export class OrderDetailRequest {
-  @OrderDetailDoc.price()
-  price: number;
-
-  @OrderDetailDoc.quantity()
-  quantity: number;
-
-  @SwaggerDoc.id('상품 품목 식별자')
-  variantId: number;
-
-  static toEntity(orderDetail: OrderDetailRequest) {
-    const entity = new OrderDetail();
-    entity.price = orderDetail.price;
-    entity.quantity = orderDetail.quantity;
-    entity.variantId = orderDetail.variantId;
-
-    return entity;
-  }
-}
-
-export class EditOrderRequest {
-  @OrderDoc.recipient()
-  recipient: string;
-
-  @OrderDoc.recipientPhone()
-  recipientPhone: string;
-
-  @OrderDoc.postalCode()
-  postalCode: string;
-
-  @OrderDoc.shippingAddress()
-  shippingAddress: string;
-
-  @OrderDoc.message()
-  message: string;
-
-  @OrderDoc.status()
-  status: OrderStatus;
-
-  @OrderDoc.paymentMethod()
-  paymentMethod: PaymentMethod;
-
-  @OrderDoc.paidAt()
-  paidAt: Date;
 }

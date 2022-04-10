@@ -8,8 +8,3 @@ export class AddCartItemRequest {
   @CartDoc.quantity()
   quantity: number;
 }
-
-export class EditCartItemRequest {
-  @CartDoc.quantity()
-  quantity: number;
-}
