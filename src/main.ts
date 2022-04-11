@@ -44,7 +44,13 @@ class Application {
   private async setUpGlobalMiddleware() {
     this.app.enableCors(corsConfig(this.DEV_MODE));
 
-    this.app.useGlobalPipes(new ValidationPipe({ transform: true }));
+    this.app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true, // Request로 넘어온 데이터 형변환
+        whitelist: true, // Request에서 Validation 데코레이터가 붙어있지 않은 속성 제거
+        forbidNonWhitelisted: true, // Whitelist 조건에 맞지 않는 속성이 있으면 400 에러 (Bad Request)
+      }),
+    );
     this.app.useGlobalInterceptors(new SuccessInterceptor());
     this.app.useGlobalFilters(new HttpExceptionFilter());
 
