@@ -15,8 +15,10 @@ export type SwaggerMethodDoc<T> = {
 };
 
 export type SwaggerFieldDoc<T> = {
-  [K in keyof T]: () => PropertyDecorator;
+  [K in keyof T]?: () => PropertyDecorator;
 };
+
+export type SwaggerEntityDoc<Entity> = SwaggerFieldDoc<Entity>;
 
 export interface PagingOptions {
   pageNum: number;

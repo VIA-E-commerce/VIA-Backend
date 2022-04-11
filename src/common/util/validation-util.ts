@@ -34,3 +34,12 @@ export function getLengthMessage({
 export function getIsNotEmptyMessage({ property }: PropsWithPropertyName) {
   return `${property} 입력이 누락되었습니다.`;
 }
+
+// 타입 검증 관련 함수
+function getTypeCheckMessage(property: string, type: string) {
+  return `${property}의 형식은 ${type}이어야 합니다.`;
+}
+
+export function getIsStringMessage({ property }: PropsWithPropertyName) {
+  return getTypeCheckMessage(property, '문자열');
+}

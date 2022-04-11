@@ -39,7 +39,7 @@ export class AuthService {
     }
 
     try {
-      await this.userRepository.save(
+      await this.userRepository.insert(
         this.userRepository.create({
           email,
           password: await bcrypt.hash(password, AUTH.SALT),

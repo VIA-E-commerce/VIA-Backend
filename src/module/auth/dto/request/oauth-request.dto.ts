@@ -1,16 +1,17 @@
-import { UserDoc } from '@/docs';
 import { SNSProvider } from '@/models';
 
+import { UserDtoDec } from '../decorator';
+
 export class OAuthRequest {
-  @UserDoc.email()
+  @UserDtoDec.email()
   email: string;
 
-  @UserDoc.name()
+  @UserDtoDec.name()
   name: string;
 
-  @UserDoc.provider()
+  @UserDtoDec.provider()
   provider: SNSProvider;
 
-  @UserDoc.snsId()
+  @UserDtoDec.snsId()
   snsId: string;
 }
