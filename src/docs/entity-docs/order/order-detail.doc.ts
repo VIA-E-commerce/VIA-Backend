@@ -1,7 +1,13 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
+import { SwaggerDoc } from '@/common';
+
 export const OrderDetailDoc = {
+  orderDetailId() {
+    return applyDecorators(SwaggerDoc.id('주문 상세 식별자'));
+  },
+
   price() {
     return applyDecorators(
       ApiProperty({

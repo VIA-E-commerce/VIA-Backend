@@ -1,7 +1,13 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
+import { SwaggerDoc } from '@/common';
+
 export const QuestionDoc = {
+  questionId() {
+    return applyDecorators(SwaggerDoc.id('문의 식별자'));
+  },
+
   title() {
     return applyDecorators(
       ApiProperty({

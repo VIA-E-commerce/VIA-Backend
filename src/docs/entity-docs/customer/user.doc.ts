@@ -1,9 +1,14 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
+import { SwaggerDoc } from '@/common';
 import { USER } from '@/models';
 
 export const UserDoc = {
+  userId() {
+    return applyDecorators(SwaggerDoc.id('회원 식별자'));
+  },
+
   email() {
     return applyDecorators(
       ApiProperty({

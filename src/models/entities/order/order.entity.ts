@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 
-import { ORDER, USER } from '../../constants';
+import { ADDRESS, ORDER, USER } from '../../constants';
 import { OrderStatus, PaymentMethod } from '../../enums';
 import { User } from '../customer';
 
@@ -49,7 +49,7 @@ export class Order extends CommonIdEntity {
 
   @Column({
     type: 'char',
-    length: ORDER.POSTAL_CODE.LENGTH,
+    length: ADDRESS.POSTAL_CODE.LENGTH,
   })
   postalCode: string;
 

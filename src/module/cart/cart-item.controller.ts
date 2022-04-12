@@ -60,7 +60,7 @@ export class CartItemController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   async editItem(
-    @Param() { id }: CartItemIdParam,
+    @Param() { id: id }: CartItemIdParam,
     @Body() dto: EditCartItemRequest,
     @CurrentUser() user: User,
   ) {
@@ -70,7 +70,10 @@ export class CartItemController {
   @Doc.remove('장바구니에서 상품 제거')
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async remove(@Param() { id }: CartItemIdParam, @CurrentUser() user: User) {
+  async remove(
+    @Param() { id: id }: CartItemIdParam,
+    @CurrentUser() user: User,
+  ) {
     await this.cartService.removeItem(id, user);
   }
 }

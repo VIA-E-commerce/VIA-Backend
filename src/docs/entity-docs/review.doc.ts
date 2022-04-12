@@ -1,7 +1,13 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
+import { SwaggerDoc } from '@/common';
+
 export const ReviewDoc = {
+  reviewId() {
+    return applyDecorators(SwaggerDoc.id('상품 후기 식별자'));
+  },
+
   content() {
     return applyDecorators(
       ApiProperty({

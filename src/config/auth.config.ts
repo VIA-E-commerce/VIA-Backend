@@ -4,7 +4,7 @@ import { ConfigType, registerAs } from '@nestjs/config';
 export const authConfig = registerAs(CONFIG.AUTH, () => ({
   usernameField: 'email',
   accessTokenSecret: process.env.JWT_ACCESS_TOKEN_SECRET,
-  accessTokenExp: 60 * 60, // 초 단위
+  accessTokenExp: 60 * 60 * 24, // 초 단위
   refreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET,
   refreshTokenExp: 60 * 60 * 24 * 14, // 초 단위
 

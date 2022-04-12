@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 
-import { REVIEW } from '../constants';
+import { COMMON, REVIEW } from '../constants';
 
 import { User } from './customer';
 import { Product } from './product';
@@ -16,6 +16,7 @@ export class Review extends CommonIdEntity {
 
   @Column({
     nullable: true,
+    length: COMMON.URL_MAX_LENGTH,
   })
   imageUrl: string;
 

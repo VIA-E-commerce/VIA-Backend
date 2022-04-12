@@ -1,7 +1,13 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
+import { SwaggerDoc } from '@/common';
+
 export const ProductDoc = {
+  productId() {
+    return applyDecorators(SwaggerDoc.id('상품 식별자'));
+  },
+
   name() {
     return applyDecorators(
       ApiProperty({
@@ -17,14 +23,6 @@ export const ProductDoc = {
         description: '상품 썸네일',
         example:
           'https://s3.ap-northeast-2.amazonaws.com/img.stibee.com/43159_1633018317.jpeg',
-      }),
-    );
-  },
-
-  images() {
-    return applyDecorators(
-      ApiProperty({
-        description: '상품 이미지 목록',
       }),
     );
   },
@@ -99,46 +97,6 @@ export const ProductDoc = {
       ApiProperty({
         description: '위시리스트 추가 여부',
         example: true,
-      }),
-    );
-  },
-};
-
-export const CategoryDoc = {
-  name() {
-    return applyDecorators(
-      ApiProperty({
-        description: '상품 그룹명',
-        example: 'OUTER',
-      }),
-    );
-  },
-
-  code() {
-    return applyDecorators(
-      ApiProperty({
-        description: '상품 그룹 코드',
-        example: 'outer',
-      }),
-    );
-  },
-};
-
-export const VariantDoc = {
-  quantity() {
-    return applyDecorators(
-      ApiProperty({
-        description: '재고 수량',
-        example: 100,
-      }),
-    );
-  },
-
-  hide() {
-    return applyDecorators(
-      ApiPropertyOptional({
-        description: '품목 표시 여부',
-        example: false,
       }),
     );
   },

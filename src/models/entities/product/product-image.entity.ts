@@ -2,11 +2,15 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
 
+import { COMMON } from '../../constants';
+
 import { Product } from './product.entity';
 
 @Entity()
 export class ProductImage extends CommonIdEntity {
-  @Column()
+  @Column({
+    length: COMMON.URL_MAX_LENGTH,
+  })
   url: string;
 
   @Column({

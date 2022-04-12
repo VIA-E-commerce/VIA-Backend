@@ -1,7 +1,13 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
+import { SwaggerDoc } from '@/common';
+
 export const AddressDoc = {
+  addressId() {
+    return applyDecorators(SwaggerDoc.id('주소 식별자'));
+  },
+
   label() {
     return applyDecorators(
       ApiProperty({

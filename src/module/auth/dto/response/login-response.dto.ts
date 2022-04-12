@@ -1,10 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { AuthResponseDec } from '../decorator';
 
 export class LoginResponse {
-  @ApiProperty({
-    example: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9',
-    description: 'JWT Access 토큰',
-  })
+  @AuthResponseDec.accessToken()
   accessToken: string;
 
   constructor(accessToken: string) {

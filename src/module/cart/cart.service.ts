@@ -101,6 +101,7 @@ export class CartService {
         },
       },
     });
+
     if (duplicateCartItem) {
       throw new ConflictException(ERROR.CART.VARIANT_CONFLICT);
     }

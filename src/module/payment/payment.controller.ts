@@ -12,7 +12,7 @@ export class PaymentController {
 
   @Doc.refund('아임포트 환불')
   @Post('refund')
-  async refund(@Body() dto: ImpRefundRequest) {
+  async refund(@Body() dto: ImpRefundRequest): Promise<void> {
     return this.paymentService.refund(dto);
   }
 }
