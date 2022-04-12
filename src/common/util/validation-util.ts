@@ -1,4 +1,4 @@
-interface PropsWithPropertyName {
+export interface PropsWithPropertyName {
   property: string;
 }
 interface PropsWithMinLength extends PropsWithPropertyName {
@@ -8,6 +8,19 @@ interface PropsWithMaxLength extends PropsWithPropertyName {
   maxLength: number;
 }
 type PropsWithLength = PropsWithMinLength & PropsWithMaxLength;
+
+interface PropsWithMax extends PropsWithPropertyName {
+  max: number;
+}
+
+interface PropsWithMin extends PropsWithPropertyName {
+  min: number;
+}
+
+interface MessageOptions extends PropsWithPropertyName {
+  description?: string;
+  example?: string;
+}
 
 export function getMinLengthMessage({
   property,
@@ -35,11 +48,53 @@ export function getIsNotEmptyMessage({ property }: PropsWithPropertyName) {
   return `${property} 입력이 누락되었습니다.`;
 }
 
-// 타입 검증 관련 함수
+// 타입 관련 함수
 function getTypeCheckMessage(property: string, type: string) {
-  return `${property}의 형식은 ${type}이어야 합니다.`;
+  return `${property} 필드는 ${type} 형식이어야 합니다.`;
 }
 
 export function getIsStringMessage({ property }: PropsWithPropertyName) {
   return getTypeCheckMessage(property, '문자열');
+}
+
+export function getIsIntMessage({ property }: PropsWithPropertyName) {
+  return getTypeCheckMessage(property, '정수형');
+}
+
+export function getIsNumberStringMessage({ property }: PropsWithPropertyName) {
+  return getTypeCheckMessage(property, '숫자형 문자열');
+}
+
+export function getIdDateMessage({ property }: PropsWithPropertyName) {
+  return getTypeCheckMessage(property, '날짜');
+}
+
+// String 타입 관련 함수
+export function getStringTypeMessage({
+  property,
+  description,
+  example,
+}: MessageOptions) {
+  const comma = description && example ? ', ' : '';
+  const exampleWithPreffix = example ? `ex: ${example}` : '';
+
+  const suffix =
+    description || example
+      ? ` (${description}${comma}${exampleWithPreffix})`
+      : '';
+
+  return `${property}의 형식이 올바르지 않습니다.${suffix}`;
+}
+
+export function getIsMobilePhone({ property }: PropsWithPropertyName) {
+  return getStringTypeMessage({ property });
+}
+
+// 값 크기 관련 함수
+export function getMaxMessage({ property, max }: PropsWithMax) {
+  return `${property}의 최대값은 ${max}입니다.`;
+}
+
+export function getMinMessage({ property, min }: PropsWithMin) {
+  return `${property}의 최소값은 ${min}입니다.`;
 }
