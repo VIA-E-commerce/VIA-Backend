@@ -14,18 +14,18 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Doc.editUserInfo('내 정보 수정')
-  @Patch('me')
-  @UseGuards(JwtAuthGuard)
-  async editUserInfo(@Body() dto: EditUserRequest, @CurrentUser() user: User) {
-    await this.userService.editUserInfo(dto, user);
-  }
-
   @Doc.getMe('본인 정보 조회')
   @Get('me')
   @UseGuards(JwtAuthGuard)
   async getMe(@CurrentUser() user: User) {
     return new UserResponse(user);
+  }
+
+  @Doc.editUserInfo('내 정보 수정')
+  @Patch('me')
+  @UseGuards(JwtAuthGuard)
+  async editUserInfo(@Body() dto: EditUserRequest, @CurrentUser() user: User) {
+    await this.userService.editUserInfo(dto, user);
   }
 
   @Doc.getMyWishlist('내 위시리스트 목록 조회')
