@@ -39,10 +39,12 @@ export class ProductController {
 
   @Doc.getAll('상품 목록 조회')
   @Get()
+  @UseGuards(JwtAuthOrGuestGuard)
   async getAll(
     @Query() { pageNum = 1, pageSize = 10, ...rest }: ProductListQuery,
+    @CurrentUser() user: User,
   ): Promise<Pagination<ProductCardResponse>> {
-    return this.productService.getAll({ pageNum, pageSize, ...rest });
+    return this.productService.getAll({ pageNum, pageSize, ...rest }, user);
   }
 
   @Doc.getOne('상품 상세 정보 조회')
