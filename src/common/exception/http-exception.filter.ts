@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 
-import { ResponseEntity, ErrorResponse } from '../interface';
+import { ErrorResponse } from '../interface';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -18,14 +18,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const error = exception.getResponse() as string | ErrorResponse;
 
     const isValidationError =
-      typeof error !== 'string' && error.statusCode === HttpStatus.BAD_REQUEST;
+      typeof error !== 'string' && status === HttpStatus.BAD_REQUEST;
 
-    const responseEntity: ResponseEntity = {
-      success: false,
-      statusCode: status,
-      data: isValidationError ? error.message : error,
-    };
+    const response = isValidationError ? { message: error.message[0] } : error;
 
-    res.status(status).json(responseEntity);
+    res.status(status).json(response);
   }
 }

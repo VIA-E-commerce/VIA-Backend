@@ -4,10 +4,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { map, Observable } from 'rxjs';
-
-import { ResponseEntity } from '../interface';
 
 @Injectable()
 export class SuccessInterceptor implements NestInterceptor {
@@ -15,17 +12,6 @@ export class SuccessInterceptor implements NestInterceptor {
     ctx: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
-    const res = ctx.switchToHttp().getResponse<Response>();
-    const status: number = res.statusCode;
-
-    return next.handle().pipe(
-      map(
-        (data): ResponseEntity => ({
-          success: true,
-          statusCode: status,
-          data,
-        }),
-      ),
-    );
+    return next.handle().pipe(map((data) => data));
   }
 }
