@@ -25,7 +25,7 @@ export class AuthService {
   ) {}
 
   async join(joinForm: JoinForm): Promise<void> {
-    const { email, password, name } = joinForm;
+    const { email, password, name, phone } = joinForm;
 
     const exUser: User = await this.userRepository.findOne(
       { email },
@@ -44,6 +44,7 @@ export class AuthService {
           email,
           password: await bcrypt.hash(password, AUTH.SALT),
           name,
+          phone,
           role: UserRole.USER,
         }),
       );

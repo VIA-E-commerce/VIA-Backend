@@ -9,4 +9,7 @@ export class JoinForm {
 
   @UserRequestDec.name()
   name: string;
+
+  @UserRequestDec.phone()
+  phone: string;
 }
