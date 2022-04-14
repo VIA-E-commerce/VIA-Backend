@@ -17,6 +17,14 @@ export const ProductDoc = {
     );
   },
 
+  description() {
+    return applyDecorators(
+      ApiProperty({
+        description: '상품 설명',
+      }),
+    );
+  },
+
   thumbnail() {
     return applyDecorators(
       ApiProperty({

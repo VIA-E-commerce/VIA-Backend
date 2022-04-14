@@ -15,6 +15,9 @@ export class ProductDetailResponse {
   @ProductResponseDec.name()
   name: string;
 
+  @ProductResponseDec.description()
+  description: string;
+
   @ProductResponseDec.images()
   images: string[];
 
@@ -68,6 +71,7 @@ export class ProductDetailResponse {
   ) {
     this.id = product.id;
     this.name = product.name;
+    this.description = product.description;
     this.images = product.images.map((image) => image.url);
 
     this.retailPrice = product.retailPrice;
