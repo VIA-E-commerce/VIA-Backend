@@ -75,4 +75,17 @@ export const CartItemControllerDoc = {
       CartItemNotFoundResponse(),
     );
   },
+
+  count(summary: string) {
+    return applyDecorators(
+      ApiOperation({
+        summary,
+        description: '장바구니에 등록된 상품 개수를 조회합니다.',
+      }),
+      ApiOkResponse({
+        description: '장바구니 상품 개수 조회 성공',
+        type: Number,
+      }),
+    );
+  },
 };

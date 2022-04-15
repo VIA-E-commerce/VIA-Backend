@@ -182,6 +182,12 @@ export class CartService {
     this.checkCartExistence(result.affected > 0);
   }
 
+  async count(user: User) {
+    const cart = await this.getUserCart(user);
+
+    return this.cartItemRepository.count({ cart });
+  }
+
   private async getUserCart(user: User) {
     const cart = await this.cartRepository.findOne({
       user,

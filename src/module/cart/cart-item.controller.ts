@@ -76,4 +76,11 @@ export class CartItemController {
   ) {
     await this.cartService.removeItem(id, user);
   }
+
+  @Doc.count('장바구니 상품 개수 조회')
+  @Get('count')
+  @UseGuards(JwtAuthGuard)
+  async count(@CurrentUser() user: User) {
+    return this.cartService.count(user);
+  }
 }
