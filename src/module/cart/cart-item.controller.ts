@@ -33,7 +33,7 @@ export class CartItemController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async add(@Body() dto: AddCartItemRequest, @CurrentUser() user: User) {
-    await this.cartService.addItem(dto, user);
+    return this.cartService.addItem(dto, user);
   }
 
   @Doc.getCartItems('장바구니 상품 목록 조회')
@@ -46,7 +46,7 @@ export class CartItemController {
     return this.cartService.getCartItems(ids, user);
   }
 
-  @Doc.editVariant('장바구니 아이템 옵션 변경')
+  @Doc.editVariant('장바구니 상품 옵션 변경')
   @Patch(':cartItemId/variants/:variantId')
   @UseGuards(JwtAuthGuard)
   async editVariant(
@@ -56,7 +56,7 @@ export class CartItemController {
     await this.cartService.editVariant(cartItemId, variantId, user);
   }
 
-  @Doc.editItem('장바구니 아이템 속성 변경')
+  @Doc.editItem('장바구니 상품 속성 변경')
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   async editItem(
