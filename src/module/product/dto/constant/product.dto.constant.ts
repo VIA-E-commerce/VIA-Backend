@@ -6,4 +6,8 @@ export const PRODUCT_DTO = {
   SORT: {
     KR: '정렬 기준',
   },
+
+  PURCHASED_PRODUCT_SORT: {
+    KR: '정렬 기준',
+  },
 };

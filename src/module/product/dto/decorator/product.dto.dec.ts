@@ -5,7 +5,7 @@ import { IsEnum, IsString, ValidateIf } from 'class-validator';
 import { getIsStringMessage, SwaggerValidation } from '@/common';
 import { ProductDoc } from '@/docs';
 
-import { ProductSort } from '../../enum';
+import { ProductSort, PurchasedProductFilter } from '../../enum';
 import { PRODUCT_DTO } from '../constant';
 
 export const ProductRequestDec = {
@@ -34,6 +34,19 @@ export const ProductRequestDec = {
       ValidateIf((value) => value === ''),
       IsEnum(ProductSort, {
         message: `지원하지 않는 ${PRODUCT_DTO.SORT.KR}입니다.`,
+      }),
+    );
+  },
+
+  reviewableFilter() {
+    return applyDecorators(
+      ApiPropertyOptional({
+        description: PRODUCT_DTO.PURCHASED_PRODUCT_SORT.KR,
+        example: PurchasedProductFilter.REVIEWABLE,
+      }),
+      ValidateIf((value) => value === ''),
+      IsEnum(PurchasedProductFilter, {
+        message: `지원하지 않는 ${PRODUCT_DTO.PURCHASED_PRODUCT_SORT.KR}입니다.`,
       }),
     );
   },
