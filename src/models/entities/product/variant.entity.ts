@@ -1,6 +1,14 @@
-import { Column, Entity, ManyToOne, RelationId, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+  Unique,
+} from 'typeorm';
 
 import { CommonIdEntity } from '@/common';
+import { OrderDetail } from '@/models';
 
 import { Color } from './color.entity';
 import { Product } from './product.entity';
@@ -50,4 +58,7 @@ export class Variant extends CommonIdEntity {
 
   @RelationId((variant: Variant) => variant.sizeValue)
   sizeValueId: number;
+
+  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.variant)
+  orderDetails: OrderDetail[];
 }
