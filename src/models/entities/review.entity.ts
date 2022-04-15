@@ -35,7 +35,7 @@ export class Review extends CommonIdEntity {
   })
   user: User;
 
-  @ManyToOne(() => Product, {
+  @ManyToOne(() => Product, (product) => product.reviews, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
     nullable: false,
