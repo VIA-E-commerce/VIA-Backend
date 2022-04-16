@@ -23,6 +23,7 @@ import {
   ProductCardResponse,
   ProductDetailResponse,
   ReviewableProductQuery,
+  PurchasedProductResponse,
 } from './dto';
 import { ProductSort, PurchasedProductFilter } from './enum';
 
@@ -219,16 +220,25 @@ export class ProductService {
   ) {
     const [
       productAlias,
+      productImageAlias,
       variantAlias,
       orderDetailAlias,
       orderAlias,
       reviewAlias,
-    ] = ['product', 'variant', 'orderDetail', 'order', 'review'];
+    ] = [
+      'product',
+      'productImage',
+      'variant',
+      'orderDetail',
+      'order',
+      'review',
+    ];
 
     // Query : 구매한 상품 조회
     let productsQuery = this.productRepository
       .createQueryBuilder(productAlias)
       .innerJoin(`${productAlias}.variants`, variantAlias)
+      .leftJoinAndSelect(`${productAlias}.images`, productImageAlias)
       .innerJoin(`${variantAlias}.orderDetails`, orderDetailAlias)
       .innerJoin(`${orderDetailAlias}.order`, orderAlias)
       .where(`${orderAlias}.user.id = :userId`, { userId: user.id })
@@ -248,7 +258,11 @@ export class ProductService {
 
     const [products, count] = await productsQuery.getManyAndCount();
 
-    return getPagination(products, count, { pageNum: 1, pageSize: 10 });
+    const list = products.map(
+      (product) => new PurchasedProductResponse(product),
+    );
+
+    return getPagination(list, count, { pageNum: 1, pageSize: 10 });
   }
 
   private checkProductExistence(trueCondition: boolean) {
