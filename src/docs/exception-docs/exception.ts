@@ -1,15 +1,22 @@
 import { HttpStatus } from '@nestjs/common';
 
-import { Dictionary } from '@/common';
-
-export interface ErrorObject {
+export interface ExceptionObject {
   status: HttpStatus;
   message: string;
 }
 
-type ErrorInfo = Dictionary<Dictionary<ErrorObject>>;
+export const EXCEPTION = {
+  COMMON: {
+    FORBIDDEN: {
+      status: HttpStatus.FORBIDDEN,
+      message: '해당 요청에 대한 권한이 없습니다.',
+    },
+    INTERNAL_SERVER_ERROR: {
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: '알 수 없는 서버 오류가 발생했습니다.',
+    },
+  },
 
-export const ERROR: ErrorInfo = {
   ADDRESS: {
     CREATE_ERROR: {
       status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -96,6 +103,14 @@ export const ERROR: ErrorInfo = {
       status: HttpStatus.NOT_FOUND,
       message: '주문 내역을 찾을 수 없습니다.',
     },
+    OUT_OF_STOCK: {
+      status: HttpStatus.BAD_REQUEST,
+      message: '재고가 부족합니다.',
+    },
+    CANCEL_NOT_ALLOWED: {
+      status: HttpStatus.FORBIDDEN,
+      message: '취소할 수 없는 주문입니다.',
+    },
   },
 
   CATEGORY: {
@@ -158,6 +173,21 @@ export const ERROR: ErrorInfo = {
     NOT_FOUND: {
       status: HttpStatus.NOT_FOUND,
       message: '회원을 찾을 수 없습니다.',
+    },
+    UPDATE_ERROR: {
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: '회원 정보 수정 중 오류가 발생했습니다.',
+    },
+  },
+
+  WISHLIST: {
+    CREATE_ERROR: {
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: '위시리스트에 상품 추가 중 오류가 발생했습니다.',
+    },
+    DELETE_ERROR: {
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: '위시리스트에서 상품 제거 중 오류가 발생했습니다.',
     },
   },
 };

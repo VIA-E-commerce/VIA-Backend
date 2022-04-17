@@ -1,15 +1,12 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
+import { handleException, throwExceptionOrNot } from '@/common';
 import { CONFIG } from '@/constant';
 import { AuthConfig } from '@/config';
-import { ERROR } from '@/docs';
+import { EXCEPTION } from '@/docs';
 import { User, UserRole, UserRepository } from '@/models';
 
 import { JoinForm, OAuthRequest } from './dto';
@@ -34,9 +31,7 @@ export class AuthService {
       },
     );
 
-    if (exUser) {
-      throw new BadRequestException(ERROR.AUTH.DUPLICATE_EMAIL);
-    }
+    throwExceptionOrNot(exUser, EXCEPTION.AUTH.DUPLICATE_EMAIL);
 
     try {
       await this.userRepository.insert(
@@ -49,7 +44,7 @@ export class AuthService {
         }),
       );
     } catch (err) {
-      throw new InternalServerErrorException(ERROR.AUTH.JOIN_ERROR);
+      handleException(EXCEPTION.AUTH.JOIN_ERROR);
     }
   }
 
@@ -63,28 +58,25 @@ export class AuthService {
 
   async validateLocalUser(email: string, password: string): Promise<User> {
     const user = await this.userRepository.findWithPassword(email);
-
-    this.checkAuthValidity(user);
+    throwExceptionOrNot(user, EXCEPTION.AUTH.BAD_AUTH_REQUEST);
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     delete user.password;
 
-    this.checkAuthValidity(isPasswordValid);
+    throwExceptionOrNot(isPasswordValid, EXCEPTION.AUTH.BAD_AUTH_REQUEST);
 
     return user;
   }
 
   async getUserIfRefreshTokenMatches(id: number, refreshToken: string) {
     const user = await this.userRepository.findWithRefreshToken(id);
-
-    this.checkAuthValidity(user);
+    throwExceptionOrNot(user, EXCEPTION.AUTH.BAD_AUTH_REQUEST);
 
     const doesRefreshTokenMatch = await bcrypt.compare(
       refreshToken,
       user.refreshToken,
     );
-
-    this.checkAuthValidity(doesRefreshTokenMatch);
+    throwExceptionOrNot(doesRefreshTokenMatch, EXCEPTION.AUTH.BAD_AUTH_REQUEST);
     delete user.refreshToken;
 
     return user;
@@ -114,13 +106,11 @@ export class AuthService {
         refreshToken: hashedRefreshToken,
       });
 
-      if (result.affected === 0) {
-        throw new BadRequestException(ERROR.AUTH.REFRESH_FAILURE);
-      }
+      throwExceptionOrNot(result.affected, EXCEPTION.AUTH.REFRESH_FAILURE);
 
       return refreshToken;
     } catch (err) {
-      throw new InternalServerErrorException(ERROR.AUTH.JWT_ERROR);
+      handleException(EXCEPTION.AUTH.JWT_ERROR);
     }
   }
 
@@ -140,22 +130,17 @@ export class AuthService {
   }
 
   private checkOAuthInfo(user: User, { provider, snsId }: OAuthRequest) {
-    if (user.provider !== provider || user.snsId != snsId) {
-      throw new BadRequestException(ERROR.AUTH.MISMATCHED_SNS_INFO);
-    }
+    throwExceptionOrNot(
+      user.provider === provider && user.snsId == snsId,
+      EXCEPTION.AUTH.MISMATCHED_SNS_INFO,
+    );
   }
 
   async oAuthJoin(oAuthRequest: OAuthRequest): Promise<User> {
     try {
       return this.userRepository.save(this.userRepository.create(oAuthRequest));
     } catch (err) {
-      throw new InternalServerErrorException(ERROR.AUTH.JOIN_ERROR);
-    }
-  }
-
-  private checkAuthValidity(condition: any) {
-    if (!!!condition) {
-      throw new BadRequestException(ERROR.AUTH.BAD_AUTH_REQUEST);
+      handleException(EXCEPTION.AUTH.JOIN_ERROR);
     }
   }
 }

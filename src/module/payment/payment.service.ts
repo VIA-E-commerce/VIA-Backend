@@ -1,10 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import * as dayjs from 'dayjs';
 
-import { MESSAGE } from '@/constant';
+import { throwExceptionOrNot } from '@/common';
+import { EXCEPTION } from '@/docs';
 import { OrderStatus, PaymentMethod } from '@/models';
 
 import { ImpRestApiDto, ImpRefundRequest } from './dto';
@@ -38,9 +39,10 @@ export class PaymentService {
     // 결제 정보 검증
     const { merchant_uid, paid_at, pay_method } = paymentData;
 
-    if (paymentReal !== paymentData.amount) {
-      throw new HttpException(MESSAGE.ERROR.FORBIDDEN, HttpStatus.FORBIDDEN);
-    }
+    throwExceptionOrNot(
+      paymentReal === paymentData.amount,
+      EXCEPTION.COMMON.FORBIDDEN,
+    );
 
     const paidAt = dayjs.unix(paid_at).toDate();
     const paymentMethod = PaymentMethod[pay_method];

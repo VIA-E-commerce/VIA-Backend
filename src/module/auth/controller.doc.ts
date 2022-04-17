@@ -9,7 +9,7 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 
-import { MESSAGE } from '@/constant';
+import { EXCEPTION } from '@/docs';
 
 import { LoginForm, LoginResponse } from './dto';
 import { AuthController } from './auth.controller';
@@ -24,7 +24,7 @@ export const AuthControllerDoc: SwaggerMethodDoc<AuthController> = {
       ApiCreatedResponse({ description: '회원가입 성공' }),
       ApiBadRequestResponse({ description: '잘못된 인증 정보 입력' }),
       ApiInternalServerErrorResponse({
-        description: MESSAGE.SWAGGER.INTERNAL_SERVER_ERROR,
+        description: EXCEPTION.COMMON.INTERNAL_SERVER_ERROR.message,
       }),
     );
   },
@@ -50,7 +50,7 @@ export const AuthControllerDoc: SwaggerMethodDoc<AuthController> = {
       }),
       ApiOkResponse({ description: '로그인 성공', type: LoginResponse }),
       ApiInternalServerErrorResponse({
-        description: MESSAGE.SWAGGER.INTERNAL_SERVER_ERROR,
+        description: EXCEPTION.COMMON.INTERNAL_SERVER_ERROR.message,
       }),
     );
   },

@@ -1,14 +1,14 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { getPagination, Pagination, PagingQuery } from '@/common';
-import { ERROR } from '@/docs';
+import {
+  getPagination,
+  Pagination,
+  PagingQuery,
+  throwExceptionOrNot,
+} from '@/common';
+import { EXCEPTION } from '@/docs';
 import { User, UserRepository, Question, Review, Wishlist } from '@/models';
 import { ProductCardResponse } from '@/module/product';
 import { MyQuestionResponse } from '@/module/question';
@@ -30,10 +30,7 @@ export class UserService {
 
   async getUserById(id: number) {
     const user = await this.userRepository.findOne({ id });
-
-    if (!user) {
-      throw new NotFoundException(ERROR.USER.NOT_FOUND);
-    }
+    throwExceptionOrNot(user, EXCEPTION.USER.NOT_FOUND);
 
     return user;
   }
@@ -43,13 +40,7 @@ export class UserService {
       name,
       phone,
     });
-
-    if (!result) {
-      throw new HttpException(
-        '회원 정보 수정 중 오류가 발생했습니다.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    throwExceptionOrNot(result, EXCEPTION.USER.UPDATE_ERROR);
   }
 
   async getMyWishlist(user: User, pagingQuery: PagingQuery) {
