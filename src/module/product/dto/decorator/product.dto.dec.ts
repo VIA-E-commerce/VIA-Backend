@@ -101,6 +101,15 @@ export const ProductResponseDec = {
     return applyDecorators(ProductDoc.wished());
   },
 
+  isSoldOut() {
+    return applyDecorators(
+      ApiProperty({
+        description: '품절 여부',
+        example: false,
+      }),
+    );
+  },
+
   images() {
     return applyDecorators(
       ApiProperty({
