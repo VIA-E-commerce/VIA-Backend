@@ -16,3 +16,5 @@ export interface PagingOptions {
   pageNum: number;
   pageSize: number;
 }
+
+export type Dictionary<T> = { [key: string]: T };
