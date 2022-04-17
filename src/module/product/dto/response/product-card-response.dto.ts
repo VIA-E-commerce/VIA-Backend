@@ -41,6 +41,9 @@ export class ProductCardResponse {
   @ProductResponseDec.wished()
   wished = false;
 
+  @ProductResponseDec.isSoldOut()
+  isSoldOut = false;
+
   @SwaggerDoc.createdAt()
   createdAt: Date;
 
@@ -53,7 +56,7 @@ export class ProductCardResponse {
   })
   category: CategoryResponse;
 
-  constructor(product: Product, wished?: boolean) {
+  constructor(product: Product, wished?: boolean, isSoldOut?: boolean) {
     this.id = product.id;
     this.name = product.name;
     if (product.images.length > 0) {
@@ -70,6 +73,7 @@ export class ProductCardResponse {
     this.display = product.display;
     this.onSale = product.onSale;
     this.wished = wished;
+    this.isSoldOut = isSoldOut;
 
     this.createdAt = product.createdAt;
     this.updatedAt = product.updatedAt;

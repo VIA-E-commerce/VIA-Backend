@@ -45,6 +45,9 @@ export class ProductDetailResponse {
   @ProductResponseDec.wished()
   wished: boolean;
 
+  @ProductResponseDec.isSoldOut()
+  isSoldOut: boolean;
+
   @ApiProperty({
     description: '상품 품목 목록',
     type: [VariantResponse],
@@ -68,6 +71,7 @@ export class ProductDetailResponse {
     colors: Color[],
     sizeValues: SizeValue[],
     wished: boolean,
+    isSoldOut: boolean,
   ) {
     this.id = product.id;
     this.name = product.name;
@@ -84,6 +88,7 @@ export class ProductDetailResponse {
     this.display = product.display;
     this.onSale = product.onSale;
     this.wished = wished;
+    this.isSoldOut = isSoldOut;
 
     this.variants = product.variants.map(
       (variant) => new VariantResponse(variant),
