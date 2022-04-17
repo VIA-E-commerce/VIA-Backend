@@ -1,6 +1,6 @@
 import { PagingQuery } from '@/common';
 
-import { PurchasedProductFilter } from '../../enum';
+import { PurchasedProductFilter } from '@/models';
 
 import { ProductRequestDec } from '../decorator';
 

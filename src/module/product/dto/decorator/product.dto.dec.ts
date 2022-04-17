@@ -4,9 +4,8 @@ import { IsEnum, IsString, ValidateIf } from 'class-validator';
 
 import { getIsStringMessage, SwaggerValidation } from '@/common';
 import { ProductDoc } from '@/docs';
-import { ProductSort } from '@/models';
+import { ProductSort, PurchasedProductFilter } from '@/models';
 
-import { PurchasedProductFilter } from '../../enum';
 import { PRODUCT_DTO } from '../constant';
 
 export const ProductRequestDec = {
