@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {
-  Wishlist,
   ProductRepository,
   CategoryRepository,
   ColorRepository,
   SizeValueRepository,
+  WishlistRepository,
 } from '@/models';
 import { ReviewModule } from '@/module/review';
 import { QuestionModule } from '@/module/question';
@@ -21,7 +21,7 @@ import { ProductController } from './product.controller';
       ProductRepository,
       ColorRepository,
       SizeValueRepository,
-      Wishlist,
+      WishlistRepository,
     ]),
     ReviewModule,
     QuestionModule,

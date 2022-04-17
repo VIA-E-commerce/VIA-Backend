@@ -17,6 +17,7 @@ import {
   CategoryRepository,
   ColorRepository,
   SizeValueRepository,
+  WishlistRepository,
   ProductFilterOptions,
 } from '@/models';
 
@@ -37,8 +38,7 @@ export class ProductService {
     private readonly categoryRepository: CategoryRepository,
     private readonly colorRepository: ColorRepository,
     private readonly sizeValueRepository: SizeValueRepository,
-    @InjectRepository(Wishlist)
-    private readonly wishlistRepository: Repository<Wishlist>,
+    private readonly wishlistRepository: WishlistRepository,
   ) {}
 
   async getAll(
@@ -74,16 +74,12 @@ export class ProductService {
         );
 
         // 위시리스트 추가 여부 검사
-        const wished =
-          user &&
-          (await this.wishlistRepository.findOne({
-            where: {
-              product: { id: item.id },
-              user,
-            },
-          }));
+        const wished = await this.wishlistRepository.isProductWished(
+          item.id,
+          user,
+        );
 
-        return new ProductCardResponse(item, !!wished, isSoldOut);
+        return new ProductCardResponse(item, wished, isSoldOut);
       }),
     );
 
@@ -112,12 +108,11 @@ export class ProductService {
 
     this.checkProductExistence(!!product);
 
-    const wished = await this.wishlistRepository.findOne({
-      where: {
-        product: { id: productId },
-        user,
-      },
-    });
+    // 위시리스트 추가 여부 검사
+    const wished = await this.wishlistRepository.isProductWished(
+      productId,
+      user,
+    );
 
     const colors = await this.colorRepository.findByProductId(productId);
     const sizeValues = await this.sizeValueRepository.findByProductId(
@@ -131,7 +126,7 @@ export class ProductService {
       product,
       colors,
       sizeValues,
-      !!wished,
+      wished,
       isSoldOut,
     );
   }
