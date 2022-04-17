@@ -90,4 +90,17 @@ export class ProductRepository extends Repository<Product> {
 
     return !sum;
   }
+
+  async getProductDetail(productId: number) {
+    return this.createQueryBuilder(productAlias)
+      .leftJoinAndSelect(`${productAlias}.images`, productImageAlias)
+      .where(`${productAlias}.id = :productId`, { productId })
+      .leftJoinAndSelect(
+        `${productAlias}.variants`,
+        variantAlias,
+        `${variantAlias}.product.id = ${productAlias}.id AND ${variantAlias}.hide = false`,
+      )
+      .orderBy(`${productImageAlias}.order`, 'ASC')
+      .getOne();
+  }
 }
