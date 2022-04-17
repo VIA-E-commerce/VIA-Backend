@@ -1,8 +1,7 @@
 import { IsOptional } from 'class-validator';
 
 import { PagingQuery } from '@/common';
-
-import { ProductSort } from '../../enum';
+import { ProductSort } from '@/models';
 
 import { ProductRequestDec } from '../decorator';
 

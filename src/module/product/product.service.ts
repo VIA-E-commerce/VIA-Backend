@@ -1,22 +1,23 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository } from 'typeorm';
 
-import { getPagination, Pagination, useTransaction } from '@/common';
+import {
+  checkExistence,
+  getPagination,
+  Pagination,
+  useTransaction,
+} from '@/common';
 import { ERROR } from '@/docs';
 import {
   User,
   Product,
-  Category,
   Wishlist,
   ProductRepository,
+  CategoryRepository,
   ColorRepository,
   SizeValueRepository,
+  ProductFilterOptions,
 } from '@/models';
 
 import {
@@ -26,15 +27,14 @@ import {
   ReviewableProductQuery,
   PurchasedProductResponse,
 } from './dto';
-import { ProductSort, PurchasedProductFilter } from './enum';
+import { PurchasedProductFilter } from './enum';
 
 @Injectable()
 export class ProductService {
   constructor(
     private readonly connection: Connection,
     private readonly productRepository: ProductRepository,
-    @InjectRepository(Category)
-    private readonly categoryRepository: Repository<Category>,
+    private readonly categoryRepository: CategoryRepository,
     private readonly colorRepository: ColorRepository,
     private readonly sizeValueRepository: SizeValueRepository,
     @InjectRepository(Wishlist)
@@ -45,70 +45,29 @@ export class ProductService {
     { pageNum, pageSize, category, sort }: ProductListQuery,
     user: User,
   ): Promise<Pagination<ProductCardResponse>> {
-    const [productAlias, categoryAlias, productImageAlias, variantAlias] = [
-      'product',
-      'category',
-      'image',
-      'variant',
-    ];
+    const productFilterOptions: ProductFilterOptions = {};
 
-    const query = this.productRepository
-      .createQueryBuilder(productAlias)
-      .leftJoinAndSelect(`${productAlias}.category`, categoryAlias)
-      .leftJoinAndSelect(`${productAlias}.images`, productImageAlias)
-      .orderBy(`${productImageAlias}.order`, 'ASC')
-      .skip((pageNum - 1) * pageSize)
-      .take(pageSize);
-
-    // 정렬 방식 지정
-    switch (sort) {
-      case ProductSort.PRICE_ASC:
-        query.orderBy(`${productAlias}.sellingPrice`, 'ASC');
-        break;
-      case ProductSort.PRICE_DESC:
-        query.orderBy(`${productAlias}.sellingPrice`, 'DESC');
-        break;
-      case ProductSort.BEST_SELLING:
-        query.orderBy(`${productAlias}.salesVolume`, 'DESC');
-        break;
-      case ProductSort.REVIEW_DESC:
-        query.orderBy(`${productAlias}.reviewCount`, 'DESC');
-        break;
-      default:
-        query.orderBy(`${productAlias}.createdAt`, 'DESC');
-    }
-
-    // 상품 그룹별 필터링
+    // 유효한 카테고리인지 확인
     if (category === 'sale') {
-      query.where(`${productAlias}.retailPrice > ${productAlias}.sellingPrice`);
+      productFilterOptions.discount = true;
     } else if (category === 'new') {
-      query.where(
-        `${productAlias}.createdAt BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()`,
-      );
+      productFilterOptions.thisMonth = true;
     } else if (category) {
-      const dbCategory = await this.categoryRepository.findOne({
-        where: {
-          code: category,
-        },
-      });
+      const dbCategory = await this.categoryRepository.findByCode(category);
+      this.checkCategoryExistence(!!dbCategory);
 
-      if (!dbCategory) {
-        throw new HttpException(
-          '카테고리를 찾을 수 없습니다.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
-      query.where(`${categoryAlias}.code = :code`, {
-        code: category,
-      });
+      productFilterOptions.category = category;
     }
 
     // 상품 목록 조회 (+ 페이지네이션)
-    const [productList, count] = await query.getManyAndCount();
+    const [products, count] = await this.productRepository.getAllAndCount(
+      { pageNum, pageSize },
+      sort,
+      productFilterOptions,
+    );
 
     const responseData = await Promise.all(
-      productList.map(async (item) => {
+      products.map(async (item) => {
         // 품절 여부 검사
         const isSoldOut = await this.productRepository.isProductSoldOut(
           item.id,
@@ -282,9 +241,11 @@ export class ProductService {
     return getPagination(list, count, { pageNum: 1, pageSize: 10 });
   }
 
-  private checkProductExistence(trueCondition: boolean) {
-    if (!trueCondition) {
-      throw new NotFoundException(ERROR.PRODUCT.NOT_FOUND);
-    }
+  private checkProductExistence(isExist: boolean) {
+    checkExistence(isExist, ERROR.PRODUCT.NOT_FOUND);
+  }
+
+  private checkCategoryExistence(isExist: boolean) {
+    checkExistence(isExist, ERROR.CATEGORY.NOT_FOUND);
   }
 }

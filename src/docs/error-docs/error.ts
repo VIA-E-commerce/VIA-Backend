@@ -98,6 +98,13 @@ export const ERROR: ErrorInfo = {
     },
   },
 
+  CATEGORY: {
+    NOT_FOUND: {
+      status: HttpStatus.NOT_FOUND,
+      message: '카테고리를 찾을 수 없습니다.',
+    },
+  },
+
   PRODUCT: {
     NOT_FOUND: {
       status: HttpStatus.NOT_FOUND,
