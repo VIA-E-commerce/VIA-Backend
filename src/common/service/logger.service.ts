@@ -2,6 +2,7 @@ import { LoggerService } from '@nestjs/common';
 import { WinstonModule, utilities } from 'nest-winston';
 import { transports, format } from 'winston';
 import 'winston-daily-rotate-file';
+import * as path from 'path';
 import * as fs from 'fs';
 
 const logFormat = format.printf(
@@ -20,7 +21,7 @@ const logFileOptions = {
   zippedArchive: true,
 };
 
-const logFileDir = __dirname + '../../../../logs';
+const logFileDir = path.resolve(__dirname, '../../../../logs');
 
 if (!fs.existsSync(logFileDir)) {
   fs.mkdirSync(logFileDir);
