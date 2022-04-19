@@ -19,7 +19,7 @@ COPY . .
 RUN yarn
 
 # nest 프로젝트 빌드
-RUN yarn run build
+RUN yarn build
 
 
 ##########    Running    ##########
