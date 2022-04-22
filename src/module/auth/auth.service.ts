@@ -31,7 +31,7 @@ export class AuthService {
       },
     );
 
-    throwExceptionOrNot(exUser, EXCEPTION.AUTH.DUPLICATE_EMAIL);
+    throwExceptionOrNot(!exUser, EXCEPTION.AUTH.DUPLICATE_EMAIL);
 
     try {
       await this.userRepository.insert(
