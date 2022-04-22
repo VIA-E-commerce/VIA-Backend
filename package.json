@@ -37,7 +37,6 @@
     "cookie-parser": "^1.4.6",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.0",
-    "express-basic-auth": "^1.2.1",
     "mysql2": "^2.3.3",
     "nest-winston": "^1.6.2",
     "passport": "^0.5.2",

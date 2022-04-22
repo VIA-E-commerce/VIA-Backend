@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule } from '@nestjs/swagger';
-import * as expressBasicAuth from 'express-basic-auth';
 import * as cookieParser from 'cookie-parser';
 
 import { swaggerConfig, corsConfig } from '@/config';
@@ -27,16 +26,6 @@ class Application {
   }
 
   private async setUpOpenAPI() {
-    this.app.use(
-      [API_URL.SWAGGER.DOCS, API_URL.SWAGGER.DOCS_JSON],
-      expressBasicAuth({
-        challenge: true,
-        users: {
-          [process.env.ADMIN_USER]: process.env.ADMIN_PASSWORD,
-        },
-      }),
-    );
-
     const document = SwaggerModule.createDocument(this.app, swaggerConfig);
     SwaggerModule.setup(API_URL.SWAGGER.DOCS, this.app, document);
   }

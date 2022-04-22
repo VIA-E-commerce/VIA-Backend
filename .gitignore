@@ -36,5 +36,5 @@ lerna-debug.log*
 
 # 설정 파일
 .env*
-!.env.*.template
+!.env.template
 /temp
