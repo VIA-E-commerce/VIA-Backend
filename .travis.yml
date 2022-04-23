@@ -1,0 +1,51 @@
+language: generic
+
+sudo: required
+
+services:
+  - docker
+
+branches:
+  - main
+
+after_success:
+  - docker build -t mcdzn/via-backend .
+  - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID" --pasword-stdin
+  - docker push mcdzn/via-backend
+
+before_deploy:
+  - zip -r via # zip 파일 생성
+  - mkdir -p deploy # deploy 폴더 생성
+  - mv via.zip deploy/via.zip # zip 파일을 deploy 폴더로 이동
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    region: us-east-1
+    bucket: via-ci-cd
+    skip_cleanup: true
+    local_dir: # deploy 디렉터리에 있는 파일을 s3에 업로드 할 때 사용하는 옵션
+    wait-until-deployed: true
+    on:
+      repo: VIA-E-commerce/VIA-Backend
+      branch: main
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    region: us-east-1
+    bucket: via-ci-cd
+    key: via.zip
+    bundle_type: zip
+    application: via-deploy # codedeploy 애플리케이션
+    deployment_group: via # codedeploy 배포그룹
+    wait-until-deployed: true
+    on:
+      repo: VIA-E-commerce/VIA-Backend
+      branch: main
+
+notifications:
+  email:
+    recipients:
+      - 88yangkh@gmail.com
+    on_success: always
