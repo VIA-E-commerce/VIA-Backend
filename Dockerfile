@@ -12,7 +12,7 @@ WORKDIR /usr/src/app
 # 프로젝트 의존성 추가
 COPY package.json .
 ## bcrypt를 쓰기 위해 python 설치
-RUN apk add --no-cache --virtual .gyp python make g++ pkgconfig pixman-dev cairo-dev pango-dev
+RUN apk add --no-cache --virtual .gyp python3 make g++
 RUN yarn
 
 # 소스 파일 복사 : Host의 현재 디렉토리 → /usr/src/app 으로 복사

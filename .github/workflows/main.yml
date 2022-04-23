@@ -7,10 +7,13 @@ on:
   # 저장소에 코드를 push 했을 때 실행할 옵션
   push:
     branches: [main]
+<<<<<<< HEAD
 
 env:
   DOCKER_IMAGE_NAME: via-backend
   VERSION: latest
+=======
+>>>>>>> b9f8a8a (:green_heart: GitHub Actions 배포 workflow 작성)
 
 # Workflow > Job > Step 으로 이어지는 계층 구조
 jobs:
