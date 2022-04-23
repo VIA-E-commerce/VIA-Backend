@@ -1,51 +1,63 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Build & Deploy
 
-# Controls when the workflow will run
+# Action 작동 조건 지정
 on:
   # 저장소에 코드를 push 했을 때 실행할 옵션
   push:
     branches: [main]
-<<<<<<< HEAD
 
 env:
-  DOCKER_IMAGE_NAME: via-backend
+  APPLICATION_NAME: via-backend
   VERSION: latest
-=======
->>>>>>> b9f8a8a (:green_heart: GitHub Actions 배포 workflow 작성)
 
-# Workflow > Job > Step 으로 이어지는 계층 구조
+# Workflow > Job > Step > Task 로 이어지는 계층 구조
 jobs:
   build:
-    name: Build # 5 Step으로 진행
-    # build가 실행될 OS 지정
-    runs-on: ubuntu-20.04
+    name: Build
+    runs-on: ubuntu-20.04 # build가 실행될 OS 환경 지정
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Step 1. 소스코드를 가상 컨테이너 안으로 Checkout
       - name: Check out source code
         uses: actions/checkout@v2
 
-      # Step 2. 가상 컨테이너 안에 Docker가 돌아갈 수 있는 환경 설치
+      # Step 2. 가상 컨테이너 안에 Docker 환경 설치
       - name: Set up docker buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      # Step 3. 2에서 생성한 토큰으로 도커 허브에 로그인
-      - name: Login to Docker Hub
+      # Step 3. 도커 허브 로그인
+      - name: Login to ghcr (${{ github.actor }})
         uses: docker/login-action@v1
         with:
-          username: ${{secrets.DOCKERHUB_USERNAME}}
-          password: ${{secrets.DOCKERHUB_PASSWORD}}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # Step 4. 도커 이미지 빌드 & Push
+      # Step 4. 도커 이미지 Build & Push
       - name: Build and push to Docker Hub
-        env:
-          NAME: mcdzn
-          REPO: via-backend
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APPLICATION_NAME }}
+
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: [self-hosted, via]
+    steps:
+      # Step 1. 도커 허브 로그인
+      - name: Login to ghcr
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      # Step 2. Self-hosted 러너로 Docker-compose 명령어 실행
+      - name: Docker run
         run: |
-          docker build -t $REPO .
-          docker tag $REPO:latest $NAME/$REPO:latest
-          docker push $NAME/$REPO:latest
+          docker ps -q --filter "name=via-backend" | grep -q . &&
+          docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+          docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APPLICATION_NAME }}:${{ env.VERSION }}
+          cd ~/app/via && docker-compose up -d
