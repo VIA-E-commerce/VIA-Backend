@@ -6,8 +6,14 @@ function getOAuthCallbackUrl(baseUrl: string, provider: string) {
 }
 
 export const authConfig = registerAs(CONFIG.AUTH, () => {
-  const SERVER_BASE_URL = process.env.SERVER_BASE_URL;
-  const CLIENT_BASE_URL = process.env.CLIENT_BASE_URL;
+  const IS_DEV_MODE = process.env.NODE_ENV === CONFIG.NODE_ENV.DEVELOPMENT;
+
+  const SERVER_BASE_URL = IS_DEV_MODE
+    ? `${process.env.HOST}:${process.env.PORT}`
+    : process.env.HOST;
+  const CLIENT_BASE_URL = IS_DEV_MODE
+    ? `${process.env.HOST}:${process.env.CLIENT_PORT}`
+    : process.env.HOST;
 
   return {
     usernameField: 'email',

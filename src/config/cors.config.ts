@@ -3,7 +3,7 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 export const corsConfig = (DEV_MODE: boolean): CorsOptions => {
   const corsOriginList = [];
 
-  const CLIENT_BASE_URL = process.env.CLIENT_BASE_URL;
+  const CLIENT_BASE_URL = `${process.env.HOST}:${process.env.CLIENT_PORT}`;
 
   if (DEV_MODE) {
     corsOriginList.push('*');
