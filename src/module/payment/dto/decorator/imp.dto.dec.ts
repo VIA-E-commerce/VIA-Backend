@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsString, IsUUID, Min } from 'class-validator';
+import { IsInt, IsString, Min } from 'class-validator';
 
 import { getIsIntMessage, getIsStringMessage, getMinMessage } from '@/common';
 
@@ -16,7 +16,6 @@ export const ImpRequestDec = {
       IsString({
         message: getIsStringMessage({ property: IMP.IMP_UUID.KR }),
       }),
-      IsUUID(),
     );
   },
 
