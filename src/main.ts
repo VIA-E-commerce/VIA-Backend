@@ -27,7 +27,11 @@ class Application {
 
   private async setUpOpenAPI() {
     const document = SwaggerModule.createDocument(this.app, swaggerConfig);
-    SwaggerModule.setup(API_URL.SWAGGER.DOCS, this.app, document);
+    SwaggerModule.setup(
+      `${APP.GLOBAL_PREFIX}${API_URL.SWAGGER.DOCS}`,
+      this.app,
+      document,
+    );
   }
 
   private async setUpGlobalMiddleware() {
