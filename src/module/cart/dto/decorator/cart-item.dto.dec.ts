@@ -1,9 +1,9 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { IsArray, IsNumber } from 'class-validator';
+import { IsArray } from 'class-validator';
 
-import { SWAGGER, SwaggerValidation } from '@/common';
+import { SwaggerValidation } from '@/common';
 import { CartItemDoc } from '@/docs';
 import { ColorResponse } from '@/module/color';
 import { SizeValueResponse } from '@/module/size';
@@ -23,13 +23,6 @@ export const CartItemRequestDec = {
       }),
       Type(() => Number),
       Transform(({ value }) => (value.length ? value : [value])),
-      IsNumber(
-        {},
-        {
-          each: true,
-          message: SWAGGER.ID.IS_NUMBER_MESSAGE,
-        },
-      ),
       IsArray({
         message: '장바구니 아이템 식별자 목록은 배열 타입이어야 합니다.',
       }),

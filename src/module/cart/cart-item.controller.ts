@@ -40,7 +40,7 @@ export class CartItemController {
   @Get()
   @UseGuards(JwtAuthGuard)
   async getCartItems(
-    @Query() { id: ids }: CartItemIdsQuery,
+    @Query() { ids }: CartItemIdsQuery,
     @CurrentUser() user: User,
   ) {
     return this.cartService.getCartItems(ids, user);
