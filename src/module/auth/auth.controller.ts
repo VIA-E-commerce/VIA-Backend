@@ -122,9 +122,9 @@ export class AuthController {
       maxAge: this.config.get<AuthConfig>(CONFIG.AUTH).refreshTokenExp * 1000,
       httpOnly: true,
       signed: true,
-      secure:
-        this.config.get(CONFIG.ENV_KEY.NODE_ENV) !==
-        CONFIG.NODE_ENV.DEVELOPMENT,
+      // secure:
+      //   this.config.get(CONFIG.ENV_KEY.NODE_ENV) !==
+      //   CONFIG.NODE_ENV.DEVELOPMENT,
     };
 
     res.cookie(COOKIE.REFRESH_TOKEN, refreshToken, cookieOptions);
