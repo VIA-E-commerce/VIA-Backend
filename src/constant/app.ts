@@ -1,5 +1,5 @@
 export const APP = {
-  VERSION: '0.0.1',
+  VERSION: '1.0.0',
   GLOBAL_PREFIX: 'api',
 
   MINIMUM_AMOUNT_FOR_FREE_SHIPPING: 30000,
