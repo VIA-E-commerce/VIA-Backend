@@ -1,5 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+
+import { User } from '@/models';
+import { CurrentUser, JwtAuthGuard } from '@/module/auth';
 
 import { ImpRefundRequest } from './dto';
 import { PaymentService } from './payment.service';
@@ -11,8 +14,12 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Doc.refund('아임포트 환불')
+  @UseGuards(JwtAuthGuard)
   @Post('refund')
-  async refund(@Body() dto: ImpRefundRequest): Promise<void> {
-    return this.paymentService.refund(dto);
+  async refund(
+    @Body() dto: ImpRefundRequest,
+    @CurrentUser() user: User,
+  ): Promise<void> {
+    return this.paymentService.refund(dto, user);
   }
 }

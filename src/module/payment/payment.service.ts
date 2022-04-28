@@ -1,21 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { lastValueFrom } from 'rxjs';
 import * as dayjs from 'dayjs';
 
 import { throwExceptionOrNot } from '@/common';
 import { EXCEPTION } from '@/docs';
-import { OrderStatus, PaymentMethod } from '@/models';
+import {
+  Order,
+  OrderStatus,
+  PaymentMethod,
+  User,
+  UserRepository,
+} from '@/models';
 
 import { ImpRestApiDto, ImpRefundRequest } from './dto';
-import { IMPPaymentResponse } from './interface';
+import { IMPPaymentResponse, IMPPaymentCancelResponse } from './interface';
 
 @Injectable()
 export class PaymentService {
   constructor(
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
+    @InjectRepository(Order)
+    private readonly orderRepository: Repository<Order>,
+    private readonly userRepository: UserRepository,
   ) {}
 
   async verify(impUID: string, paymentReal: number) {
@@ -54,21 +65,44 @@ export class PaymentService {
     return { merchantUID: merchant_uid, paidAt, paymentMethod, orderStatus };
   }
 
-  async refund({ impUID, amount, checksum, reason }: ImpRefundRequest) {
+  async refund(
+    { impUID, amount, checksum, reason }: ImpRefundRequest,
+    user: User,
+  ) {
     const accessToken = await this.getAccessToken();
 
-    await lastValueFrom(
-      this.httpService.post(
-        'https://api.iamport.kr/payments/cancel',
-        { imp_uid: impUID, amount, checksum, reason },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: accessToken,
+    try {
+      const {
+        data: { response },
+      } = await lastValueFrom(
+        this.httpService.post<IMPPaymentCancelResponse>(
+          'https://api.iamport.kr/payments/cancel',
+          { imp_uid: impUID, amount, checksum, reason },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: accessToken,
+            },
           },
-        },
-      ),
-    );
+        ),
+      );
+
+      const { merchant_uid } = response;
+
+      const order = await this.orderRepository.findOne({
+        merchantUID: merchant_uid,
+      });
+
+      throwExceptionOrNot(order, EXCEPTION.ORDER.NOT_FOUND);
+
+      if (order.status === OrderStatus.DELIVERED) {
+        await this.userRepository.update(user, {
+          point: user.point - order.point,
+        });
+      }
+    } catch (err) {
+      throw err;
+    }
   }
 
   private async getAccessToken() {

@@ -1,6 +1,9 @@
-export interface IMPPaymentResponse {
+interface IMPCommonResponse {
   code?: number;
   message?: string;
+}
+
+export interface IMPPaymentResponse extends IMPCommonResponse {
   response: {
     imp_uid: string;
     merchant_uid: string;
@@ -81,3 +84,10 @@ export type PayMethod =
   | 'alipay'
   | 'unionpay'
   | 'tenpay';
+
+export interface IMPPaymentCancelResponse extends IMPCommonResponse {
+  response: {
+    imp_uid: string;
+    merchant_uid: string;
+  };
+}
