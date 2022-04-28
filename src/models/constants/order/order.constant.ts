@@ -7,6 +7,9 @@ export const ORDER = {
     KR: '실 결제 금액',
     MIN: 0,
   },
+  POINT: {
+    KR: '총 적립 포인트',
+  },
 
   PURCHASER: {
     KR: '구매자 이름',

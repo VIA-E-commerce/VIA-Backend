@@ -44,6 +44,11 @@ export const OrderValidation: SwaggerEntityDoc<Order> = {
     );
   },
 
+  point(propertyName?: string) {
+    const property = propertyName || ORDER.POINT.KR;
+    return applyDecorators(UserValidation.point(property));
+  },
+
   purchaser(propertyName?: string) {
     const property = propertyName || ORDER.PURCHASER.KR;
     return applyDecorators(UserValidation.name(property));

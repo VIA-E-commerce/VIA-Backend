@@ -86,6 +86,10 @@ export const OrderResponseDec = {
     return applyDecorators(OrderDoc.paymentReal());
   },
 
+  point() {
+    return applyDecorators(OrderDoc.point());
+  },
+
   purchaser() {
     return applyDecorators(OrderDoc.purchaser());
   },

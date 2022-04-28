@@ -27,6 +27,15 @@ export const OrderDoc = {
     );
   },
 
+  point() {
+    return applyDecorators(
+      ApiProperty({
+        description: '총 적립 포인트',
+        example: 100,
+      }),
+    );
+  },
+
   purchaser() {
     return applyDecorators(
       ApiProperty({

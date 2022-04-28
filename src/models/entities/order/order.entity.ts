@@ -22,6 +22,11 @@ export class Order extends CommonIdEntity {
   paymentReal: number;
 
   @Column({
+    default: 0,
+  })
+  point: number;
+
+  @Column({
     length: USER.NAME.MAX_LENGTH,
   })
   purchaser: string;
