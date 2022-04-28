@@ -197,7 +197,6 @@ export class OrderService {
         const calcedSalesVolume = product.salesVolume - orderDetail.quantity;
         product.salesVolume = Math.max(0, calcedSalesVolume);
 
-        console.log(variant);
         await variantRepository.save(variant);
         await productRepository.save(product);
       });
