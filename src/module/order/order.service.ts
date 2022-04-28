@@ -10,7 +10,7 @@ import {
   throwExceptionOrNot,
   useTransaction,
 } from '@/common';
-import { APP } from '@/constant';
+import { BUSINESS } from '@/constant';
 import { EXCEPTION } from '@/docs';
 import {
   CartItem,
@@ -66,18 +66,23 @@ export class OrderService {
     const { merchantUID, paidAt, paymentMethod, orderStatus } =
       await this.paymentService.verify(dto.impUID, 100);
 
-    // 주문 Mapping : DTO → 주문 Entity
-    const order = dto.toEntity(user, totalPrice, paymentReal);
-    order.orderDetails = this.mapCartItemsToOrderDetails(cartItems);
-    order.merchantUID = merchantUID;
-    order.paidAt = paidAt;
-    order.paymentMethod = paymentMethod;
-    order.status = orderStatus;
-
     // DB 저장
     let response: number;
 
     await useTransaction(this.connection, async (manager) => {
+      // 주문 Mapping : DTO → 주문 Entity
+      const order = dto.toEntity(user, totalPrice, paymentReal);
+      order.orderDetails = this.mapCartItemsToOrderDetails(cartItems);
+      order.merchantUID = merchantUID;
+      order.paidAt = paidAt;
+      order.paymentMethod = paymentMethod;
+      order.status = orderStatus;
+
+      // 결제 완료 시 order에 적립할 금액 저장
+      if (orderStatus === OrderStatus.PAYMENT_ACCEPTED) {
+        order.point = paymentReal * BUSINESS.POINT_EARNING_RATE;
+      }
+
       // 주문 등록
       const orderRepository = manager.getRepository(Order);
 
@@ -215,8 +220,8 @@ export class OrderService {
     });
 
     // Logic B : 주문 금액이 적으면 배송비 추가
-    if (paymentReal < APP.MINIMUM_AMOUNT_FOR_FREE_SHIPPING) {
-      paymentReal += APP.SHIPPING_FEE;
+    if (paymentReal < BUSINESS.MINIMUM_AMOUNT_FOR_FREE_SHIPPING) {
+      paymentReal += BUSINESS.SHIPPING_FEE;
     }
 
     return [totalPrice, paymentReal];
