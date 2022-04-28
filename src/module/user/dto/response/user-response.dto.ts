@@ -23,6 +23,10 @@ export class UserResponse {
   @Expose()
   phone: string;
 
+  @UserResponseDec.point()
+  @Expose()
+  point: string;
+
   @UserResponseDec.role()
   @Expose()
   role: UserRole;

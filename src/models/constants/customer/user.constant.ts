@@ -28,6 +28,10 @@ export const USER = {
     MAX_LENGTH: 11,
   },
 
+  POINT: {
+    KR: '적립 포인트',
+  },
+
   ROLE: {
     KR: '권한',
     MAX_LENGTH: 5,

@@ -45,6 +45,15 @@ export const UserDoc = {
     );
   },
 
+  point() {
+    return applyDecorators(
+      ApiProperty({
+        description: USER.POINT.KR,
+        example: 1000,
+      }),
+    );
+  },
+
   role() {
     return applyDecorators(
       ApiProperty({

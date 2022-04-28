@@ -1,17 +1,21 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   IsEmail,
+  IsInt,
   IsMobilePhone,
   IsString,
   Length,
   Matches,
   MaxLength,
+  Min,
 } from 'class-validator';
 
 import {
+  getIsIntMessage,
   getIsStringMessage,
   getLengthMessage,
   getMaxLengthMessage,
+  getMinMessage,
   getStringTypeMessage,
   SwaggerEntityDoc,
 } from '@/common';
@@ -68,6 +72,18 @@ export const UserValidation: SwaggerEntityDoc<User> = {
           message: getStringTypeMessage({ property }),
         },
       ),
+    );
+  },
+
+  point(propertyName?: string) {
+    const property = propertyName || USER.PHONE.KR;
+    const min = 0;
+
+    return applyDecorators(
+      IsInt({ message: getIsIntMessage({ property }) }),
+      Min(min, {
+        message: getMinMessage({ property, min }),
+      }),
     );
   },
 
