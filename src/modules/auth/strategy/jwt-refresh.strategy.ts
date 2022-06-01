@@ -4,8 +4,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 
-import { AuthConfig } from '@/config';
-import { CONFIG, COOKIE } from '@/constant';
+import { AuthConfig } from '@/configs';
+import { CONFIG, COOKIE } from '@/constants';
 
 import { JwtPayload } from '../interface';
 import { STRATEGY } from '../auth.constant';

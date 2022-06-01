@@ -12,8 +12,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { CookieOptions, Response } from 'express';
 
 import { removeCookie } from '@/common';
-import { AuthConfig } from '@/config';
-import { CONFIG, COOKIE } from '@/constant';
+import { AuthConfig } from '@/configs';
+import { CONFIG, COOKIE } from '@/constants';
 import { User } from '@/models';
 
 import { CurrentUser } from './decorator';

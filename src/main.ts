@@ -4,8 +4,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 
-import { swaggerConfig, corsConfig } from '@/config';
-import { APP, API_URL, CONFIG } from '@/constant';
+import { swaggerConfig, corsConfig } from '@/configs';
+import { APP, API_URL, CONFIG } from '@/constants';
 import {
   HttpExceptionFilter,
   SuccessInterceptor,

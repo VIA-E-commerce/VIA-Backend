@@ -1,4 +1,4 @@
-import { APP } from '@/constant';
+import { APP } from '@/constants';
 import { DocumentBuilder } from '@nestjs/swagger';
 
 const BEARER_AUTH_NAME = 'Access Token';

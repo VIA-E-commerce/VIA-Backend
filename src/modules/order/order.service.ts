@@ -10,7 +10,7 @@ import {
   throwExceptionOrNot,
   useTransaction,
 } from '@/common';
-import { BUSINESS } from '@/constant';
+import { BUSINESS } from '@/constants';
 import { EXCEPTION } from '@/docs';
 import {
   CartItem,

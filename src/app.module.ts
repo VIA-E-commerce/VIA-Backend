@@ -2,8 +2,8 @@ import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { configs } from '@/config';
-import { CONFIG } from '@/constant';
+import { configs } from '@/configs';
+import { CONFIG } from '@/constants';
 import { modules } from '@/modules';
 
 @Module({

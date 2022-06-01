@@ -3,8 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile } from 'passport-kakao';
 
-import { AuthConfig } from '@/config';
-import { CONFIG } from '@/constant';
+import { AuthConfig } from '@/configs';
+import { CONFIG } from '@/constants';
 import { SNSProvider } from '@/models';
 
 import { OAuthRequest } from '../dto';

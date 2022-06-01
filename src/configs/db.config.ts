@@ -2,7 +2,7 @@ import { ConfigType, registerAs } from '@nestjs/config';
 import { getMetadataArgsStorage } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
-import { CONFIG } from '@/constant';
+import { CONFIG } from '@/constants';
 
 export const dbConfig = registerAs(CONFIG.DB, () => {
   const isDevMode = process.env.NODE_ENV === CONFIG.NODE_ENV.DEVELOPMENT;

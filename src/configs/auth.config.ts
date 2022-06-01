@@ -1,4 +1,4 @@
-import { APP, CONFIG } from '@/constant';
+import { APP, CONFIG } from '@/constants';
 import { ConfigType, registerAs } from '@nestjs/config';
 
 function getOAuthCallbackUrl(baseUrl: string, provider: string) {

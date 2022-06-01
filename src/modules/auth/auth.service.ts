@@ -4,8 +4,8 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { handleException, throwExceptionOrNot } from '@/common';
-import { CONFIG } from '@/constant';
-import { AuthConfig } from '@/config';
+import { CONFIG } from '@/constants';
+import { AuthConfig } from '@/configs';
 import { EXCEPTION } from '@/docs';
 import { User, UserRole, UserRepository } from '@/models';
 
