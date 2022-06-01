@@ -2,9 +2,9 @@
   "name": "via-backend",
   "version": "1.0.0",
   "description": "",
-  "author": "",
+  "author": "Mec.D",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
