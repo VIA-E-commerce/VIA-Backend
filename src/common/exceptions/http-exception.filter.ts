@@ -7,7 +7,7 @@ import {
 import { isObject, isString } from 'class-validator';
 import { Response } from 'express';
 
-import { ErrorResponse } from '../interface';
+import { ErrorResponse } from '../interfaces';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {

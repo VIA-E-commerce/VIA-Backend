@@ -1,6 +1,6 @@
 import { Connection, EntityManager, SelectQueryBuilder } from 'typeorm';
 
-import { PagingQuery } from '../dto';
+import { PagingQuery } from '../dtos';
 
 export async function useTransaction(
   connection: Connection,
