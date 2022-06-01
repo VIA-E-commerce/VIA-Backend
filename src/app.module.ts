@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { configs } from '@/config';
 import { CONFIG } from '@/constant';
-import { modules } from '@/module';
+import { modules } from '@/modules';
 
 @Module({
   imports: [
